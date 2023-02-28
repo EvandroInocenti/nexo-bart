@@ -4,8 +4,9 @@ import 'implanted_catheter_page.dart';
 import 'oncological_cirurgian_page.dart';
 import 'patient_form_page.dart';
 
-class TabsPage extends StatefulWidget {
-  const TabsPage({super.key});
+class TabsPage extends StatefulWidget with ChangeNotifier {
+  Patient? patient;
+  TabsPage({super.key, this.patient});
 
   @override
   State<TabsPage> createState() => _TabsPageState();
@@ -13,9 +14,13 @@ class TabsPage extends StatefulWidget {
 
 class _TabsPageState extends State<TabsPage> {
   int _selectedPageIndex = 0;
+  Patient? patient;
 
   final List<Map<String, Object>> _pages = [
-    {'title': 'Informações do Paciente', 'page': PatientFormPage()},
+    {
+      'title': 'Informações do Paciente',
+      'page': PatientFormPage(widget.patient)
+    },
     {'title': 'Cirurgia Oncológica', 'page': OncologicalCirurgianPage()},
     {'title': 'Catéter', 'page': ImplantedCatheterPage()},
   ];
@@ -23,6 +28,7 @@ class _TabsPageState extends State<TabsPage> {
   @override
   void initState() {
     super.initState();
+    patient = widget.patient;
   }
 
   _selectPage(int index) {
@@ -33,7 +39,7 @@ class _TabsPageState extends State<TabsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final patient = ModalRoute.of(context)?.settings.arguments as Patient;
+    // final patient = ModalRoute.of(context)?.settings.arguments as Patient;
     return Scaffold(
       appBar: AppBar(
         title: Text(

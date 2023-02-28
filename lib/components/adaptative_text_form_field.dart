@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class AdaptativeTextFormField extends StatelessWidget {
   final String initialValue;
   final String label;
+  final bool obscureText;
   final TextInputAction textInputAction;
   final String? Function(String?)? validator;
   final Function(String?)? onSaved;
@@ -22,7 +23,8 @@ class AdaptativeTextFormField extends StatelessWidget {
     this.keyboardType,
     this.onFieldSubmitted,
     required this.onSaved,
-    required this.validator,
+    this.validator,
+    required this.obscureText,
   }) : super(key: key);
 
   @override
@@ -37,6 +39,7 @@ class AdaptativeTextFormField extends StatelessWidget {
             onSaved: onSaved,
             validator: validator,
             keyboardType: keyboardType,
+            obscureText: obscureText,
           )
         : TextFormField(
             initialValue: initialValue,
@@ -51,6 +54,7 @@ class AdaptativeTextFormField extends StatelessWidget {
             onSaved: onSaved,
             validator: validator,
             keyboardType: keyboardType,
+            obscureText: obscureText,
           );
   }
 }

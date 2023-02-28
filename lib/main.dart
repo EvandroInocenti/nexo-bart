@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:nexo_onco/pages/auth_page.dart';
 import 'package:nexo_onco/pages/implanted_catheter_page.dart';
 import 'package:nexo_onco/pages/oncological_cirurgian_page.dart';
+import 'package:nexo_onco/pages/patient_form_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'models/auth.dart';
 import 'models/environment.dart';
 import 'models/patient_list.dart';
 import 'pages/patients_page.dart';
@@ -49,14 +52,20 @@ class _MyHomePageState extends State<MyHomePage> {
         ChangeNotifierProvider(
           create: (_) => PatientList(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => TabsPage(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Auth(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Nexo Onco',
         theme: tema.copyWith(
           colorScheme: tema.colorScheme.copyWith(
-            primary: const Color(0xFF0a5394),
-            secondary: const Color(0xFFf49937),
+            primary: const Color.fromARGB(255, 10, 83, 148),
+            secondary: const Color.fromARGB(255, 244, 153, 55),
           ),
           textTheme: tema.textTheme.copyWith(
             titleLarge: const TextStyle(
@@ -95,8 +104,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         routes: {
-          AppRoutes.home: (ctx) => PatientsPage(),
-          AppRoutes.tabsPage: (ctx) => TabsPage(),
+          AppRoutes.auth: (ctx) => AuthPage(),
+          AppRoutes.home: (ctx) => TabsPage(),
+          // AppRoutes.patientForm: (ctx) => PatientFormPage(),
           AppRoutes.oncologicalForm: (ctx) => OncologicalCirurgianPage(),
           AppRoutes.catheterForm: (ctx) => ImplantedCatheterPage(),
         },

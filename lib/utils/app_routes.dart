@@ -1,5 +1,6 @@
 class AppRoutes {
-  static const home = '/';
+  static const auth = '/';
+  static const home = '/home';
   static const tabsPage = 'tabs-page';
   static const patientForm = 'patients-form';
   static const oncologicalForm = 'oncological-form';

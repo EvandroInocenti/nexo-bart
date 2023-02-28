@@ -6,7 +6,8 @@ import '../models/patient_list.dart';
 import '../components/adaptative_text_form_field.dart';
 
 class PatientFormPage extends StatefulWidget {
-  const PatientFormPage({
+  const PatientFormPage(
+    Patient? patient, {
     super.key,
   });
 
@@ -129,6 +130,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                     keyboardType: TextInputType.name,
                     focusNode: _nameFocus,
                     label: 'Nome',
+                    obscureText: false,
                     textInputAction: TextInputAction.next,
                     onFieldSubmitted: (_) {
                       FocusScope.of(context).requestFocus(_emailFocus);
@@ -152,6 +154,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                     keyboardType: TextInputType.emailAddress,
                     focusNode: _emailFocus,
                     label: 'E-mail',
+                    obscureText: false,
                     textInputAction: TextInputAction.next,
                     onFieldSubmitted: (_) {
                       FocusScope.of(context).requestFocus(_cpfFocus);
@@ -178,6 +181,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           keyboardType: TextInputType.text,
                           focusNode: _cpfFocus,
                           label: 'CPF',
+                          obscureText: false,
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) {
                             FocusScope.of(context)
@@ -199,6 +203,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           initialValue: _formData['cellphone']!.toString(),
                           focusNode: _cellphoneFocus,
                           label: 'Celular',
+                          obscureText: false,
                           keyboardType: TextInputType.phone,
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) {
@@ -228,6 +233,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           initialValue: _formData['birthDate']!.toString(),
                           focusNode: _birthDateFocus,
                           label: 'Data de Nascimento',
+                          obscureText: false,
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) {
                             FocusScope.of(context).requestFocus(_heightFocus);
@@ -249,6 +255,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           initialValue: _formData['height']!.toString(),
                           focusNode: _heightFocus,
                           label: 'Altura',
+                          obscureText: false,
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) {
                             FocusScope.of(context).requestFocus(_weightFocus);
@@ -277,6 +284,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           initialValue: _formData['weight']!.toString(),
                           focusNode: _weightFocus,
                           label: 'Peso',
+                          obscureText: false,
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) {
                             FocusScope.of(context)
@@ -302,6 +310,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           initialValue: _formData['bodySurface']!.toString(),
                           focusNode: _bodySurfaceFocus,
                           label: 'Circunferência Corpória',
+                          obscureText: false,
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) {
                             FocusScope.of(context).requestFocus(_tumorFocus);
@@ -335,6 +344,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           focusNode: _tumorFocus,
                           label: 'Tumor',
                           textInputAction: TextInputAction.done,
+                          obscureText: false,
                           onSaved: (tumor) =>
                               _formData['tumor_id'] = int.parse(tumor ?? '0'),
                           validator: (_tumor) {
