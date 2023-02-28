@@ -16,8 +16,8 @@ class _TabsPageState extends State<TabsPage> {
 
   final List<Map<String, Object>> _pages = [
     {'title': 'Informações do Paciente', 'page': PatientFormPage()},
-    {'title': 'Cirurgia Oncológica', 'page': const OncologicalCirurgianPage()},
-    {'title': 'Catéter', 'page': const ImplantedCatheterPage()},
+    {'title': 'Cirurgia Oncológica', 'page': OncologicalCirurgianPage()},
+    {'title': 'Catéter', 'page': ImplantedCatheterPage()},
   ];
 
   @override
