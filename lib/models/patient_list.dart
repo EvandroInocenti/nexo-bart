@@ -41,7 +41,7 @@ class PatientList with ChangeNotifier {
     );
 
     var patientJson = jsonDecode(response.body)["data"];
-
+    notifyListeners();
     if (response.statusCode == 200) {
       List<Patient> patient =
           List<Patient>.from(patientJson.map((i) => Patient.fromJson(i)));
@@ -49,7 +49,6 @@ class PatientList with ChangeNotifier {
       for (var element in patient) {
         _items.add(element);
       }
-      notifyListeners();
     } else {
       throw Exception('Falha ao carregar pacientes');
     }
@@ -77,7 +76,7 @@ class PatientList with ChangeNotifier {
       // doctor_id: data['doctorId'] as int,
       // user_id: data['userId'] as int,
       staging: data['staging'] as int,
-      // tumor_id: data['tumor_id'] as int,
+      tumor_id: data['tumor_id'] as int,
       user: User(
         name: data['name'] as String,
         email: data['email'] as String,

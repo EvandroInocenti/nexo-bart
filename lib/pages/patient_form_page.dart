@@ -371,9 +371,9 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           activeColor: Theme.of(context).colorScheme.primary,
                           onChanged: (value) {
                             setState(() {
-                              _formData['staging'] = value;
-                              arg.staging = value.round().toInt();
-                              arg.sliderStaging(value.round().toInt());
+                              _formData['staging'] = value.toInt();
+                              arg.staging = value.toInt();
+                              arg.sliderStaging(value.toInt());
                             });
                           },
                         ),

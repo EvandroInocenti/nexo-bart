@@ -13,28 +13,12 @@ class PatientsPage extends StatefulWidget {
 }
 
 class _PatientsPageState extends State<PatientsPage> {
-  bool _isLoading = true;
-
   Future<void> _refreshPatients(BuildContext context) {
     return Provider.of<PatientList>(context, listen: false).loadPatients();
   }
 
   @override
-  void initState() {
-    super.initState();
-    Provider.of<PatientList>(
-      context,
-      listen: false,
-    ).loadPatients().then((value) {
-      setState(() {
-        _isLoading = false;
-      });
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final PatientList patients = Provider.of(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -53,25 +37,38 @@ class _PatientsPageState extends State<PatientsPage> {
           ),
         ],
       ),
-      body: _isLoading
-          ? const Center(
+      body: FutureBuilder(
+        future: Provider.of<PatientList>(context, listen: false).loadPatients(),
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
               child: CircularProgressIndicator(),
-            )
-          : RefreshIndicator(
-              onRefresh: () => _refreshPatients(context),
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: ListView.builder(
-                  itemCount: patients.itemsCount,
-                  itemBuilder: (ctx, i) => Column(
-                    children: [
-                      PatientItem(patients.items[i]),
-                      const Divider(),
-                    ],
+            );
+          } else if (snapshot.error != null) {
+            return const Center(
+              child: Text('Ocorreu um erro!'),
+            );
+          } else {
+            return Consumer<PatientList>(
+              builder: (ctx, patients, child) => RefreshIndicator(
+                onRefresh: () => _refreshPatients(context),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: ListView.builder(
+                    itemCount: patients.itemsCount,
+                    itemBuilder: (ctx, i) => Column(
+                      children: [
+                        PatientItem(patients.items[i]),
+                        const Divider(),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
+            );
+          }
+        },
+      ),
     );
   }
 }
