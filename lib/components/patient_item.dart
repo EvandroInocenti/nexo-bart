@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../models/patient.dart';
 import '../models/patient_list.dart';
+import '../pages/tabs_page.dart';
 import '../utils/app_routes.dart';
 
 class PatientItem extends StatefulWidget {
@@ -59,15 +60,15 @@ class _PatientItemState extends State<PatientItem> {
                 icon: const Icon(Icons.edit),
                 color: Theme.of(context).colorScheme.primary,
                 onPressed: () {
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (context) => TabsPage(patient: widget.patient),
-                  //   ),
-                  // );
-                  Navigator.of(context).pushNamed(
-                    AppRoutes.tabsPage,
-                    arguments: widget.patient,
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => TabsPage(widget.patient),
+                    ),
                   );
+                  // Navigator.of(context).pushNamed(
+                  //   AppRoutes.tabsPage,
+                  //   arguments: widget.patient,
+                  // );
                 },
               ),
               IconButton(
