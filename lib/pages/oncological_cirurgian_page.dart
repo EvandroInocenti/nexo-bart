@@ -5,7 +5,7 @@ import '../models/patient.dart';
 import '../models/patient_list.dart';
 
 class OncologicalCirurgianPage extends StatefulWidget {
-  const OncologicalCirurgianPage({super.key});
+  OncologicalCirurgianPage({super.key});
 
   @override
   State<OncologicalCirurgianPage> createState() =>

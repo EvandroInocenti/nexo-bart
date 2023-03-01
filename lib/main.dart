@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nexo_onco/pages/auth_page.dart';
 import 'package:nexo_onco/pages/implanted_catheter_page.dart';
 import 'package:nexo_onco/pages/oncological_cirurgian_page.dart';
 import 'package:nexo_onco/pages/patient_form_page.dart';
@@ -9,7 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'models/auth.dart';
 import 'models/environment.dart';
 import 'models/patient_list.dart';
-import 'pages/patients_page.dart';
+import 'pages/auth_or_home_page.dart';
 import 'pages/tabs_page.dart';
 import 'utils/app_routes.dart';
 
@@ -50,13 +49,16 @@ class _MyHomePageState extends State<MyHomePage> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => PatientList(),
+          create: (_) => Auth(),
+        ),
+        ChangeNotifierProxyProvider<Auth, PatientList>(
+          create: (_) => PatientList('', []),
+          update: (ctx, auth, previous) {
+            return PatientList(auth.token ?? '', previous?.items ?? []);
+          },
         ),
         ChangeNotifierProvider(
           create: (_) => TabsPage(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => Auth(),
         ),
       ],
       child: MaterialApp(
@@ -104,9 +106,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         routes: {
-          AppRoutes.auth: (ctx) => AuthPage(),
-          AppRoutes.home: (ctx) => TabsPage(),
-          // AppRoutes.patientForm: (ctx) => PatientFormPage(),
+          AppRoutes.authOrHome: (ctx) => AuthOrHomePage(),
+          AppRoutes.tabsPage: (ctx) => TabsPage(),
+          AppRoutes.patientForm: (ctx) => PatientFormPage(),
           AppRoutes.oncologicalForm: (ctx) => OncologicalCirurgianPage(),
           AppRoutes.catheterForm: (ctx) => ImplantedCatheterPage(),
         },

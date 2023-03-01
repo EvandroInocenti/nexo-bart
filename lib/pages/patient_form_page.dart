@@ -6,8 +6,7 @@ import '../models/patient_list.dart';
 import '../components/adaptative_text_form_field.dart';
 
 class PatientFormPage extends StatefulWidget {
-  const PatientFormPage(
-    Patient? patient, {
+  PatientFormPage({
     super.key,
   });
 

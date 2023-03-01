@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import '../models/patient.dart';
 import 'implanted_catheter_page.dart';
 import 'oncological_cirurgian_page.dart';
 import 'patient_form_page.dart';
 
 class TabsPage extends StatefulWidget with ChangeNotifier {
-  Patient? patient;
-  TabsPage({super.key, this.patient});
+  TabsPage({super.key});
 
   @override
   State<TabsPage> createState() => _TabsPageState();
@@ -14,13 +12,9 @@ class TabsPage extends StatefulWidget with ChangeNotifier {
 
 class _TabsPageState extends State<TabsPage> {
   int _selectedPageIndex = 0;
-  Patient? patient;
 
   final List<Map<String, Object>> _pages = [
-    {
-      'title': 'Informações do Paciente',
-      'page': PatientFormPage(widget.patient)
-    },
+    {'title': 'Informações do Paciente', 'page': PatientFormPage()},
     {'title': 'Cirurgia Oncológica', 'page': OncologicalCirurgianPage()},
     {'title': 'Catéter', 'page': ImplantedCatheterPage()},
   ];
@@ -28,7 +22,6 @@ class _TabsPageState extends State<TabsPage> {
   @override
   void initState() {
     super.initState();
-    patient = widget.patient;
   }
 
   _selectPage(int index) {

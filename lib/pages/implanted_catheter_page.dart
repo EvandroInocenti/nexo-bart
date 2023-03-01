@@ -5,7 +5,7 @@ import '../models/patient.dart';
 import '../models/patient_list.dart';
 
 class ImplantedCatheterPage extends StatefulWidget {
-  const ImplantedCatheterPage({super.key});
+  ImplantedCatheterPage({super.key});
 
   @override
   State<ImplantedCatheterPage> createState() => _ImplantedCatheterPageState();

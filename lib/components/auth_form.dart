@@ -4,10 +4,8 @@ import 'package:provider/provider.dart';
 
 import '../models/auth.dart';
 
-enum AuthMode { Signup, Login }
-
 class AuthForm extends StatefulWidget {
-  AuthForm({super.key});
+  const AuthForm({super.key});
 
   @override
   State<AuthForm> createState() => _AuthFormState();
@@ -17,7 +15,7 @@ class _AuthFormState extends State<AuthForm> {
   final _formkey = GlobalKey<FormState>();
   bool _isLoading = false;
 
-  Map<String, String> _authData = {
+  final Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
@@ -116,17 +114,20 @@ class _AuthFormState extends State<AuthForm> {
               ),
               const SizedBox(height: 20),
               if (_isLoading)
-                CircularProgressIndicator()
+                const CircularProgressIndicator()
               else
                 ElevatedButton(
                   onPressed: _submit,
-                  child: Text('Entrar'),
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 8)),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 8)),
+                  child: Text(
+                    'Entrar',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
                 ),
             ],
           ),

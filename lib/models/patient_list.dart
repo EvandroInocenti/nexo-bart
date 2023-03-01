@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+
 import 'package:nexo_onco/exceptions/http_exception.dart';
 import 'package:nexo_onco/models/doctor.dart';
 
@@ -14,23 +15,26 @@ import 'user.dart';
 
 class PatientList with ChangeNotifier {
   final _url = dotenv.env['API_URL'];
-  String? token =
-      'NTIy.RpZR0k7ih6tWleh5R77X_Oc0lntzAN8LO5p981SoXpbDXFSN3z2fUoJCnFqf';
+  String token;
 
-  List<Patient> _items = [];
-
-// Clona a lista de itens
+  // Clona a lista de itens
   List<Patient> get items => [..._items];
 
   List<Patient> get activePatients =>
       _items.where((pat) => pat.user!.confirmed!).toList();
+
+  List<Patient> _items = [];
+  PatientList(
+    this.token,
+    this._items,
+  );
 
   int get itemsCount {
     return _items.length;
   }
 
   Future<void> loadPatients() async {
-    _items.clear();
+    List<Patient> items = [];
     final response = await http.get(
       Uri.parse('${_url!}/patients'),
       headers: {
@@ -41,14 +45,16 @@ class PatientList with ChangeNotifier {
     );
 
     var patientJson = jsonDecode(response.body)["data"];
-    notifyListeners();
     if (response.statusCode == 200) {
       List<Patient> patient =
           List<Patient>.from(patientJson.map((i) => Patient.fromJson(i)));
 
       for (var element in patient) {
-        _items.add(element);
+        items.add(element);
       }
+
+      _items = items.reversed.toList();
+      notifyListeners();
     } else {
       throw Exception('Falha ao carregar pacientes');
     }
@@ -107,6 +113,11 @@ class PatientList with ChangeNotifier {
   Future<void> addPatient(Patient patient) async {
     final response = await http.post(
       Uri.parse('$_url/patients'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
       body: jsonEncode(
         {
           "name": patient.user!.name,
@@ -151,7 +162,6 @@ class PatientList with ChangeNotifier {
 
     if (index >= 0) {
       _items[index] = patient;
-      notifyListeners();
 
       final response =
           await http.put(Uri.parse('${_url!}/patients/${patient.id}'),
@@ -168,6 +178,7 @@ class PatientList with ChangeNotifier {
           statusCode: response.statusCode,
         );
       }
+      notifyListeners();
     }
   }
 
@@ -192,7 +203,7 @@ class PatientList with ChangeNotifier {
         _items.insert(index, patient);
         notifyListeners();
         throw HttpException(
-          msg: 'Não é possível excluir o paciente',
+          msg: 'Não é possível excluir o paciente.',
           statusCode: response.statusCode,
         );
       }
