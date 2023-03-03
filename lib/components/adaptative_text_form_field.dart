@@ -18,13 +18,13 @@ class AdaptativeTextFormField extends StatelessWidget {
     Key? key,
     this.initialValue,
     required this.label,
-    required this.textInputAction,
-    this.focusNode,
-    this.keyboardType,
-    this.onFieldSubmitted,
-    required this.onSaved,
-    this.validator,
     required this.obscureText,
+    required this.textInputAction,
+    this.validator,
+    required this.onSaved,
+    this.keyboardType,
+    this.focusNode,
+    this.onFieldSubmitted,
   }) : super(key: key);
 
   @override

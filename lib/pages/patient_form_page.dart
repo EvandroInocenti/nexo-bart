@@ -34,6 +34,8 @@ class _PatientFormPageState extends State<PatientFormPage> {
 
   bool _isLoading = false;
 
+  Patient get patient => ModalRoute.of(context)?.settings.arguments as Patient;
+
   @override
   void initState() {
     super.initState();
@@ -43,26 +45,26 @@ class _PatientFormPageState extends State<PatientFormPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (_formData.isEmpty) {
-      final arg = ModalRoute.of(context)?.settings.arguments;
+    // if (_formData.isEmpty) {
+    //   final arg = ModalRoute.of(context)?.settings.arguments;
 
-      if (arg != null) {
-        final patient = arg as Patient;
-        _formData['id'] = patient.id;
-        _formData['name'] = patient.user!.name;
-        _formData['email'] = patient.user!.email;
-        _formData['cpf'] = patient.user!.cpf!;
-        _formData['cellphone'] = patient.user!.telefone!;
-        _formData['birthDate'] = patient.data_nascimento;
-        _formData['height'] = patient.altura;
-        _formData['weight'] = patient.peso;
-        _formData['bodySurface'] = patient.superficie_corporea;
-        _formData['tumor_id'] = patient.tumor_id!;
-        _formData['staging'] = patient.staging;
-        _formData['confirmed'] = patient.user!.confirmed!;
-        _formData['tumor_id'] = patient.tumor_id!;
-      }
-    }
+    //   if (arg != null) {
+    //     final patient = arg as Patient;
+    //     _formData['id'] = patient.id;
+    //     _formData['name'] = patient.user!.name;
+    //     _formData['email'] = patient.user!.email;
+    //     _formData['cpf'] = patient.user!.cpf!;
+    //     _formData['cellphone'] = patient.user!.telefone!;
+    //     _formData['birthDate'] = patient.data_nascimento;
+    //     _formData['height'] = patient.altura;
+    //     _formData['weight'] = patient.peso;
+    //     _formData['bodySurface'] = patient.superficie_corporea;
+    //     _formData['tumor_id'] = patient.tumor_id!;
+    //     _formData['staging'] = patient.staging;
+    //     _formData['confirmed'] = patient.user!.confirmed!;
+    //     _formData['tumor_id'] = patient.tumor_id!;
+    //   }
+    // }
   }
 
   @override
@@ -82,19 +84,12 @@ class _PatientFormPageState extends State<PatientFormPage> {
   }
 
   Future<void> _submitForm() async {
-    // final isValid = _formKey.currentState?.validate() ?? false;
-    // if (!isValid) {
-    //   return;
-    // }
-
-    // _formKey.currentState?.save();
-
     setState(() => _isLoading = true);
     try {
       await Provider.of<PatientList>(
         context,
         listen: false,
-      ).savePatient(_formData);
+      ).savePatient(patient);
 
       Navigator.of(context).pop();
     } catch (error) {
@@ -134,7 +129,8 @@ class _PatientFormPageState extends State<PatientFormPage> {
                 children: [
                   const SizedBox(height: 10),
                   AdaptativeTextFormField(
-                    initialValue: patient.user!.name,
+                    initialValue:
+                        patient.user != null ? patient.user!.name : '',
                     keyboardType: TextInputType.name,
                     focusNode: _nameFocus,
                     label: 'Nome',
@@ -143,7 +139,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                     onFieldSubmitted: (_) {
                       FocusScope.of(context).requestFocus(_emailFocus);
                     },
-                    onSaved: (name) => _formData['name'] = name ?? '',
+                    onSaved: (name) => patient.user!.name = name ?? '',
                     validator: (_name) {
                       final name = _name ?? '';
                       if (name.trim().isEmpty) {
@@ -156,9 +152,10 @@ class _PatientFormPageState extends State<PatientFormPage> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   AdaptativeTextFormField(
-                    initialValue: _formData['email']!.toString(),
+                    initialValue:
+                        patient.user != null ? patient.user!.email : '',
                     keyboardType: TextInputType.emailAddress,
                     focusNode: _emailFocus,
                     label: 'E-mail',
@@ -167,7 +164,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                     onFieldSubmitted: (_) {
                       FocusScope.of(context).requestFocus(_cpfFocus);
                     },
-                    onSaved: (email) => _formData['email'] = email ?? '',
+                    onSaved: (email) => patient.user!.email = email ?? '',
                     validator: (_email) {
                       final email = _email ?? '';
                       if (email.trim().isEmpty) {
@@ -185,7 +182,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                     children: [
                       Expanded(
                         child: AdaptativeTextFormField(
-                          initialValue: _formData['cpf']!.toString(),
+                          initialValue: patient.user!.cpf ?? '',
                           keyboardType: TextInputType.text,
                           focusNode: _cpfFocus,
                           label: 'CPF',
@@ -195,7 +192,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                             FocusScope.of(context)
                                 .requestFocus(_cellphoneFocus);
                           },
-                          onSaved: (cpf) => _formData['cpf'] = cpf ?? '',
+                          onSaved: (cpf) => patient.user!.cpf = cpf,
                           validator: (_cpf) {
                             final cpf = _cpf ?? '';
                             if (cpf.trim().isEmpty) {
@@ -208,7 +205,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                       const SizedBox(width: 20),
                       Expanded(
                         child: AdaptativeTextFormField(
-                          initialValue: _formData['cellphone']!.toString(),
+                          initialValue: patient.user!.telefone ?? '',
                           focusNode: _cellphoneFocus,
                           label: 'Celular',
                           obscureText: false,
@@ -219,10 +216,9 @@ class _PatientFormPageState extends State<PatientFormPage> {
                                 .requestFocus(_birthDateFocus);
                           },
                           onSaved: (cellphone) =>
-                              _formData['cellphone'] = cellphone ?? '',
+                              patient.user!.telefone = cellphone,
                           validator: (_cellphone) {
                             final cellphone = _cellphone ?? '';
-
                             if (cellphone.trim().isEmpty) {
                               return 'Celular é obrigatório';
                             }
@@ -238,7 +234,8 @@ class _PatientFormPageState extends State<PatientFormPage> {
                     children: [
                       Expanded(
                         child: AdaptativeTextFormField(
-                          initialValue: _formData['birthDate']!.toString(),
+                          initialValue:
+                              patient != null ? patient.data_nascimento : '',
                           focusNode: _birthDateFocus,
                           label: 'Data de Nascimento',
                           obscureText: false,
@@ -247,7 +244,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                             FocusScope.of(context).requestFocus(_heightFocus);
                           },
                           onSaved: (birthDate) =>
-                              _formData['birthDate'] = birthDate ?? '',
+                              patient.data_nascimento = birthDate ?? '',
                           validator: (_birthDate) {
                             final birthDate = _birthDate ?? '';
                             if (birthDate.trim().isEmpty) {
@@ -260,7 +257,8 @@ class _PatientFormPageState extends State<PatientFormPage> {
                       const SizedBox(width: 20),
                       Expanded(
                         child: AdaptativeTextFormField(
-                          initialValue: _formData['height']!.toString(),
+                          initialValue:
+                              patient != null ? patient.altura.toString() : '',
                           focusNode: _heightFocus,
                           label: 'Altura',
                           obscureText: false,
@@ -270,7 +268,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           },
                           keyboardType: TextInputType.number,
                           onSaved: (height) =>
-                              _formData['height'] = int.parse(height ?? '0'),
+                              patient.altura = int.parse(height ?? '0'),
                           validator: (_height) {
                             final heightString = _height ?? '0';
                             final height = int.tryParse(heightString) ?? -1;
@@ -289,7 +287,8 @@ class _PatientFormPageState extends State<PatientFormPage> {
                     children: [
                       Expanded(
                         child: AdaptativeTextFormField(
-                          initialValue: _formData['weight']!.toString(),
+                          initialValue:
+                              patient != null ? patient.peso.toString() : '',
                           focusNode: _weightFocus,
                           label: 'Peso',
                           obscureText: false,
@@ -300,7 +299,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           },
                           keyboardType: TextInputType.number,
                           onSaved: (weight) =>
-                              _formData['weight'] = int.parse(weight ?? '0'),
+                              patient.altura = int.parse(weight ?? '0'),
                           validator: (_weight) {
                             final weightString = _weight ?? '0';
                             final weight = int.tryParse(weightString) ?? -1;
@@ -315,9 +314,11 @@ class _PatientFormPageState extends State<PatientFormPage> {
                       const SizedBox(width: 20),
                       Expanded(
                         child: AdaptativeTextFormField(
-                          initialValue: _formData['bodySurface']!.toString(),
+                          initialValue: patient != null
+                              ? patient.superficie_corporea.toString()
+                              : '',
                           focusNode: _bodySurfaceFocus,
-                          label: 'Circunferência Corpória',
+                          label: 'Superfície Corpória',
                           obscureText: false,
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) {
@@ -327,8 +328,9 @@ class _PatientFormPageState extends State<PatientFormPage> {
                             decimal: true,
                             signed: true,
                           ),
-                          onSaved: (bodySurface) => _formData['bodySurface'] =
-                              double.parse(bodySurface ?? '0'),
+                          onSaved: (bodySurface) =>
+                              patient.superficie_corporea =
+                                  double.parse(bodySurface ?? '0'),
                           validator: (_bodySurface) {
                             final bodySurfaceString = _bodySurface ?? '0';
                             final bodySurface =
@@ -363,7 +365,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           focusNode: _stagingFocus,
                           label: patient != null
                               ? patient.staging.round().toInt().toString()
-                              : _formData['staging'].toString(),
+                              : '',
                           min: 1,
                           max: 4,
                           divisions: 3,
@@ -372,7 +374,6 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           activeColor: Theme.of(context).colorScheme.primary,
                           onChanged: (value) {
                             setState(() {
-                              _formData['staging'] = value.toInt();
                               patient.staging = value.toInt();
                               patient.sliderStaging(value.toInt());
                             });
@@ -392,7 +393,6 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           value: patient.user!.confirmed!,
                           onChanged: (value) {
                             setState(() {
-                              _formData['confirmed'] = value;
                               patient.user!.switchConfirmed(value);
                             });
                           },
@@ -409,38 +409,27 @@ class _PatientFormPageState extends State<PatientFormPage> {
                   const SizedBox(height: 20),
                   Column(
                     children: [
-                      ButtonTheme(
-                        child: StreamBuilder<bool>(
-                            initialData: false,
-                            builder: (context, snapshot) {
-                              bool? isLoading = snapshot.data;
-                              return ElevatedButton(
-                                onPressed: isLoading!
-                                    ? null
-                                    : () {
-                                        if (!_formKey.currentState!
-                                            .validate()) {
-                                          return;
-                                        } else {
-                                          _formKey.currentState!.save();
-                                          _submitForm;
-                                        }
-                                      },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(Icons.check),
-                                    Padding(
-                                      padding: const EdgeInsets.all(14.0),
-                                      child: Text("Salvar",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelLarge),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (!_formKey.currentState!.validate()) {
+                            return;
+                          } else {
+                            _formKey.currentState!.save();
+                            _submitForm();
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.check),
+                            Padding(
+                              padding: const EdgeInsets.all(14.0),
+                              child: Text("Salvar",
+                                  style:
+                                      Theme.of(context).textTheme.labelLarge),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -468,7 +457,6 @@ Widget tumors(Patient patient) {
         value: patient.tumor!.name,
         onChanged: (newValue) {
           patient.tumor!.name = newValue.toString();
-          // tumors.setSelectedItem(newValue.toString());
         },
         items: tumors.items.map<DropdownMenuItem<String>>((tumor) {
           return DropdownMenuItem(

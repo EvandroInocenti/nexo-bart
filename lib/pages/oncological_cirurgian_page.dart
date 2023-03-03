@@ -32,10 +32,10 @@ class _OncologicalCirurgianPageState extends State<OncologicalCirurgianPage> {
   }
 
   void _submitForm() {
-    Provider.of<PatientList>(
-      context,
-      listen: false,
-    ).savePatient(_formData);
+    // Provider.of<PatientList>(
+    //   context,
+    //   listen: false,
+    // ).savePatient(_formData);
 
     Navigator.of(context).pop();
   }

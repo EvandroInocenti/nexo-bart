@@ -60,48 +60,8 @@ class PatientList with ChangeNotifier {
     }
   }
 
-  Future<void> savePatient(Map<String, Object> data) {
-    bool hasId = data['id'] != null;
-
-    final patient = Patient(
-      id: hasId ? data['id'] as int : Random().nextDouble().toInt(),
-      data_nascimento: data['birthDate'] as String,
-      altura: data['height'] as int,
-      peso: data['weight'] as int,
-      superficie_corporea: data['bodySurface'] as double,
-      // catheter: data['catheter'] as bool,
-      // catheter_hot: data['catheterHot'] as bool,
-      // catheter_liquid: data['catheterLiquid'] as bool,
-      // catheter_pain: data['catheterPain'] as bool,
-      // catheter_swollen: data['catheterSwollen'] as bool,
-      // surgery: data['surgery'] as bool,
-      // surgery_hot: data['surgeryHot'] as bool,
-      // surgery_liquid: data['surgeryLiquid'] as bool,
-      // surgery_pain: data['surgeryPain'] as bool,
-      // surgery_swollen: data['surgerySwollen'] as bool,
-      // doctor_id: data['doctorId'] as int,
-      // user_id: data['userId'] as int,
-      staging: data['staging'] as int,
-      tumor_id: data['tumor_id'] as int,
-      user: User(
-        name: data['name'] as String,
-        email: data['email'] as String,
-        cpf: data['cpf'] as String,
-        telefone: data['cellphone'] as String,
-        confirmed: data['confirmed'] as bool,
-        role: 'P',
-      ),
-      doctor: Doctor(
-        id: 1,
-        name: "evandro",
-        email: "inocenti@gmail.com",
-        role: "S",
-      ),
-      tumor: Tumor(
-        id: data['tumor_id'] as int,
-        name: 'tumor 2',
-      ),
-    );
+  Future<void> savePatient(Patient patient) {
+    bool hasId = patient.id != null;
 
     if (hasId) {
       return updatePatient(patient);

@@ -14,12 +14,12 @@ part 'patient.g.dart';
 @JsonSerializable()
 class Patient with ChangeNotifier {
   final int id;
-  final String data_nascimento;
-  final int altura;
-  final int peso;
-  final double superficie_corporea;
-  final int? user_id;
-  final int? doctor_id;
+  String data_nascimento;
+  int altura;
+  int peso;
+  double superficie_corporea;
+  int? user_id;
+  int? doctor_id;
   int? tumor_id;
   bool surgery;
   bool surgery_pain;

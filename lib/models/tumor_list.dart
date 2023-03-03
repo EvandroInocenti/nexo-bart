@@ -45,9 +45,6 @@ class TumorList with ChangeNotifier {
     if (response.statusCode == 200) {
       List<Tumor> tumor =
           List<Tumor>.from(tumorJson.map((i) => Tumor.fromJson(i)));
-
-      print(tumor);
-
       for (var element in tumor) {
         items.add(element);
       }
