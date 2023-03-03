@@ -41,7 +41,7 @@ class _PatientItemState extends State<PatientItem> {
           widget.patient.user!.email,
           style: Theme.of(context).textTheme.titleSmall,
         ),
-        trailing: SizedBox(
+        trailing: Container(
           width: 150,
           child: Row(
             children: [
@@ -60,15 +60,15 @@ class _PatientItemState extends State<PatientItem> {
                 icon: const Icon(Icons.edit),
                 color: Theme.of(context).colorScheme.primary,
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => TabsPage(widget.patient),
-                    ),
-                  );
-                  // Navigator.of(context).pushNamed(
-                  //   AppRoutes.tabsPage,
-                  //   arguments: widget.patient,
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (context) => TabsPage(widget.patient),
+                  //   ),
                   // );
+                  Navigator.of(context).pushNamed(
+                    AppRoutes.tabsPage,
+                    arguments: widget.patient,
+                  );
                 },
               ),
               IconButton(

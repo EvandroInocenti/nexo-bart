@@ -6,7 +6,7 @@ import 'auth_page.dart';
 import 'patients_page.dart';
 
 class AuthOrHomePage extends StatelessWidget {
-  const AuthOrHomePage({super.key});
+  AuthOrHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {

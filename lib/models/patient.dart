@@ -20,7 +20,7 @@ class Patient with ChangeNotifier {
   final double superficie_corporea;
   final int? user_id;
   final int? doctor_id;
-  final int? tumor_id;
+  int? tumor_id;
   bool surgery;
   bool surgery_pain;
   bool surgery_swollen;

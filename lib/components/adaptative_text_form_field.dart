@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AdaptativeTextFormField extends StatelessWidget {
-  final String initialValue;
+  final String? initialValue;
   final String label;
   final bool obscureText;
   final TextInputAction textInputAction;
@@ -16,7 +16,7 @@ class AdaptativeTextFormField extends StatelessWidget {
 
   AdaptativeTextFormField({
     Key? key,
-    required this.initialValue,
+    this.initialValue,
     required this.label,
     required this.textInputAction,
     this.focusNode,

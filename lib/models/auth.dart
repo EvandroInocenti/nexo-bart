@@ -41,10 +41,11 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> _authenticate(String email, String password) async {
-    final url = Uri.parse('${dotenv.env['API_URL']!}/auth/login');
+    final url = Uri.parse('${dotenv.env['API_URL']}/auth/login');
     final response = await http.post(
       url,
       headers: {
+        "Accept": "application/json",
         "Content-Type": "application/json",
       },
       body: jsonEncode({
@@ -69,5 +70,15 @@ class Auth with ChangeNotifier {
 
   Future<void> login(String email, String password) async {
     return _authenticate(email, password);
+  }
+
+  void logout() {
+    _token = null;
+    _email = null;
+    _id = null;
+    _role = null;
+    _confirmed = null;
+    _institutionId = null;
+    notifyListeners();
   }
 }

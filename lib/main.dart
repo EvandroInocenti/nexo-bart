@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nexo_onco/models/tumor_list.dart';
 import 'package:nexo_onco/pages/implanted_catheter_page.dart';
 import 'package:nexo_onco/pages/oncological_cirurgian_page.dart';
 import 'package:nexo_onco/pages/patient_form_page.dart';
@@ -55,6 +56,13 @@ class _MyHomePageState extends State<MyHomePage> {
           create: (_) => PatientList('', []),
           update: (ctx, auth, previous) {
             return PatientList(auth.token ?? '', previous?.items ?? []);
+          },
+        ),
+        ChangeNotifierProxyProvider<Auth, TumorList>(
+          create: (_) => TumorList('', [], ''),
+          update: (ctx, auth, previous) {
+            return TumorList(
+                auth.token ?? '', previous?.items ?? [], previous!.selected);
           },
         ),
         ChangeNotifierProvider(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../models/auth.dart';
 import '../utils/app_routes.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -11,37 +13,21 @@ class AppDrawer extends StatelessWidget {
       child: Column(
         children: [
           AppBar(
-            title: Text('Bem vindo Usuário'),
+            title: Text('Opções'),
             automaticallyImplyLeading: false,
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.shop),
-            title: Text('Loja'),
+            leading: Icon(Icons.exit_to_app),
+            title: Text(
+              'sair',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
             onTap: () {
+              Provider.of<Auth>(context, listen: false).logout();
               Navigator.of(context).pushReplacementNamed(
                 AppRoutes.authOrHome,
               );
-            },
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.payment),
-            title: Text('Pedidos'),
-            onTap: () {
-              // Navigator.of(context).pushReplacementNamed(
-              //   AppRoutes.orders,
-              // );
-            },
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.edit),
-            title: Text('Gerenciar Produtos'),
-            onTap: () {
-              // Navigator.of(context).pushReplacementNamed(
-              //   AppRoutes.products,
-              // );
             },
           ),
         ],

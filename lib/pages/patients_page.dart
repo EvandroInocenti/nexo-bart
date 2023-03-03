@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../components/app_drawer.dart';
 import '../components/patient_item.dart';
 import '../models/patient_list.dart';
 import '../utils/app_routes.dart';
@@ -36,6 +37,9 @@ class _PatientsPageState extends State<PatientsPage> {
             icon: const Icon(Icons.person_add_alt_1_rounded),
           ),
         ],
+      ),
+      drawer: const Drawer(
+        child: AppDrawer(),
       ),
       body: FutureBuilder(
         future: Provider.of<PatientList>(context, listen: false).loadPatients(),

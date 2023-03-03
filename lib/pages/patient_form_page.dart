@@ -4,10 +4,11 @@ import 'package:provider/provider.dart';
 import '../models/patient.dart';
 import '../models/patient_list.dart';
 import '../components/adaptative_text_form_field.dart';
+import '../models/tumor.dart';
+import '../models/tumor_list.dart';
 
 class PatientFormPage extends StatefulWidget {
-  PatientFormPage(
-    Patient patient, {
+  PatientFormPage({
     super.key,
   });
 
@@ -34,6 +35,12 @@ class _PatientFormPageState extends State<PatientFormPage> {
   bool _isLoading = false;
 
   @override
+  void initState() {
+    super.initState();
+    Provider.of<TumorList>(context, listen: false).loadTumors();
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_formData.isEmpty) {
@@ -53,6 +60,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
         _formData['tumor_id'] = patient.tumor_id!;
         _formData['staging'] = patient.staging;
         _formData['confirmed'] = patient.user!.confirmed!;
+        _formData['tumor_id'] = patient.tumor_id!;
       }
     }
   }
@@ -74,12 +82,12 @@ class _PatientFormPageState extends State<PatientFormPage> {
   }
 
   Future<void> _submitForm() async {
-    final isValid = _formKey.currentState?.validate() ?? false;
-    if (!isValid) {
-      return;
-    }
+    // final isValid = _formKey.currentState?.validate() ?? false;
+    // if (!isValid) {
+    //   return;
+    // }
 
-    _formKey.currentState?.save();
+    // _formKey.currentState?.save();
 
     setState(() => _isLoading = true);
     try {
@@ -112,7 +120,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final arg = ModalRoute.of(context)?.settings.arguments as Patient;
+    final patient = ModalRoute.of(context)?.settings.arguments as Patient;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -124,9 +132,9 @@ class _PatientFormPageState extends State<PatientFormPage> {
               key: _formKey,
               child: ListView(
                 children: [
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   AdaptativeTextFormField(
-                    initialValue: _formData['name']!.toString(),
+                    initialValue: patient.user!.name,
                     keyboardType: TextInputType.name,
                     focusNode: _nameFocus,
                     label: 'Nome',
@@ -339,24 +347,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                   Row(
                     children: [
                       Expanded(
-                        child: AdaptativeTextFormField(
-                          initialValue: _formData['tumor_id']!.toString(),
-                          focusNode: _tumorFocus,
-                          label: 'Tumor',
-                          textInputAction: TextInputAction.done,
-                          obscureText: false,
-                          onSaved: (tumor) =>
-                              _formData['tumor_id'] = int.parse(tumor ?? '0'),
-                          validator: (_tumor) {
-                            final tumorString = _tumor ?? '0';
-                            final tumor = double.tryParse(tumorString) ?? -1;
-                            if (tumor <= 0) {
-                              return 'Selecione um tumor';
-                            }
-
-                            return null;
-                          },
-                        ),
+                        child: tumors(patient),
                       ),
                       Expanded(
                         flex: 1,
@@ -370,20 +361,20 @@ class _PatientFormPageState extends State<PatientFormPage> {
                         flex: 1,
                         child: Slider(
                           focusNode: _stagingFocus,
-                          label: arg != null
-                              ? arg.staging.round().toInt().toString()
+                          label: patient != null
+                              ? patient.staging.round().toInt().toString()
                               : _formData['staging'].toString(),
                           min: 1,
                           max: 4,
                           divisions: 3,
-                          value: arg.staging.round().toDouble(),
+                          value: patient.staging.round().toDouble(),
                           // value: _formData['staging'] as double,
                           activeColor: Theme.of(context).colorScheme.primary,
                           onChanged: (value) {
                             setState(() {
                               _formData['staging'] = value.toInt();
-                              arg.staging = value.toInt();
-                              arg.sliderStaging(value.toInt());
+                              patient.staging = value.toInt();
+                              patient.sliderStaging(value.toInt());
                             });
                           },
                         ),
@@ -398,11 +389,11 @@ class _PatientFormPageState extends State<PatientFormPage> {
                         child: Switch(
                           focusNode: _confirmedFocus,
                           activeColor: Theme.of(context).colorScheme.primary,
-                          value: arg.user!.confirmed!,
+                          value: patient.user!.confirmed!,
                           onChanged: (value) {
                             setState(() {
                               _formData['confirmed'] = value;
-                              arg.user!.switchConfirmed(value);
+                              patient.user!.switchConfirmed(value);
                             });
                           },
                         ),
@@ -418,24 +409,38 @@ class _PatientFormPageState extends State<PatientFormPage> {
                   const SizedBox(height: 20),
                   Column(
                     children: [
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        child: ElevatedButton(
-                          onPressed: _submitForm,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.check),
-                              Padding(
-                                padding: const EdgeInsets.all(14.0),
-                                child: Text(
-                                  "Salvar",
-                                  style: Theme.of(context).textTheme.labelLarge,
+                      ButtonTheme(
+                        child: StreamBuilder<bool>(
+                            initialData: false,
+                            builder: (context, snapshot) {
+                              bool? isLoading = snapshot.data;
+                              return ElevatedButton(
+                                onPressed: isLoading!
+                                    ? null
+                                    : () {
+                                        if (!_formKey.currentState!
+                                            .validate()) {
+                                          return;
+                                        } else {
+                                          _formKey.currentState!.save();
+                                          _submitForm;
+                                        }
+                                      },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.check),
+                                    Padding(
+                                      padding: const EdgeInsets.all(14.0),
+                                      child: Text("Salvar",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
+                              );
+                            }),
                       ),
                     ],
                   ),
@@ -444,4 +449,34 @@ class _PatientFormPageState extends State<PatientFormPage> {
             ),
     );
   }
+}
+
+Widget tumors(Patient patient) {
+  return Consumer<TumorList>(
+    builder: (ctx, tumors, child) {
+      return DropdownButtonFormField<String>(
+        icon: const Icon(Icons.arrow_drop_down),
+        elevation: 16,
+        style: TextStyle(color: Theme.of(ctx).colorScheme.primary),
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(16, 0, 8, 0),
+          border: OutlineInputBorder(),
+          label: Text(
+            'Tumor',
+          ),
+        ),
+        value: patient.tumor!.name,
+        onChanged: (newValue) {
+          patient.tumor!.name = newValue.toString();
+          // tumors.setSelectedItem(newValue.toString());
+        },
+        items: tumors.items.map<DropdownMenuItem<String>>((tumor) {
+          return DropdownMenuItem(
+            value: tumor.name,
+            child: Text(tumor.name!),
+          );
+        }).toList(),
+      );
+    },
+  );
 }

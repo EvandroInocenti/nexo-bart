@@ -75,7 +75,7 @@ class _AuthFormState extends State<AuthForm> {
       ),
       child: Container(
         padding: const EdgeInsets.all(16),
-        height: 250,
+        height: 300,
         width: deviceSize.width * 0.80,
         child: Form(
           key: _formkey,
