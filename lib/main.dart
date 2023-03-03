@@ -59,10 +59,9 @@ class _MyHomePageState extends State<MyHomePage> {
           },
         ),
         ChangeNotifierProxyProvider<Auth, TumorList>(
-          create: (_) => TumorList('', [], ''),
+          create: (_) => TumorList('', []),
           update: (ctx, auth, previous) {
-            return TumorList(
-                auth.token ?? '', previous?.items ?? [], previous!.selected);
+            return TumorList(auth.token ?? '', previous?.items ?? []);
           },
         ),
         ChangeNotifierProvider(

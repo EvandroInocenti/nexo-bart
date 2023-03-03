@@ -38,8 +38,6 @@ class _TabsPageState extends State<TabsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final patient = ModalRoute.of(context)?.settings.arguments as Patient;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(

@@ -17,6 +17,36 @@ class PatientItem extends StatefulWidget {
 }
 
 class _PatientItemState extends State<PatientItem> {
+  bool isLoading = false;
+
+  Future<void> _confirm(int id) async {
+    setState(() => isLoading = true);
+    try {
+      await Provider.of<PatientList>(
+        context,
+        listen: false,
+      ).confirmPatient(id);
+    } catch (error) {
+      await showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Ocorreu um erro!',
+              style: Theme.of(context).textTheme.titleLarge),
+          content: Text('Ocorreu erro ao liberar o paciente .',
+              style: Theme.of(context).textTheme.titleMedium),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Ok', style: Theme.of(context).textTheme.titleMedium),
+            ),
+          ],
+        ),
+      );
+    } finally {
+      setState(() => isLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final msg = ScaffoldMessenger.of(context);
@@ -52,6 +82,7 @@ class _PatientItemState extends State<PatientItem> {
                   onChanged: (value) {
                     setState(() {
                       widget.patient.user!.switchConfirmed(value);
+                      _confirm(widget.patient.id);
                     });
                   },
                 ),

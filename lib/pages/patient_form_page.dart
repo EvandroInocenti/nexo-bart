@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:nexo_onco/components/adaptative_dropdown_button_form_field.dart';
 import 'package:provider/provider.dart';
 
 import '../models/patient.dart';
 import '../models/patient_list.dart';
 import '../components/adaptative_text_form_field.dart';
-import '../models/tumor.dart';
 import '../models/tumor_list.dart';
 
 class PatientFormPage extends StatefulWidget {
@@ -30,7 +30,6 @@ class _PatientFormPageState extends State<PatientFormPage> {
   final _confirmedFocus = FocusNode();
 
   final _formKey = GlobalKey<FormState>();
-  final _formData = <String, Object>{};
 
   bool _isLoading = false;
 
@@ -349,7 +348,8 @@ class _PatientFormPageState extends State<PatientFormPage> {
                   Row(
                     children: [
                       Expanded(
-                        child: tumors(patient),
+                        child:
+                            AdaptativeDropdownButtonFormField(patient: patient),
                       ),
                       Expanded(
                         flex: 1,
@@ -370,7 +370,6 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           max: 4,
                           divisions: 3,
                           value: patient.staging.round().toDouble(),
-                          // value: _formData['staging'] as double,
                           activeColor: Theme.of(context).colorScheme.primary,
                           onChanged: (value) {
                             setState(() {
@@ -438,33 +437,4 @@ class _PatientFormPageState extends State<PatientFormPage> {
             ),
     );
   }
-}
-
-Widget tumors(Patient patient) {
-  return Consumer<TumorList>(
-    builder: (ctx, tumors, child) {
-      return DropdownButtonFormField<String>(
-        icon: const Icon(Icons.arrow_drop_down),
-        elevation: 16,
-        style: TextStyle(color: Theme.of(ctx).colorScheme.primary),
-        decoration: const InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(16, 0, 8, 0),
-          border: OutlineInputBorder(),
-          label: Text(
-            'Tumor',
-          ),
-        ),
-        value: patient.tumor!.name,
-        onChanged: (newValue) {
-          patient.tumor!.name = newValue.toString();
-        },
-        items: tumors.items.map<DropdownMenuItem<String>>((tumor) {
-          return DropdownMenuItem(
-            value: tumor.name,
-            child: Text(tumor.name!),
-          );
-        }).toList(),
-      );
-    },
-  );
 }

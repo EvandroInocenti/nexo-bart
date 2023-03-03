@@ -9,22 +9,17 @@ import 'tumor.dart';
 class TumorList with ChangeNotifier {
   final _url = dotenv.env['API_URL'];
   String token;
-  String _selectedItem;
 
   List<Tumor> _items = [];
-  TumorList(this.token, this._items, this._selectedItem);
+  TumorList(
+    this.token,
+    this._items,
+  );
 
   // Clona a lista de itens
   List<Tumor> get items => [..._items];
 
   List<Tumor> get tumors => _items.where((tumor) => tumor.id != null).toList();
-
-  String get selected => _selectedItem;
-
-  void setSelectedItem(String s) {
-    _selectedItem = s;
-    notifyListeners();
-  }
 
   int get itemsCount {
     return _items.length;

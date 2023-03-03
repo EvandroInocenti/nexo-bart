@@ -123,14 +123,15 @@ class PatientList with ChangeNotifier {
     if (index >= 0) {
       _items[index] = patient;
 
-      final response =
-          await http.put(Uri.parse('${_url!}/patients/${patient.id}'),
-              headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer $token',
-              },
-              body: jsonEncode(patient));
+      final response = await http.put(
+        Uri.parse('${_url!}/patients/${patient.id}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(patient),
+      );
 
       if (response.statusCode >= 400) {
         throw HttpException(
@@ -140,6 +141,24 @@ class PatientList with ChangeNotifier {
       }
       notifyListeners();
     }
+  }
+
+  Future<void> confirmPatient(int id) async {
+    final response = await http.patch(
+      Uri.parse('${_url!}/patients/confirm/$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw HttpException(
+        msg: 'Não foi possível liberar paciente.',
+        statusCode: response.statusCode,
+      );
+    }
+    notifyListeners();
   }
 
   Future<void> removePatient(Patient patient) async {
