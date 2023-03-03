@@ -7,10 +7,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:nexo_onco/exceptions/http_exception.dart';
-import 'package:nexo_onco/models/doctor.dart';
-
 import 'patient.dart';
-import 'tumor.dart';
+
 import 'user.dart';
 
 class PatientList with ChangeNotifier {

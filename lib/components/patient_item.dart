@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../models/patient.dart';
 import '../models/patient_list.dart';
-import '../pages/tabs_page.dart';
 import '../utils/app_routes.dart';
 
 class PatientItem extends StatefulWidget {

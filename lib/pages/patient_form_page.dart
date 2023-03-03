@@ -349,7 +349,23 @@ class _PatientFormPageState extends State<PatientFormPage> {
                     children: [
                       Expanded(
                         child:
-                            AdaptativeDropdownButtonFormField(patient: patient),
+                            Consumer<TumorList>(builder: (ctx, tumors, child) {
+                          return AdaptativeDropdownButtonFormField(
+                            label: 'Tumor',
+                            value: patient.tumor!.name,
+                            onChanged: (newValue) {
+                              patient.tumor!.name = newValue;
+                              patient.tumor_id = patient.tumor!.id;
+                            },
+                            items: tumors.items
+                                .map<DropdownMenuItem<String>>((tumor) {
+                              return DropdownMenuItem(
+                                value: tumor.name,
+                                child: Text(tumor.name!),
+                              );
+                            }).toList(),
+                          );
+                        }),
                       ),
                       Expanded(
                         flex: 1,
