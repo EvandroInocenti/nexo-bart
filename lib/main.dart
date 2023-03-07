@@ -10,7 +10,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'models/auth.dart';
 import 'models/environment.dart';
 import 'models/patient_list.dart';
+import 'models/treatment_list.dart';
 import 'pages/auth_or_home_page.dart';
+import 'pages/radiotherapy_page.dart';
 import 'pages/tabs_page.dart';
 import 'utils/app_routes.dart';
 
@@ -72,6 +74,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 auth.token ?? '', previous?.items ?? []);
           },
         ),
+        ChangeNotifierProxyProvider<Auth, TreatmentList>(
+          create: (_) => TreatmentList('', []),
+          update: (ctx, auth, previous) {
+            return TreatmentList(auth.token ?? '', previous?.items ?? []);
+          },
+        ),
         ChangeNotifierProvider(
           create: (_) => TabsPage(),
         ),
@@ -126,6 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
           AppRoutes.patientForm: (ctx) => PatientFormPage(),
           AppRoutes.oncologicalForm: (ctx) => OncologicalCirurgianPage(),
           AppRoutes.catheterForm: (ctx) => ImplantedCatheterPage(),
+          AppRoutes.radiotherapyForm: (ctx) => RadiotherapyPage(),
         },
       ),
     );

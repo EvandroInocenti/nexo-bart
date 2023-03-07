@@ -42,6 +42,7 @@ class AdaptativeDropdownButtonFormField extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
+            isExpanded: true,
             value: value,
             onChanged: onChanged,
             items: items,

@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
-import 'treatment_patient.dart';
+import 'treatment.dart';
 
-class TreatmentPatientList with ChangeNotifier {
+class TreatmentList with ChangeNotifier {
   final _url = dotenv.env['API_URL'];
   String token;
 
   // Clona a lista de itens
-  List<TreatmentPatient> get items => [..._items];
+  List<Treatment> get items => [..._items];
 
-  List<TreatmentPatient> _items = [];
-  TreatmentPatientList(
+  List<Treatment> _items = [];
+  TreatmentList(
     this.token,
     this._items,
   );
@@ -23,10 +23,10 @@ class TreatmentPatientList with ChangeNotifier {
     return _items.length;
   }
 
-  Future<void> loadTreatmentPatient(int id) async {
-    List<TreatmentPatient> items = [];
+  Future<void> loadTreatment() async {
+    List<Treatment> items = [];
     final response = await http.get(
-      Uri.parse('${_url!}/treatments/$id'),
+      Uri.parse('${_url!}/treatments'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -36,8 +36,8 @@ class TreatmentPatientList with ChangeNotifier {
 
     var patientJson = jsonDecode(response.body)["data"];
     if (response.statusCode == 200) {
-      List<TreatmentPatient> patient = List<TreatmentPatient>.from(
-          patientJson.map((i) => TreatmentPatient.fromJson(i)));
+      List<Treatment> patient =
+          List<Treatment>.from(patientJson.map((i) => Treatment.fromJson(i)));
 
       for (var element in patient) {
         items.add(element);
@@ -46,7 +46,7 @@ class TreatmentPatientList with ChangeNotifier {
       _items = items.reversed.toList();
       notifyListeners();
     } else {
-      throw Exception('Falha ao carregar tratamento anterior do paciente.');
+      throw Exception('Falha ao carregar tratamentos.');
     }
   }
 }
