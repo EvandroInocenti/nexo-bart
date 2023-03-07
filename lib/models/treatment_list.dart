@@ -34,12 +34,12 @@ class TreatmentList with ChangeNotifier {
       },
     );
 
-    var patientJson = jsonDecode(response.body)["data"];
+    var treatmentJson = jsonDecode(response.body)["data"];
     if (response.statusCode == 200) {
-      List<Treatment> patient =
-          List<Treatment>.from(patientJson.map((i) => Treatment.fromJson(i)));
+      List<Treatment> treatment =
+          List<Treatment>.from(treatmentJson.map((i) => Treatment.fromJson(i)));
 
-      for (var element in patient) {
+      for (var element in treatment) {
         items.add(element);
       }
 

@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'models/auth.dart';
+import 'models/cicle_list.dart';
+import 'models/drugs_list.dart';
 import 'models/environment.dart';
 import 'models/patient_list.dart';
 import 'models/treatment_list.dart';
@@ -78,6 +80,18 @@ class _MyHomePageState extends State<MyHomePage> {
           create: (_) => TreatmentList('', []),
           update: (ctx, auth, previous) {
             return TreatmentList(auth.token ?? '', previous?.items ?? []);
+          },
+        ),
+        ChangeNotifierProxyProvider<Auth, DrugList>(
+          create: (_) => DrugList('', []),
+          update: (ctx, auth, previous) {
+            return DrugList(auth.token ?? '', previous?.items ?? []);
+          },
+        ),
+        ChangeNotifierProxyProvider<Auth, CicleList>(
+          create: (_) => CicleList('', []),
+          update: (ctx, auth, previous) {
+            return CicleList(auth.token ?? '', previous?.items ?? []);
           },
         ),
         ChangeNotifierProvider(
