@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:nexo_onco/components/adaptative_dropdown_button_form_field.dart';
 import 'package:provider/provider.dart';
 
@@ -114,7 +115,16 @@ class _PatientFormPageState extends State<PatientFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final patient = ModalRoute.of(context)?.settings.arguments as Patient;
+    // final patient = ModalRoute.of(context)?.settings.arguments as Patient;
+
+    var foneEditingController =
+        TextEditingController(text: patient.user!.telefone);
+
+    var foneMask = MaskTextInputFormatter(
+      mask: '(##) #####-####',
+      filter: {"#": RegExp(r'[0-9]')},
+      type: MaskAutoCompletionType.lazy,
+    );
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -182,7 +192,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                       Expanded(
                         child: AdaptativeTextFormField(
                           initialValue: patient.user!.cpf ?? '',
-                          keyboardType: TextInputType.text,
+                          keyboardType: TextInputType.number,
                           focusNode: _cpfFocus,
                           label: 'CPF',
                           obscureText: false,
@@ -204,8 +214,9 @@ class _PatientFormPageState extends State<PatientFormPage> {
                       const SizedBox(width: 20),
                       Expanded(
                         child: AdaptativeTextFormField(
-                          initialValue: patient.user!.telefone ?? '',
+                          initialValue: foneEditingController.text,
                           focusNode: _cellphoneFocus,
+                          inputFormatters: [foneMask],
                           label: 'Celular',
                           obscureText: false,
                           keyboardType: TextInputType.phone,
@@ -298,7 +309,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           },
                           keyboardType: TextInputType.number,
                           onSaved: (weight) =>
-                              patient.altura = int.parse(weight ?? '0'),
+                              patient.peso = int.parse(weight ?? '0'),
                           validator: (_weight) {
                             final weightString = _weight ?? '0';
                             final weight = int.tryParse(weightString) ?? -1;
@@ -352,15 +363,14 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           builder: (ctx, tumors, child) {
                             return AdaptativeDropdownButtonFormField(
                               label: 'Tumor',
-                              value: patient.tumor!.name,
+                              value: patient.tumor!.id.toString(),
                               onChanged: (newValue) {
-                                patient.tumor!.name = newValue;
-                                patient.tumor_id = patient.tumor!.id;
+                                patient.tumor!.id = int.tryParse(newValue!);
                               },
                               items: tumors.items
                                   .map<DropdownMenuItem<String>>((tumor) {
                                 return DropdownMenuItem(
-                                  value: tumor.name,
+                                  value: tumor.id.toString(),
                                   child: Text(tumor.name!),
                                 );
                               }).toList(),

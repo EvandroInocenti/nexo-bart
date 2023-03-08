@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class AdaptativeTextFormField extends StatelessWidget {
   final String? initialValue;
@@ -13,6 +15,8 @@ class AdaptativeTextFormField extends StatelessWidget {
   TextInputType? keyboardType;
   FocusNode? focusNode;
   Function(String)? onFieldSubmitted;
+  List<TextInputFormatter>? inputFormatters;
+  TextEditingController? controller;
 
   AdaptativeTextFormField({
     Key? key,
@@ -25,6 +29,8 @@ class AdaptativeTextFormField extends StatelessWidget {
     this.keyboardType,
     this.focusNode,
     this.onFieldSubmitted,
+    this.inputFormatters,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -40,6 +46,8 @@ class AdaptativeTextFormField extends StatelessWidget {
             validator: validator,
             keyboardType: keyboardType,
             obscureText: obscureText,
+            inputFormatters: inputFormatters,
+            controller: controller,
           )
         : TextFormField(
             initialValue: initialValue,
@@ -55,6 +63,8 @@ class AdaptativeTextFormField extends StatelessWidget {
             validator: validator,
             keyboardType: keyboardType,
             obscureText: obscureText,
+            inputFormatters: inputFormatters,
+            controller: controller,
           );
   }
 }
