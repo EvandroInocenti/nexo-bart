@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:flutter/services.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:nexo_onco/components/adaptative_dropdown_button_form_field.dart';
 import 'package:provider/provider.dart';
 
@@ -117,14 +118,8 @@ class _PatientFormPageState extends State<PatientFormPage> {
   Widget build(BuildContext context) {
     // final patient = ModalRoute.of(context)?.settings.arguments as Patient;
 
-    var foneEditingController =
-        TextEditingController(text: patient.user!.telefone);
-
-    var foneMask = MaskTextInputFormatter(
-      mask: '(##) #####-####',
-      filter: {"#": RegExp(r'[0-9]')},
-      type: MaskAutoCompletionType.lazy,
-    );
+    final foneEditingController = TextEditingController(
+        text: UtilBrasilFields.obterTelefone(patient.user!.telefone!));
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -215,8 +210,11 @@ class _PatientFormPageState extends State<PatientFormPage> {
                       Expanded(
                         child: AdaptativeTextFormField(
                           initialValue: foneEditingController.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            TelefoneInputFormatter(),
+                          ],
                           focusNode: _cellphoneFocus,
-                          inputFormatters: [foneMask],
                           label: 'Celular',
                           obscureText: false,
                           keyboardType: TextInputType.phone,
@@ -225,8 +223,9 @@ class _PatientFormPageState extends State<PatientFormPage> {
                             FocusScope.of(context)
                                 .requestFocus(_birthDateFocus);
                           },
-                          onSaved: (cellphone) =>
-                              patient.user!.telefone = cellphone,
+                          onSaved: (cellphone) => patient.user!.telefone =
+                              UtilBrasilFields.obterTelefone(cellphone!,
+                                  mascara: false),
                           validator: (_cellphone) {
                             final cellphone = _cellphone ?? '';
                             if (cellphone.trim().isEmpty) {

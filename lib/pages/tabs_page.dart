@@ -22,7 +22,7 @@ class _TabsPageState extends State<TabsPage> {
     {'title': 'Informações do Paciente', 'page': PatientFormPage()},
     {'title': 'Cirurgia Oncológica', 'page': OncologicalCirurgianPage()},
     {'title': 'Catéter', 'page': ImplantedCatheterPage()},
-    {'title': 'Radio Terapia', 'page': RadiotherapyPage()},
+    {'title': 'Radioterapia', 'page': RadiotherapyPage()},
   ];
 
   @override

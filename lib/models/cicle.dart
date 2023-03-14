@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,10 +9,12 @@ part 'cicle.g.dart';
 class Cicle with ChangeNotifier {
   int? id;
   String? name;
+  int? number;
 
   Cicle({
     this.id,
     this.name,
+    this.number,
   });
 
   factory Cicle.fromJson(Map<String, dynamic> json) => _$CicleFromJson(json);
