@@ -118,8 +118,14 @@ class _PatientFormPageState extends State<PatientFormPage> {
   Widget build(BuildContext context) {
     // final patient = ModalRoute.of(context)?.settings.arguments as Patient;
 
-    final foneEditingController = TextEditingController(
+    final cpfController = TextEditingController(
+        text: UtilBrasilFields.obterCpf(patient.user!.cpf!));
+
+    final foneController = TextEditingController(
         text: UtilBrasilFields.obterTelefone(patient.user!.telefone!));
+
+    // final dataNascController = TextEditingController(
+    //     text: UtilData.obterDataDDMMAAAA(patient.data_nascimento));
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -186,17 +192,22 @@ class _PatientFormPageState extends State<PatientFormPage> {
                     children: [
                       Expanded(
                         child: AdaptativeTextFormField(
-                          initialValue: patient.user!.cpf ?? '',
+                          initialValue: cpfController.text,
                           keyboardType: TextInputType.number,
                           focusNode: _cpfFocus,
                           label: 'CPF',
                           obscureText: false,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            CpfInputFormatter(),
+                          ],
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) {
                             FocusScope.of(context)
                                 .requestFocus(_cellphoneFocus);
                           },
-                          onSaved: (cpf) => patient.user!.cpf = cpf,
+                          onSaved: (cpf) => patient.user!.cpf =
+                              cpf!.replaceAll('.', '').replaceAll('-', ''),
                           validator: (_cpf) {
                             final cpf = _cpf ?? '';
                             if (cpf.trim().isEmpty) {
@@ -209,7 +220,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                       const SizedBox(width: 20),
                       Expanded(
                         child: AdaptativeTextFormField(
-                          initialValue: foneEditingController.text,
+                          initialValue: foneController.text,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                             TelefoneInputFormatter(),
@@ -243,8 +254,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                     children: [
                       Expanded(
                         child: AdaptativeTextFormField(
-                          initialValue:
-                              patient != null ? patient.data_nascimento : '',
+                          initialValue: patient.data_nascimento,
                           focusNode: _birthDateFocus,
                           label: 'Data de Nascimento',
                           obscureText: false,
