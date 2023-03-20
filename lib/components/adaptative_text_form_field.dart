@@ -7,20 +7,23 @@ import 'package:flutter/services.dart';
 class AdaptativeTextFormField extends StatelessWidget {
   final String? initialValue;
   final String label;
+  Widget? icon;
   final bool obscureText;
   final TextInputAction textInputAction;
   final String? Function(String?)? validator;
   final Function(String?)? onSaved;
-  // final TextEditingController? controller;
+  // TextEditingController? controller;
   TextInputType? keyboardType;
   FocusNode? focusNode;
   Function(String)? onFieldSubmitted;
   List<TextInputFormatter>? inputFormatters;
+  void Function()? onTap;
 
   AdaptativeTextFormField({
     Key? key,
     this.initialValue,
     required this.label,
+    this.icon,
     required this.obscureText,
     required this.textInputAction,
     this.validator,
@@ -30,6 +33,7 @@ class AdaptativeTextFormField extends StatelessWidget {
     this.focusNode,
     this.onFieldSubmitted,
     this.inputFormatters,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -46,6 +50,7 @@ class AdaptativeTextFormField extends StatelessWidget {
             keyboardType: keyboardType,
             obscureText: obscureText,
             inputFormatters: inputFormatters,
+            onTap: onTap,
             // controller: controller,
           )
         : TextFormField(
@@ -54,6 +59,7 @@ class AdaptativeTextFormField extends StatelessWidget {
               label: Text(label, style: Theme.of(context).textTheme.bodyMedium),
               border: const OutlineInputBorder(gapPadding: 3),
               contentPadding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+              icon: icon,
             ),
             textInputAction: textInputAction,
             // controller: controller,
@@ -64,6 +70,7 @@ class AdaptativeTextFormField extends StatelessWidget {
             keyboardType: keyboardType,
             obscureText: obscureText,
             inputFormatters: inputFormatters,
+            onTap: onTap,
           );
   }
 }

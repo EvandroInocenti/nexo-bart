@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:intl/intl.dart';
 import 'package:nexo_onco/components/adaptative_dropdown_button_form_field.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +38,11 @@ class _PatientFormPageState extends State<PatientFormPage> {
   bool _isLoading = false;
 
   Patient get patient => ModalRoute.of(context)?.settings.arguments as Patient;
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _cpfController = TextEditingController();
+  final TextEditingController _foneController = TextEditingController();
 
   @override
   void initState() {
@@ -82,6 +89,10 @@ class _PatientFormPageState extends State<PatientFormPage> {
     _tumorFocus.dispose();
     _stagingFocus.dispose();
     _confirmedFocus.dispose();
+    _nameController.dispose();
+    _dateController.dispose();
+    _cpfController.dispose();
+    _foneController.dispose();
   }
 
   Future<void> _submitForm() async {
@@ -118,14 +129,42 @@ class _PatientFormPageState extends State<PatientFormPage> {
   Widget build(BuildContext context) {
     // final patient = ModalRoute.of(context)?.settings.arguments as Patient;
 
-    final cpfController = TextEditingController(
-        text: UtilBrasilFields.obterCpf(patient.user!.cpf!));
+    _nameController.text = patient.user!.name;
+    _cpfController.text = UtilBrasilFields.obterCpf(patient.user!.cpf!);
 
-    final foneController = TextEditingController(
-        text: UtilBrasilFields.obterTelefone(patient.user!.telefone!));
+    _foneController.text =
+        UtilBrasilFields.obterTelefone(patient.user!.telefone!);
 
-    // final dataNascController = TextEditingController(
-    //     text: UtilData.obterDataDDMMAAAA(patient.data_nascimento));
+    _dateController.text = patient.data_nascimento;
+    DateTime parseDate =
+        DateFormat("yyyy-MM-dd").parse(patient.data_nascimento);
+    String dateFormat = DateFormat('dd/MM/yyyy').format(parseDate);
+
+    final TextEditingController dateControllerFormat =
+        TextEditingController(text: dateFormat);
+
+    Future _selectDate() async {
+      DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2023 - 100),
+        lastDate: DateTime.now(),
+      );
+      if (picked != null) {
+        String formatDate = DateFormat('dd/MM/yyyy').format(picked);
+        String dateDb = DateFormat('yyyy-MM-dd').format(picked);
+        setState(
+          () => {
+            patient.data_nascimento = dateDb,
+            _dateController.text = formatDate,
+          },
+        );
+      } else {
+        if (kDebugMode) {
+          print("Data não selecionada");
+        }
+      }
+    }
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -192,7 +231,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                     children: [
                       Expanded(
                         child: AdaptativeTextFormField(
-                          initialValue: cpfController.text,
+                          initialValue: _cpfController.text,
                           keyboardType: TextInputType.number,
                           focusNode: _cpfFocus,
                           label: 'CPF',
@@ -220,7 +259,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                       const SizedBox(width: 20),
                       Expanded(
                         child: AdaptativeTextFormField(
-                          initialValue: foneController.text,
+                          initialValue: _foneController.text,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                             TelefoneInputFormatter(),
@@ -253,21 +292,36 @@ class _PatientFormPageState extends State<PatientFormPage> {
                   Row(
                     children: [
                       Expanded(
-                        child: AdaptativeTextFormField(
-                          initialValue: patient.data_nascimento,
+                        child: TextFormField(
+                          // initialValue: dateControllerFormat,
+                          controller: dateControllerFormat,
                           focusNode: _birthDateFocus,
-                          label: 'Data de Nascimento',
+                          decoration: InputDecoration(
+                            label: Text('Data de Nascimento',
+                                style: Theme.of(context).textTheme.bodyMedium),
+                            border: const OutlineInputBorder(gapPadding: 3),
+                            contentPadding:
+                                const EdgeInsets.fromLTRB(16, 0, 8, 0),
+                          ),
                           obscureText: false,
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) {
                             FocusScope.of(context).requestFocus(_heightFocus);
                           },
-                          onSaved: (birthDate) =>
-                              patient.data_nascimento = birthDate ?? '',
-                          validator: (_birthDate) {
-                            final birthDate = _birthDate ?? '';
-                            if (birthDate.trim().isEmpty) {
-                              return 'Data de nascimento não pode ser vazia';
+                          onTap: () {
+                            _selectDate();
+                            FocusScope.of(context).requestFocus(FocusNode());
+                          },
+                          onSaved: (birthDate) {
+                            DateTime _parseBirthDate =
+                                DateFormat("dd/MM/yyyy").parse(birthDate!);
+                            String _formatDateDb = DateFormat('yyyy-MM-dd')
+                                .format(_parseBirthDate);
+                            patient.data_nascimento = _formatDateDb;
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Selecione uma data';
                             }
                             return null;
                           },
