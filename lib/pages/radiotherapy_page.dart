@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:intl/intl.dart';
 import 'package:nexo_onco/components/adaptative_dropdown_button_form_field.dart';
 import 'package:nexo_onco/models/treatment.dart';
 import 'package:nexo_onco/models/treatment_patient.dart';
@@ -25,6 +27,8 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
   // TreatmentPatient get treatmentPatient =>
   //     ModalRoute.of(context)?.settings.arguments as TreatmentPatient;
 
+  final TextEditingController _startDateController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -47,6 +51,37 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
     Drug drug = Drug();
     Cicle cicle = Cicle();
 
+    // _startDateController.text = treatmentPatient.startDate!;
+    // DateTime parseDate =
+    //     DateFormat("yyyy-MM-dd").parse(treatmentPatient.startDate!);
+    // String dateFormat = DateFormat('dd/MM/yyyy').format(parseDate);
+
+    // final TextEditingController dateControllerFormat =
+    //     TextEditingController(text: dateFormat);
+
+    // Future _selectDate() async {
+    //   DateTime? picked = await showDatePicker(
+    //     context: context,
+    //     initialDate: DateTime.now(),
+    //     firstDate: DateTime(2023 - 100),
+    //     lastDate: DateTime.now(),
+    //   );
+    //   if (picked != null) {
+    //     String formatDate = DateFormat('dd/MM/yyyy').format(picked);
+    //     String dateDb = DateFormat('yyyy-MM-dd').format(picked);
+    //     setState(
+    //       () => {
+    //         treatmentPatient.startDate = dateDb,
+    //         _startDateController.text = formatDate,
+    //       },
+    //     );
+    //   } else {
+    //     if (kDebugMode) {
+    //       print("Data não selecionada");
+    //     }
+    //   }
+    // }
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListView(
@@ -59,7 +94,6 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                   builder: (ctx, treatmentsPatient, child) {
                     return AdaptativeDropdownButtonFormField(
                       label: 'Tratamento anterior',
-                      // value: treatmentPatient.dose,
                       onChanged: (newValue) {
                         treatmentPatient.treatment!.name = newValue;
                       },
@@ -68,7 +102,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                         return DropdownMenuItem(
                           value: treatmentPatient.treatment!.name,
                           child: Text(
-                              '${treatmentPatient.startDate} ${' - '} ${treatmentPatient.treatment!.name!}'),
+                              '${treatmentPatient.getformatDate(treatmentPatient.start_date!)} ${' - '} ${treatmentPatient.treatment!.name!}'),
                         );
                       }).toList(),
                     );
@@ -164,7 +198,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                   //   FocusScope.of(context).requestFocus(_heightFocus);
                   // },
                   onSaved: (dataInicio) =>
-                      treatmentPatient.startDate = dataInicio ?? '',
+                      treatmentPatient.start_date = dataInicio ?? '',
                   validator: (_dataInicio) {
                     final dataInicio = _dataInicio ?? '';
                     if (dataInicio.trim().isEmpty) {
@@ -215,20 +249,20 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
               Expanded(
                 flex: 2,
                 child: AdaptativeTextFormField(
-                    initialValue: treatmentPatient.doseTotal,
+                    initialValue: treatmentPatient.dose_total,
                     label: 'Dose cumulativa',
                     obscureText: false,
                     textInputAction: TextInputAction.done,
                     keyboardType: TextInputType.number,
                     onSaved: (dose) {
                       int? doseTotal =
-                          int.tryParse(treatmentPatient.doseTotal!);
+                          int.tryParse(treatmentPatient.dose_total!);
                       int? intDose = int.tryParse(dose!);
                       int doseAcumulada = doseTotal! + intDose!;
                       if (doseAcumulada > 0) {
-                        treatmentPatient.doseTotal = doseAcumulada.toString();
+                        treatmentPatient.dose_total = doseAcumulada.toString();
                       } else {
-                        treatmentPatient.doseTotal = treatmentPatient.dose;
+                        treatmentPatient.dose_total = treatmentPatient.dose;
                       }
 
                       print(doseAcumulada);

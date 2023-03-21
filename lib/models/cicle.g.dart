@@ -9,9 +9,11 @@ part of 'cicle.dart';
 Cicle _$CicleFromJson(Map<String, dynamic> json) => Cicle(
       id: json['id'] as int?,
       name: json['name'] as String?,
+      number: json['number'] as int?,
     );
 
 Map<String, dynamic> _$CicleToJson(Cicle instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'number': instance.number,
     };

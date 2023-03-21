@@ -201,31 +201,31 @@ class _ImplantedCatheterPageState extends State<ImplantedCatheterPage> {
               ),
             ],
           ),
-          const Divider(),
-          const SizedBox(height: 20),
-          Column(
-            children: [
-              Container(
-                alignment: Alignment.bottomCenter,
-                child: ElevatedButton(
-                  onPressed: _submitForm,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.check),
-                      Padding(
-                        padding: const EdgeInsets.all(14.0),
-                        child: Text(
-                          "Salvar",
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // const Divider(),
+          // const SizedBox(height: 20),
+          // Column(
+          //   children: [
+          //     Container(
+          //       alignment: Alignment.bottomCenter,
+          //       child: ElevatedButton(
+          //         onPressed: _submitForm,
+          //         child: Row(
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           children: [
+          //             const Icon(Icons.check),
+          //             Padding(
+          //               padding: const EdgeInsets.all(14.0),
+          //               child: Text(
+          //                 "Salvar",
+          //                 style: Theme.of(context).textTheme.labelLarge,
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );
