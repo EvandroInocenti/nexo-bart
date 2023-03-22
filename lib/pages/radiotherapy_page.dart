@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:nexo_onco/components/adaptative_dropdown_button_form_field.dart';
 import 'package:nexo_onco/models/treatment.dart';
@@ -24,10 +23,13 @@ class RadiotherapyPage extends StatefulWidget {
 }
 
 class _RadiotherapyPageState extends State<RadiotherapyPage> {
-  // TreatmentPatient get treatmentPatient =>
-  //     ModalRoute.of(context)?.settings.arguments as TreatmentPatient;
+  TreatmentPatient treatmentPatient = TreatmentPatient();
+  Treatment treatment = Treatment();
+  Drug drug = Drug();
+  Cicle cicle = Cicle();
 
   final TextEditingController _startDateController = TextEditingController();
+  final TextEditingController _doseController = TextEditingController();
 
   @override
   void initState() {
@@ -45,42 +47,51 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    treatmentPatient.dispose();
+    treatment.dispose();
+    drug.dispose();
+    cicle.dispose();
+    _startDateController.dispose();
+    _doseController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    TreatmentPatient treatmentPatient = TreatmentPatient();
-    Treatment treatment = Treatment();
-    Drug drug = Drug();
-    Cicle cicle = Cicle();
+    // TreatmentPatient treatmentPatient = TreatmentPatient();
 
-    // _startDateController.text = treatmentPatient.startDate!;
-    // DateTime parseDate =
-    //     DateFormat("yyyy-MM-dd").parse(treatmentPatient.startDate!);
-    // String dateFormat = DateFormat('dd/MM/yyyy').format(parseDate);
+    _startDateController.text = treatmentPatient.start_date ??
+        DateFormat("yyyy-MM-dd").format(DateTime.now());
+    DateTime parseDate =
+        DateFormat("yyyy-MM-dd").parse(_startDateController.text);
+    String dateFormat = DateFormat('dd/MM/yyyy').format(parseDate);
 
-    // final TextEditingController dateControllerFormat =
-    //     TextEditingController(text: dateFormat);
+    final TextEditingController dateControllerFormat =
+        TextEditingController(text: dateFormat);
 
-    // Future _selectDate() async {
-    //   DateTime? picked = await showDatePicker(
-    //     context: context,
-    //     initialDate: DateTime.now(),
-    //     firstDate: DateTime(2023 - 100),
-    //     lastDate: DateTime.now(),
-    //   );
-    //   if (picked != null) {
-    //     String formatDate = DateFormat('dd/MM/yyyy').format(picked);
-    //     String dateDb = DateFormat('yyyy-MM-dd').format(picked);
-    //     setState(
-    //       () => {
-    //         treatmentPatient.startDate = dateDb,
-    //         _startDateController.text = formatDate,
-    //       },
-    //     );
-    //   } else {
-    //     if (kDebugMode) {
-    //       print("Data não selecionada");
-    //     }
-    //   }
-    // }
+    Future _selectDate() async {
+      DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2023 - 100),
+        lastDate: DateTime.now(),
+      );
+      if (picked != null) {
+        String formatDate = DateFormat('dd/MM/yyyy').format(picked);
+        String dateDb = DateFormat('yyyy-MM-dd').format(picked);
+        setState(
+          () => {
+            treatmentPatient.start_date = dateDb,
+            _startDateController.text = formatDate,
+          },
+        );
+      } else {
+        if (kDebugMode) {
+          print("Data não selecionada");
+        }
+      }
+    }
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -189,20 +200,29 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
             children: [
               Expanded(
                 flex: 2,
-                child: AdaptativeTextFormField(
-                  // focusNode: _birthDateFocus,
-                  label: 'Data de início',
-                  obscureText: false,
+                child: TextFormField(
+                  controller: dateControllerFormat,
+                  decoration: InputDecoration(
+                    label: Text('Data de início',
+                        style: Theme.of(context).textTheme.bodyMedium),
+                    border: const OutlineInputBorder(gapPadding: 3),
+                    contentPadding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+                  ),
                   textInputAction: TextInputAction.next,
-                  // onFieldSubmitted: (_) {
-                  //   FocusScope.of(context).requestFocus(_heightFocus);
-                  // },
-                  onSaved: (dataInicio) =>
-                      treatmentPatient.start_date = dataInicio ?? '',
-                  validator: (_dataInicio) {
-                    final dataInicio = _dataInicio ?? '';
-                    if (dataInicio.trim().isEmpty) {
-                      return 'Data de início do tratamento é obrigatória';
+                  onTap: () {
+                    _selectDate();
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
+                  onSaved: (startDate) {
+                    DateTime _parseStartDate =
+                        DateFormat("dd/MM/yyyy").parse(startDate!);
+                    String _formatDateDb =
+                        DateFormat('yyyy-MM-dd').format(_parseStartDate);
+                    treatmentPatient.start_date = _formatDateDb;
+                  },
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Selecione uma data';
                     }
                     return null;
                   },

@@ -10,7 +10,7 @@ TreatmentPatient _$TreatmentPatientFromJson(Map<String, dynamic> json) =>
     TreatmentPatient(
       id: json['id'] as int?,
       patient_id: json['patient_id'] as int?,
-      treatment_idd: json['treatment_idd'] as int?,
+      treatment_id: json['treatment_id'] as int?,
       ciclo_id: json['ciclo_id'] as int?,
       start_date: json['start_date'] as String?,
       dose: json['dose'] as String?,
@@ -24,7 +24,7 @@ Map<String, dynamic> _$TreatmentPatientToJson(TreatmentPatient instance) =>
     <String, dynamic>{
       'id': instance.id,
       'patient_id': instance.patient_id,
-      'treatment_idd': instance.treatment_idd,
+      'treatment_id': instance.treatment_id,
       'ciclo_id': instance.ciclo_id,
       'start_date': instance.start_date,
       'dose': instance.dose,

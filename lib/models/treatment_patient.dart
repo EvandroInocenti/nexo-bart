@@ -11,7 +11,7 @@ part 'treatment_patient.g.dart';
 class TreatmentPatient with ChangeNotifier {
   int? id;
   int? patient_id;
-  int? treatment_idd;
+  int? treatment_id;
   int? ciclo_id;
   String? start_date;
   String? dose;
@@ -21,7 +21,7 @@ class TreatmentPatient with ChangeNotifier {
   TreatmentPatient({
     this.id,
     this.patient_id,
-    this.treatment_idd,
+    this.treatment_id,
     this.ciclo_id,
     this.start_date,
     this.dose,
