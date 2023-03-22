@@ -113,7 +113,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                         return DropdownMenuItem(
                           value: treatmentPatient.treatment!.name,
                           child: Text(
-                              '${treatmentPatient.getformatDate(treatmentPatient.start_date!)} ${' - '} ${treatmentPatient.treatment!.name!}'),
+                              '${treatmentPatient.getformatedDate(treatmentPatient.start_date!)} ${' - '} ${treatmentPatient.treatment!.name!}'),
                         );
                       }).toList(),
                     );
@@ -275,17 +275,16 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                     textInputAction: TextInputAction.done,
                     keyboardType: TextInputType.number,
                     onSaved: (dose) {
-                      int? doseTotal =
-                          int.tryParse(treatmentPatient.dose_total!);
-                      int? intDose = int.tryParse(dose!);
-                      int doseAcumulada = doseTotal! + intDose!;
-                      if (doseAcumulada > 0) {
-                        treatmentPatient.dose_total = doseAcumulada.toString();
+                      int doseTotal = treatmentPatient.getDoseTotal(
+                          treatmentPatient.dose as int,
+                          treatmentPatient.cicle!.number!);
+                      if (doseTotal > 0) {
+                        treatmentPatient.dose_total = doseTotal.toString();
                       } else {
                         treatmentPatient.dose_total = treatmentPatient.dose;
                       }
 
-                      print(doseAcumulada);
+                      print(doseTotal);
                     }),
               ),
             ],

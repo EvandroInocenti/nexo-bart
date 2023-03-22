@@ -1,26 +1,22 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'cicle.g.dart';
+part 'institution.g.dart';
 
 @JsonSerializable()
-class Cicle with ChangeNotifier {
+class Institution with ChangeNotifier {
   int? id;
   String? name;
-  int? days;
-  int? number;
 
-  Cicle({
+  Institution({
     this.id,
     this.name,
-    this.days,
-    this.number,
   });
 
-  factory Cicle.fromJson(Map<String, dynamic> json) => _$CicleFromJson(json);
-  Map<String, dynamic> toJson() => _$CicleToJson(this);
+  factory Institution.fromJson(Map<String, dynamic> json) =>
+      _$InstitutionFromJson(json);
+  Map<String, dynamic> toJson() => _$InstitutionToJson(this);
 
   @override
   String toString() {
