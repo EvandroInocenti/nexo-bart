@@ -6,7 +6,6 @@ import 'package:nexo_onco/models/treatment.dart';
 import 'package:nexo_onco/models/treatment_patient.dart';
 import 'package:provider/provider.dart';
 
-import '../components/adaptative_text_form_field.dart';
 import '../models/cicle.dart';
 import '../models/cicle_list.dart';
 import '../models/drug.dart';
@@ -30,6 +29,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
 
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _doseController = TextEditingController();
+  final TextEditingController _doseTotalController = TextEditingController();
 
   @override
   void initState() {
@@ -55,12 +55,14 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
     cicle.dispose();
     _startDateController.dispose();
     _doseController.dispose();
+    _doseTotalController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TreatmentPatient treatmentPatient = TreatmentPatient();
-
+    // final keyTratamento = GlobalKey<FormFieldState>();
+    // final keyQuimioterapico = GlobalKey<FormFieldState>();
+    // final keyCiclo = GlobalKey<FormFieldState>();
     _startDateController.text = treatmentPatient.start_date ??
         DateFormat("yyyy-MM-dd").format(DateTime.now());
     DateTime parseDate =
@@ -93,6 +95,15 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
       }
     }
 
+    void clearFields() {
+      _startDateController.clear();
+      _doseController.clear();
+      _doseTotalController.clear();
+      // keyTratamento.currentState!.reset();
+      // keyQuimioterapico.currentState!.reset();
+      // keyCiclo.currentState!.reset();
+    }
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListView(
@@ -103,8 +114,15 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                 flex: 3,
                 child: Consumer<TreatmentPatientList>(
                   builder: (ctx, treatmentsPatient, child) {
-                    return AdaptativeDropdownButtonFormField(
-                      label: 'Tratamento anterior',
+                    return DropdownButtonFormField(
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+                        border: const OutlineInputBorder(),
+                        label: Text(
+                          'Tratamento anterior',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
                       onChanged: (newValue) {
                         treatmentPatient.treatment!.name = newValue;
                       },
@@ -126,7 +144,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                 child: Column(
                   children: [
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: clearFields,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -151,8 +169,16 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                 flex: 2,
                 child: Consumer<TreatmentList>(
                   builder: (ctx, treatments, child) {
-                    return AdaptativeDropdownButtonFormField(
-                      label: 'Tratamento',
+                    return DropdownButtonFormField(
+                      // key: keyTratamento,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+                        border: const OutlineInputBorder(),
+                        label: Text(
+                          'Tratamento',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
                       value: treatment.name,
                       onChanged: (newValue) {
                         treatment.name = newValue;
@@ -177,8 +203,16 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                 flex: 2,
                 child: Consumer<DrugList>(
                   builder: (ctx, drugs, child) {
-                    return AdaptativeDropdownButtonFormField(
-                      label: 'Quimioterápico',
+                    return DropdownButtonFormField(
+                      // key: keyQuimioterapico,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+                        border: const OutlineInputBorder(),
+                        label: Text(
+                          'Quimioterápico',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
                       value: drug.name,
                       onChanged: (newValue) {
                         drug.name = newValue;
@@ -214,11 +248,11 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                     FocusScope.of(context).requestFocus(FocusNode());
                   },
                   onSaved: (startDate) {
-                    DateTime _parseStartDate =
+                    DateTime parseStartDate =
                         DateFormat("dd/MM/yyyy").parse(startDate!);
-                    String _formatDateDb =
-                        DateFormat('yyyy-MM-dd').format(_parseStartDate);
-                    treatmentPatient.start_date = _formatDateDb;
+                    String formatDateDb =
+                        DateFormat('yyyy-MM-dd').format(parseStartDate);
+                    treatmentPatient.start_date = formatDateDb;
                   },
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -231,8 +265,14 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
               const SizedBox(width: 10),
               Expanded(
                 flex: 2,
-                child: AdaptativeTextFormField(
-                  label: 'Dose/m2',
+                child: TextFormField(
+                  controller: _doseController,
+                  decoration: InputDecoration(
+                    label: Text('Dose/m2',
+                        style: Theme.of(context).textTheme.bodyMedium),
+                    border: const OutlineInputBorder(gapPadding: 3),
+                    contentPadding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+                  ),
                   obscureText: false,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.number,
@@ -248,16 +288,30 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                 flex: 2,
                 child: Consumer<CicleList>(
                   builder: (ctx, cicles, child) {
-                    return AdaptativeDropdownButtonFormField(
-                      label: 'Ciclos',
-                      value: cicle.name,
+                    return DropdownButtonFormField(
+                      // key: keyCiclo,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+                        border: const OutlineInputBorder(),
+                        label: Text(
+                          'Ciclo',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
+                      // value: cicle.id.toString(),
+                      value: '1',
                       onChanged: (newValue) {
-                        cicle.name = newValue;
+                        cicle.id = int.tryParse(newValue!);
+                        cicle.number = cicles.getNumberCicle(cicle.id!);
+                        _doseTotalController.text = treatmentPatient
+                            .getDoseTotal(double.tryParse(_doseController.text),
+                                cicle.number!)
+                            .toString();
                       },
                       items:
                           cicles.items.map<DropdownMenuItem<String>>((cicle) {
                         return DropdownMenuItem(
-                          value: cicle.name,
+                          value: cicle.id.toString(),
                           child: Text(cicle.name!),
                         );
                       }).toList(),
@@ -268,23 +322,21 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
               const SizedBox(width: 10),
               Expanded(
                 flex: 2,
-                child: AdaptativeTextFormField(
+                child: TextFormField(
+                    enabled: false,
                     initialValue: treatmentPatient.dose_total,
-                    label: 'Dose cumulativa',
+                    controller: _doseTotalController,
+                    decoration: InputDecoration(
+                      label: Text('Dose cumulativa',
+                          style: Theme.of(context).textTheme.bodyMedium),
+                      border: const OutlineInputBorder(gapPadding: 3),
+                      contentPadding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+                    ),
                     obscureText: false,
                     textInputAction: TextInputAction.done,
                     keyboardType: TextInputType.number,
                     onSaved: (dose) {
-                      int doseTotal = treatmentPatient.getDoseTotal(
-                          treatmentPatient.dose as int,
-                          treatmentPatient.cicle!.number!);
-                      if (doseTotal > 0) {
-                        treatmentPatient.dose_total = doseTotal.toString();
-                      } else {
-                        treatmentPatient.dose_total = treatmentPatient.dose;
-                      }
-
-                      print(doseTotal);
+                      treatmentPatient.dose_total = dose ?? '';
                     }),
               ),
             ],

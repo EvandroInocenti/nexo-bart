@@ -1,10 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../models/tumor_list.dart';
 
 class AdaptativeDropdownButtonFormField extends StatelessWidget {
   String? label;
@@ -14,6 +11,7 @@ class AdaptativeDropdownButtonFormField extends StatelessWidget {
 
   AdaptativeDropdownButtonFormField({
     Key? key,
+    Key? keyFormField,
     this.label,
     this.value,
     this.onChanged,
@@ -35,8 +33,8 @@ class AdaptativeDropdownButtonFormField extends StatelessWidget {
             icon: const Icon(Icons.arrow_drop_down),
             elevation: 16,
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.fromLTRB(16, 0, 8, 0),
-              border: OutlineInputBorder(),
+              contentPadding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+              border: const OutlineInputBorder(),
               label: Text(
                 label!,
                 style: Theme.of(context).textTheme.bodyMedium,

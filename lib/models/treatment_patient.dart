@@ -43,8 +43,8 @@ class TreatmentPatient with ChangeNotifier {
     return dateFormat;
   }
 
-  int getDoseTotal(int dose, int numCicle) {
-    int doseTotal = (dose > 0 || numCicle > 0) ? dose * numCicle : 0;
+  num getDoseTotal(double? dose, int numCicle) {
+    num doseTotal = (dose! > 0 || numCicle > 0) ? dose * numCicle : 0;
     return doseTotal;
   }
 
