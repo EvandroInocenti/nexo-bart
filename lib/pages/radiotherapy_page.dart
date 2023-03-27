@@ -131,7 +131,9 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                         return DropdownMenuItem(
                           value: treatmentPatient.treatment!.name,
                           child: Text(
-                              '${treatmentPatient.getformatedDate(treatmentPatient.start_date!)} ${' - '} ${treatmentPatient.treatment!.name!}'),
+                            '${treatmentPatient.getformatedDate(treatmentPatient.start_date!)} ${' - '} ${treatmentPatient.treatment!.name!}',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
                         );
                       }).toList(),
                     );
@@ -140,21 +142,21 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
               ),
               const SizedBox(width: 10),
               Expanded(
-                flex: 2,
+                flex: 1,
                 child: Column(
                   children: [
-                    ElevatedButton(
-                      onPressed: clearFields,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.add),
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text("Incluir",
-                                style: Theme.of(context).textTheme.labelLarge),
+                    Container(
+                      height: 48,
+                      child: ButtonTheme(
+                        child: ElevatedButton(
+                          onPressed: clearFields,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.add),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     )
                   ],

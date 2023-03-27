@@ -39,7 +39,7 @@ class TreatmentPatient with ChangeNotifier {
 
   String getformatedDate(String _startDate) {
     DateTime parseDate = DateFormat("yyyy-MM-dd").parse(_startDate);
-    String dateFormat = DateFormat('dd/MM/yyyy').format(parseDate);
+    String dateFormat = DateFormat('dd/MM/yy').format(parseDate);
     return dateFormat;
   }
 
