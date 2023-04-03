@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
+import '../exceptions/http_exception.dart';
 import 'treatment_patient.dart';
 
 class TreatmentPatientList with ChangeNotifier {
@@ -47,6 +48,73 @@ class TreatmentPatientList with ChangeNotifier {
       notifyListeners();
     } else {
       throw Exception('Falha ao carregar tratamento anterior do paciente.');
+    }
+  }
+
+  Future<void> saveTreatmentPatient(TreatmentPatient treatmentPatient) {
+    bool hasId = treatmentPatient.id != null;
+
+    if (hasId) {
+      return updateTreatmentPatient(treatmentPatient);
+    } else {
+      return addTreatmentPatient(treatmentPatient);
+    }
+  }
+
+  Future<void> addTreatmentPatient(TreatmentPatient treatmentPatient) async {
+    final response = await http.post(
+      Uri.parse('$_url/treatments/${treatmentPatient.patient_id}'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(
+        {
+          "id": treatmentPatient.id,
+        },
+      ),
+    );
+
+    final id = jsonDecode(response.body)['id'];
+    _items.add(
+      TreatmentPatient(
+        id: id,
+        treatment: treatmentPatient.treatment,
+        drug: treatmentPatient.drug,
+        start_date: treatmentPatient.start_date,
+        dose: treatmentPatient.dose,
+        ciclo_id: treatmentPatient.ciclo_id,
+        dose_total: treatmentPatient.dose_total,
+      ),
+    );
+
+    notifyListeners();
+  }
+
+  Future<void> updateTreatmentPatient(TreatmentPatient treatmentPatient) async {
+    int index = _items.indexWhere((p) => p.id == treatmentPatient.id);
+
+    if (index >= 0) {
+      _items[index] = treatmentPatient;
+
+      final response = await http.put(
+        Uri.parse('${_url!}/patients/${treatmentPatient.id}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(treatmentPatient),
+      );
+
+      if (response.statusCode >= 400) {
+        throw HttpException(
+          msg: 'Não é possível salvar o tratamento dopaciente',
+          statusCode: response.statusCode,
+        );
+      }
+      notifyListeners();
     }
   }
 }
