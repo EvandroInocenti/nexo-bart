@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,6 +21,15 @@ class TreatmentList with ChangeNotifier {
 
   int get itemsCount {
     return _items.length;
+  }
+
+  Treatment getTreatment(int id) {
+    var treatment = [..._items].singleWhere((el) => el.id == id);
+
+    if (kDebugMode) {
+      print(treatment);
+    }
+    return treatment;
   }
 
   Future<void> loadTreatment() async {

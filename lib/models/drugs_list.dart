@@ -1,11 +1,10 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import 'drug.dart';
-import 'treatment.dart';
 
 class DrugList with ChangeNotifier {
   final _url = dotenv.env['API_URL'];
@@ -22,6 +21,15 @@ class DrugList with ChangeNotifier {
 
   int get itemsCount {
     return _items.length;
+  }
+
+  Drug getDrug(int id) {
+    var drugName = [..._items].singleWhere((el) => el.id == id);
+
+    if (kDebugMode) {
+      print(drugName);
+    }
+    return drugName;
   }
 
   Future<void> loadDrugs() async {

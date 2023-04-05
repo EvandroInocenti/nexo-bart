@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,13 +24,13 @@ class CicleList with ChangeNotifier {
   }
 
   //retorna uma lista de elemento Cicle
-  int getNumberCicle(int idCicle) {
-    var cicleNumber = [..._items].singleWhere((el) => el.id == idCicle);
+  Cicle getCicle(int idCicle) {
+    var cicle = [..._items].singleWhere((el) => el.id == idCicle);
 
     if (kDebugMode) {
-      print(cicleNumber.number);
+      print(cicle);
     }
-    return cicleNumber.number!;
+    return cicle;
   }
 
   Future<void> loadCicles() async {

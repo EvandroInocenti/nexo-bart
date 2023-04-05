@@ -63,7 +63,7 @@ class TreatmentPatientList with ChangeNotifier {
 
   Future<void> addTreatmentPatient(TreatmentPatient treatmentPatient) async {
     final response = await http.post(
-      Uri.parse('$_url/treatments/${treatmentPatient.patient_id}'),
+      Uri.parse('$_url/patients/treatments/${treatmentPatient.patient_id}'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -93,28 +93,23 @@ class TreatmentPatientList with ChangeNotifier {
   }
 
   Future<void> updateTreatmentPatient(TreatmentPatient treatmentPatient) async {
-    int index = _items.indexWhere((p) => p.id == treatmentPatient.id);
+    final response = await http.put(
+      Uri.parse(
+          '${_url!}/patients/treatments/${treatmentPatient.patient_id}/${treatmentPatient.id}'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(treatmentPatient),
+    );
 
-    if (index >= 0) {
-      _items[index] = treatmentPatient;
-
-      final response = await http.put(
-        Uri.parse('${_url!}/patients/${treatmentPatient.id}'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode(treatmentPatient),
+    if (response.statusCode >= 400) {
+      throw HttpException(
+        msg: 'Não é possível salvar o tratamento do paciente',
+        statusCode: response.statusCode,
       );
-
-      if (response.statusCode >= 400) {
-        throw HttpException(
-          msg: 'Não é possível salvar o tratamento dopaciente',
-          statusCode: response.statusCode,
-        );
-      }
-      notifyListeners();
     }
+    notifyListeners();
   }
 }

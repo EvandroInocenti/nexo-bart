@@ -27,6 +27,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
   Treatment treatment = Treatment();
   Drug drug = Drug();
   Cicle cicle = Cicle();
+  List listCicles = [];
 
   bool _isLoading = false;
 
@@ -76,7 +77,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
         builder: (ctx) => AlertDialog(
           title: Text('Ocorreu um erro!',
               style: Theme.of(context).textTheme.titleLarge),
-          content: Text('Ocorreu erro ao salvar o paciente.',
+          content: Text('Ocorreu erro ao salvar o tratamento do paciente.',
               style: Theme.of(context).textTheme.titleMedium),
           actions: [
             TextButton(
@@ -106,7 +107,6 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
         TextEditingController(text: dateFormat);
 
     treatmentPatient.patient_id = patient.id;
-    // _doseController.text = '0';
 
     Future _selectDate() async {
       DateTime? picked = await showDatePicker(
@@ -167,17 +167,16 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                                 ),
                               ),
                               // value: treatmentPatient.id ?? '1',
-                              value: '1',
+                              value: '4',
                               onChanged: (newValue) {
                                 treatmentPatient.id =
-                                    int.tryParse(newValue.toString());
+                                    int.tryParse(newValue!.toString());
                               },
                               items: treatmentsPatient.items
                                   .map<DropdownMenuItem<String>>(
                                       (treatmentPatient) {
                                 return DropdownMenuItem(
-                                  value:
-                                      treatmentPatient.treatment!.id.toString(),
+                                  value: treatmentPatient.id.toString(),
                                   child: Text(
                                     '${treatmentPatient.getformatedDate(treatmentPatient.start_date!)} ${' - '} ${treatmentPatient.treatment!.name!}',
                                   ),
@@ -238,8 +237,13 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                               onSaved: (newValue) {
                                 treatment.id =
                                     int.tryParse(newValue!.toString());
+                                treatment.name =
+                                    treatments.getTreatment(treatment.id!).name;
                                 treatmentPatient.treatment = treatment;
-                                treatmentPatient.treatment_id = treatment.id;
+                                treatmentPatient.treatment_id =
+                                    treatmentPatient.id;
+                                treatmentPatient.treatment!.name =
+                                    treatment.name;
                               },
                               items: treatments.items
                                   .map<DropdownMenuItem<String>>((treatment) {
@@ -278,6 +282,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                               },
                               onSaved: (newValue) {
                                 drug.id = int.tryParse(newValue.toString());
+                                drug.name = drugs.getDrug(drug.id!).name;
                                 treatmentPatient.drug = drug;
                               },
                               items: drugs.items
@@ -369,7 +374,8 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                               value: '1',
                               onChanged: (newValue) {
                                 cicle.id = int.tryParse(newValue.toString());
-                                cicle.number = cicles.getNumberCicle(cicle.id!);
+                                cicle.number =
+                                    cicles.getCicle(cicle.id!).number;
                                 _doseTotalController.text = treatmentPatient
                                     .getDoseTotal(
                                         double.tryParse(_doseController.text),
@@ -378,6 +384,10 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                               },
                               onSaved: (newValue) {
                                 cicle.id = int.tryParse(newValue.toString());
+                                cicle.name = cicles.getCicle(cicle.id!).name;
+                                cicle.days = cicles.getCicle(cicle.id!).days;
+                                cicle.number =
+                                    cicles.getCicle(cicle.id!).number;
                                 treatmentPatient.ciclo_id =
                                     int.tryParse(newValue.toString());
                                 treatmentPatient.cicle = cicle;
