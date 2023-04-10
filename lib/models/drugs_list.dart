@@ -23,6 +23,14 @@ class DrugList with ChangeNotifier {
     return _items.length;
   }
 
+  List<String> getId() {
+    List<String> idDrugs = [];
+    if (items.isNotEmpty) {
+      idDrugs.add(items.map((e) => e.name).toString());
+    }
+    return idDrugs;
+  }
+
   Drug getDrug(int id) {
     var drugName = [..._items].singleWhere((el) => el.id == id);
 

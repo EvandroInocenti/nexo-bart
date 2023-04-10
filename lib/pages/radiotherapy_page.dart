@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:multiselect/multiselect.dart';
 import 'package:nexo_onco/models/treatment.dart';
 import 'package:nexo_onco/models/treatment_patient.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,8 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
   Treatment treatment = Treatment();
   Drug drug = Drug();
   Cicle cicle = Cicle();
-  List listCicles = [];
+  List<String> drugs = ['Apple', 'Banana', 'Grapes', 'Orange', 'Mango'];
+  List<String> selectedDrugs = [];
 
   bool _isLoading = false;
 
@@ -167,7 +169,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                                 ),
                               ),
                               // value: treatmentPatient.id ?? '1',
-                              value: '4',
+                              // value: '4',
                               onChanged: (newValue) {
                                 treatmentPatient.id =
                                     int.tryParse(newValue!.toString());
@@ -229,7 +231,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                                 ),
                               ),
                               // value: treatment.id ?? '1',
-                              value: '1',
+                              // value: '1',
                               onChanged: (newValue) {
                                 treatment.id =
                                     int.tryParse(newValue!.toString());
@@ -265,8 +267,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                         flex: 2,
                         child: Consumer<DrugList>(
                           builder: (ctx, drugs, child) {
-                            return DropdownButtonFormField(
-                              // key: keyQuimioterapico,
+                            return DropDownMultiSelect(
                               decoration: InputDecoration(
                                 contentPadding:
                                     const EdgeInsets.fromLTRB(16, 0, 8, 0),
@@ -276,22 +277,19 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ),
-                              value: '1',
-                              onChanged: (newValue) {
-                                drug.id = int.tryParse(newValue.toString());
+                              selected_values_style:
+                                  Theme.of(context).textTheme.bodyMedium,
+                              options: drugs.getId(),
+                              selectedValues: selectedDrugs,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedDrugs = value;
+                                });
+                                if (kDebugMode) {
+                                  print('Selecionou $selectedDrugs drugs.');
+                                }
+                                // drug.id = selectedDrugs as int?;
                               },
-                              onSaved: (newValue) {
-                                drug.id = int.tryParse(newValue.toString());
-                                drug.name = drugs.getDrug(drug.id!).name;
-                                treatmentPatient.drug = drug;
-                              },
-                              items: drugs.items
-                                  .map<DropdownMenuItem<String>>((drug) {
-                                return DropdownMenuItem(
-                                  value: drug.id.toString(),
-                                  child: Text(drug.name!),
-                                );
-                              }).toList(),
                             );
                           },
                         ),
@@ -371,7 +369,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                                 ),
                               ),
                               // value: cicle.id ?? '1',
-                              value: '1',
+                              // value: '1',
                               onChanged: (newValue) {
                                 cicle.id = int.tryParse(newValue.toString());
                                 cicle.number =
