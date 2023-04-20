@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:multiselect/multiselect.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:nexo_onco/models/treatment.dart';
 import 'package:nexo_onco/models/treatment_patient.dart';
 import 'package:provider/provider.dart';
@@ -24,13 +24,12 @@ class RadiotherapyPage extends StatefulWidget {
 class _RadiotherapyPageState extends State<RadiotherapyPage> {
   Patient get patient => ModalRoute.of(context)?.settings.arguments as Patient;
   final _formKey = GlobalKey<FormState>();
+  final _multiSelectKey = GlobalKey<FormFieldState>();
   TreatmentPatient treatmentPatient = TreatmentPatient();
   Treatment treatment = Treatment();
   Drug drug = Drug();
   Cicle cicle = Cicle();
-  List<String> drugs = ['Apple', 'Banana', 'Grapes', 'Orange', 'Mango'];
-  List<String> selectedDrugs = [];
-
+  List<int>? selectedDrugs = [];
   bool _isLoading = false;
 
   final TextEditingController _startDateController = TextEditingController();
@@ -62,6 +61,12 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
     _startDateController.dispose();
     _doseController.dispose();
     _doseTotalController.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // selectedDrugs = null;
   }
 
   Future<void> _submitForm() async {
@@ -137,6 +142,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
       _startDateController.clear();
       _doseController.clear();
       _doseTotalController.clear();
+      _multiSelectKey.currentState!.reset();
       // keyTratamento.currentState!.reset();
       // keyQuimioterapico.currentState!.reset();
       // keyCiclo.currentState!.reset();
@@ -267,29 +273,59 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                         flex: 2,
                         child: Consumer<DrugList>(
                           builder: (ctx, drugs, child) {
-                            return DropDownMultiSelect(
-                              decoration: InputDecoration(
-                                contentPadding:
-                                    const EdgeInsets.fromLTRB(16, 0, 8, 0),
-                                border: const OutlineInputBorder(),
-                                label: Text(
-                                  'Quimioterápico',
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                            final listDrugs = drugs
+                                .getDrugs()
+                                .map((e) => MultiSelectItem<Drug?>(e, e.name!))
+                                .toList();
+                            return MultiSelectBottomSheetField<Drug?>(
+                              key: _multiSelectKey,
+                              initialChildSize: 0.7,
+                              maxChildSize: 0.95,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey.shade500,
                                 ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4.0)),
+                                shape: BoxShape.rectangle,
                               ),
-                              selected_values_style:
-                                  Theme.of(context).textTheme.bodyMedium,
-                              options: drugs.getId(),
-                              selectedValues: selectedDrugs,
-                              onChanged: (value) {
+                              buttonIcon: Icon(Icons.arrow_drop_down_sharp),
+                              title: Text(
+                                "Quimioterápico",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              buttonText: Text(
+                                "Quimioterápico",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              confirmText: Text(
+                                "Confirmar",
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                              cancelText: Text(
+                                "Cancelar",
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                              items: listDrugs,
+                              searchable: true,
+                              onConfirm: (values) {
                                 setState(() {
-                                  selectedDrugs = value;
+                                  for (var element in values) {
+                                    selectedDrugs!.add(element!.id!);
+                                  }
                                 });
-                                if (kDebugMode) {
-                                  print('Selecionou $selectedDrugs drugs.');
-                                }
-                                // drug.id = selectedDrugs as int?;
+                                _multiSelectKey.currentState!.validate();
                               },
+                              chipDisplay: MultiSelectChipDisplay(
+                                onTap: (item) {
+                                  setState(() {
+                                    selectedDrugs!.remove(item!.id);
+                                  });
+                                  _multiSelectKey.currentState!.validate();
+                                },
+                              ),
+                              onSaved: (value) =>
+                                  treatmentPatient.drugs = selectedDrugs,
                             );
                           },
                         ),

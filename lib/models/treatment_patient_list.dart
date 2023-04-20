@@ -81,7 +81,7 @@ class TreatmentPatientList with ChangeNotifier {
       TreatmentPatient(
         id: id,
         treatment: treatmentPatient.treatment,
-        drug: treatmentPatient.drug,
+        drugs: treatmentPatient.drugs,
         start_date: treatmentPatient.start_date,
         dose: treatmentPatient.dose,
         ciclo_id: treatmentPatient.ciclo_id,

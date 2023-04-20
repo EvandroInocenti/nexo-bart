@@ -23,12 +23,20 @@ class DrugList with ChangeNotifier {
     return _items.length;
   }
 
-  List<String> getId() {
+  List<String> getNameDrug() {
     List<String> idDrugs = [];
-    if (items.isNotEmpty) {
-      idDrugs.add(items.map((e) => e.name).toString());
+    for (var element in items) {
+      idDrugs.add(element.name!);
     }
     return idDrugs;
+  }
+
+  List<Drug> getDrugs() {
+    List<Drug> list = [];
+    for (var element in items) {
+      list.add(element);
+    }
+    return list;
   }
 
   Drug getDrug(int id) {

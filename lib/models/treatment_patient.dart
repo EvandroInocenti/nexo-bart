@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -23,6 +22,7 @@ class TreatmentPatient with ChangeNotifier {
   Treatment? treatment;
   Cicle? cicle;
   Drug? drug;
+  List<int>? drugs;
 
   TreatmentPatient({
     this.id,
@@ -35,6 +35,7 @@ class TreatmentPatient with ChangeNotifier {
     this.treatment,
     this.cicle,
     this.drug,
+    this.drugs,
   });
 
   String getformatedDate(String _startDate) {
