@@ -72,6 +72,15 @@ class TreatmentPatientList with ChangeNotifier {
       body: jsonEncode(
         {
           "id": treatmentPatient.id,
+          "patient_id": treatmentPatient.patient_id,
+          "treatment": treatmentPatient.treatment,
+          "treatment_id": treatmentPatient.treatment_id,
+          "drug": treatmentPatient.drug,
+          "drugs": treatmentPatient.drugs,
+          "dose": treatmentPatient.dose,
+          "dose_total": treatmentPatient.dose_total,
+          "cicle": treatmentPatient.cicle,
+          "start_date": treatmentPatient.start_date,
         },
       ),
     );
@@ -81,6 +90,7 @@ class TreatmentPatientList with ChangeNotifier {
       TreatmentPatient(
         id: id,
         treatment: treatmentPatient.treatment,
+        drug: treatmentPatient.drug,
         drugs: treatmentPatient.drugs,
         start_date: treatmentPatient.start_date,
         dose: treatmentPatient.dose,
