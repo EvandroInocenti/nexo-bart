@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../models/cicle.dart';
 import '../models/cicle_list.dart';
-import '../models/drug.dart';
+import '../models/drugs.dart';
 import '../models/drugs_list.dart';
 import '../models/patient.dart';
 import '../models/treatment_list.dart';
@@ -27,7 +27,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
   final _multiSelectKey = GlobalKey<FormFieldState>();
   TreatmentPatient treatmentPatient = TreatmentPatient();
   Treatment treatment = Treatment();
-  Drug drug = Drug();
+  Drugs drug = Drugs();
   Cicle cicle = Cicle();
   List<int>? selectedDrugs = [];
   bool _isLoading = false;
@@ -275,9 +275,9 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                           builder: (ctx, drugs, child) {
                             final listDrugs = drugs
                                 .getDrugs()
-                                .map((e) => MultiSelectItem<Drug?>(e, e.name!))
+                                .map((e) => MultiSelectItem<Drugs?>(e, e.name!))
                                 .toList();
-                            return MultiSelectBottomSheetField<Drug?>(
+                            return MultiSelectBottomSheetField<Drugs?>(
                               key: _multiSelectKey,
                               initialChildSize: 0.7,
                               maxChildSize: 0.95,
@@ -324,8 +324,8 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                                   _multiSelectKey.currentState!.validate();
                                 },
                               ),
-                              onSaved: (value) =>
-                                  treatmentPatient.drugs = selectedDrugs,
+                              onSaved: (value) => treatmentPatient.drug!.id =
+                                  selectedDrugs as int?,
                             );
                           },
                         ),

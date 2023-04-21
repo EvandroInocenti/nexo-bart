@@ -23,8 +23,7 @@ TreatmentPatient _$TreatmentPatientFromJson(Map<String, dynamic> json) =>
           : Cicle.fromJson(json['cicle'] as Map<String, dynamic>),
       drug: json['drug'] == null
           ? null
-          : Drug.fromJson(json['drug'] as Map<String, dynamic>),
-      // drugs: (json['drugs'] as List<dynamic>?)?.map((e) => e as int).toList(),
+          : Drugs.fromJson(json['drug'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$TreatmentPatientToJson(TreatmentPatient instance) =>
@@ -39,5 +38,4 @@ Map<String, dynamic> _$TreatmentPatientToJson(TreatmentPatient instance) =>
       'treatment': instance.treatment,
       'cicle': instance.cicle,
       'drug': instance.drug,
-      // 'drugs': instance.drugs,
     };

@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'cicle.dart';
-import 'drug.dart';
+import 'drugs.dart';
 import 'treatment.dart';
 
 part 'treatment_patient.g.dart';
@@ -21,8 +21,7 @@ class TreatmentPatient with ChangeNotifier {
   String? dose_total;
   Treatment? treatment;
   Cicle? cicle;
-  Drug? drug;
-  List<int>? drugs;
+  Drugs? drug;
 
   TreatmentPatient({
     this.id,
@@ -35,7 +34,6 @@ class TreatmentPatient with ChangeNotifier {
     this.treatment,
     this.cicle,
     this.drug,
-    this.drugs,
   });
 
   String getformatedDate(String _startDate) {

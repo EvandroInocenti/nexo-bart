@@ -2,20 +2,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'drug.g.dart';
+part 'drugs.g.dart';
 
 @JsonSerializable()
-class Drug with ChangeNotifier {
+class Drugs with ChangeNotifier {
   int? id;
   String? name;
 
-  Drug({
+  Drugs({
     this.id,
     this.name,
   });
 
-  factory Drug.fromJson(Map<String, dynamic> json) => _$DrugFromJson(json);
-  Map<String, dynamic> toJson() => _$DrugToJson(this);
+  factory Drugs.fromJson(Map<String, dynamic> json) => _$DrugsFromJson(json);
+  Map<String, dynamic> toJson() => _$DrugsToJson(this);
 
   @override
   String toString() {
