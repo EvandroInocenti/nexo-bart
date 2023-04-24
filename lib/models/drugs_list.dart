@@ -36,6 +36,8 @@ class DrugList with ChangeNotifier {
     for (var element in items) {
       list.add(element);
     }
+    // order list
+    list.sort((a, b) => a.name!.compareTo(b.name!));
     return list;
   }
 

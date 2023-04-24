@@ -29,7 +29,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
   Treatment treatment = Treatment();
   Drugs drug = Drugs();
   Cicle cicle = Cicle();
-  List<int>? selectedDrugs = [];
+  List<Drugs>? selectedDrugs = [];
   bool _isLoading = false;
 
   final TextEditingController _startDateController = TextEditingController();
@@ -285,11 +285,12 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                                 border: Border.all(
                                   color: Colors.grey.shade500,
                                 ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(4.0)),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(4.0)),
                                 shape: BoxShape.rectangle,
                               ),
-                              buttonIcon: Icon(Icons.arrow_drop_down_sharp),
+                              buttonIcon:
+                                  const Icon(Icons.arrow_drop_down_sharp),
                               title: Text(
                                 "Quimioterápico",
                                 style: Theme.of(context).textTheme.bodyMedium,
@@ -311,7 +312,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                               onConfirm: (values) {
                                 setState(() {
                                   for (var element in values) {
-                                    selectedDrugs!.add(element!.id!);
+                                    selectedDrugs!.add(element!);
                                   }
                                 });
                                 _multiSelectKey.currentState!.validate();
@@ -319,13 +320,13 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                               chipDisplay: MultiSelectChipDisplay(
                                 onTap: (item) {
                                   setState(() {
-                                    selectedDrugs!.remove(item!.id);
+                                    selectedDrugs!.remove(item);
                                   });
                                   _multiSelectKey.currentState!.validate();
                                 },
                               ),
-                              onSaved: (value) => treatmentPatient.drug!.id =
-                                  selectedDrugs as int?,
+                              onSaved: (value) =>
+                                  treatmentPatient.drugs = value!,
                             );
                           },
                         ),

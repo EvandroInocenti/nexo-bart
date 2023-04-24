@@ -6,7 +6,7 @@ part of 'drugs.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Drugs _$DrugsFromJson(Map<String, dynamic> json) => Drugs(
+Drugs _$DrugsFromJson(Map json) => Drugs(
       id: json['id'] as int?,
       name: json['name'] as String?,
     );

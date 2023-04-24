@@ -6,7 +6,7 @@ part of 'doctor.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Doctor _$DoctorFromJson(Map<String, dynamic> json) => Doctor(
+Doctor _$DoctorFromJson(Map json) => Doctor(
       id: json['id'] as int?,
       name: json['name'] as String?,
       email: json['email'] as String?,

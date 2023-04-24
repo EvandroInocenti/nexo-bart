@@ -6,8 +6,7 @@ part of 'patient_answers.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PatientAnswers _$PatientAnswersFromJson(Map<String, dynamic> json) =>
-    PatientAnswers(
+PatientAnswers _$PatientAnswersFromJson(Map json) => PatientAnswers(
       id: json['id'] as int?,
       felling: json['felling'] as int?,
       temperature: json['temperature'] as int?,
@@ -24,7 +23,7 @@ PatientAnswers _$PatientAnswersFromJson(Map<String, dynamic> json) =>
       skinChange: json['skinChange'] as bool?,
       patient: json['patient'] == null
           ? null
-          : Patient.fromJson(json['patient'] as Map<String, dynamic>),
+          : Patient.fromJson(Map<String, dynamic>.from(json['patient'] as Map)),
     );
 
 Map<String, dynamic> _$PatientAnswersToJson(PatientAnswers instance) =>

@@ -6,8 +6,7 @@ part of 'treatment_patient_drug.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TreatmentPatientDrug _$TreatmentPatientDrugFromJson(
-        Map<String, dynamic> json) =>
+TreatmentPatientDrug _$TreatmentPatientDrugFromJson(Map json) =>
     TreatmentPatientDrug(
       id: json['id'] as int?,
       treatment_patient_id: json['treatment_patient_id'] as int?,

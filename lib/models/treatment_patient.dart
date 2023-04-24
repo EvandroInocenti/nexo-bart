@@ -22,6 +22,7 @@ class TreatmentPatient with ChangeNotifier {
   Treatment? treatment;
   Cicle? cicle;
   Drugs? drug;
+  List? drugs;
 
   TreatmentPatient({
     this.id,
@@ -34,6 +35,7 @@ class TreatmentPatient with ChangeNotifier {
     this.treatment,
     this.cicle,
     this.drug,
+    this.drugs,
   });
 
   String getformatedDate(String _startDate) {

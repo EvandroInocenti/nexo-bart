@@ -6,7 +6,7 @@ part of 'treatment.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Treatment _$TreatmentFromJson(Map<String, dynamic> json) => Treatment(
+Treatment _$TreatmentFromJson(Map json) => Treatment(
       id: json['id'] as int?,
       name: json['name'] as String?,
     );

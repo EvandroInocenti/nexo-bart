@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:nexo_onco/models/drugs.dart';
 
 import '../exceptions/http_exception.dart';
 import 'treatment_patient.dart';
@@ -80,6 +81,7 @@ class TreatmentPatientList with ChangeNotifier {
           "treatment_id": treatmentPatient.treatment_id,
           "cicle": treatmentPatient.cicle,
           "drug": treatmentPatient.drug,
+          "drugs": treatmentPatient.drugs,
           "treatment": treatmentPatient.treatment,
         },
       ),
@@ -91,6 +93,7 @@ class TreatmentPatientList with ChangeNotifier {
         id: id,
         treatment: treatmentPatient.treatment,
         drug: treatmentPatient.drug,
+        drugs: treatmentPatient.drugs,
         start_date: treatmentPatient.start_date,
         dose: treatmentPatient.dose,
         ciclo_id: treatmentPatient.ciclo_id,

@@ -6,7 +6,7 @@ part of 'tumor.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Tumor _$TumorFromJson(Map<String, dynamic> json) => Tumor(
+Tumor _$TumorFromJson(Map json) => Tumor(
       id: json['id'] as int?,
       name: json['name'] as String?,
     );
