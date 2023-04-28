@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nexo_onco/components/app_drawer.dart';
+import 'package:nexo_onco/models/patient_list.dart';
 import 'package:provider/provider.dart';
 import '../models/patient.dart';
-import '../models/patient_list.dart';
 import 'implanted_catheter_page.dart';
 import 'oncological_cirurgian_page.dart';
 import 'patient_form_page.dart';

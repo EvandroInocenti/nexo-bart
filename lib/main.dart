@@ -14,6 +14,7 @@ import 'models/environment.dart';
 import 'models/patient_list.dart';
 import 'models/treatment_list.dart';
 import 'pages/auth_or_home_page.dart';
+import 'pages/patient_answers_page.dart';
 import 'pages/radiotherapy_page.dart';
 import 'pages/tabs_page.dart';
 import 'utils/app_routes.dart';
@@ -144,6 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         routes: {
           AppRoutes.authOrHome: (ctx) => AuthOrHomePage(),
+          AppRoutes.answresForm: (ctx) => PatientAnswersPage(),
           AppRoutes.tabsPage: (ctx) => TabsPage(),
           AppRoutes.patientForm: (ctx) => PatientFormPage(),
           AppRoutes.oncologicalForm: (ctx) => OncologicalCirurgianPage(),
