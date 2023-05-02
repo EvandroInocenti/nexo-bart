@@ -17,7 +17,8 @@ class _AppRatingBarState extends State<AppRatingBar> {
       initialRating: _rating,
       direction: _isVertical ? Axis.vertical : Axis.horizontal,
       itemCount: 5,
-      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+      itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+      itemSize: 60,
       itemBuilder: (context, index) {
         switch (index) {
           case 0:

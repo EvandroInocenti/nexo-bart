@@ -177,6 +177,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  cupertino_radio_choice:
+    dependency: "direct main"
+    description:
+      name: cupertino_radio_choice
+      sha256: "2ded617f6b1b38b90d5b006207d8278bc0ec56ce9ce2064a6483b9dee8cc5675"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   custom_radio_grouped_button:
     dependency: "direct main"
     description:
