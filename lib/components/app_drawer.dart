@@ -13,12 +13,12 @@ class AppDrawer extends StatelessWidget {
       child: Column(
         children: [
           AppBar(
-            title: Text('Opções'),
+            title: const Text('Opções'),
             automaticallyImplyLeading: false,
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            leading: Icon(Icons.exit_to_app),
+            leading: const Icon(Icons.exit_to_app),
             title: Text(
               'sair',
               style: Theme.of(context).textTheme.bodyMedium,

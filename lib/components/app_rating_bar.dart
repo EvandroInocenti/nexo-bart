@@ -10,7 +10,7 @@ class AppRatingBar extends StatefulWidget {
 
 class _AppRatingBarState extends State<AppRatingBar> {
   final bool _isVertical = false;
-  double _rating = 5;
+  double _rating = -1;
   @override
   Widget build(BuildContext context) {
     return RatingBar.builder(
