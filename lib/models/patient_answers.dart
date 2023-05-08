@@ -11,34 +11,34 @@ class PatientAnswers with ChangeNotifier {
   int? id;
   int? felling;
   int? temperature;
-  bool? difficultyBreathing;
+  bool? difficulty_breathing;
   bool? convulsion;
-  bool? bodyAche;
+  bool? body_ache;
   bool? tiredness;
-  bool? mouthSore;
-  bool? painWhenSwallowing;
-  bool? hotSkin;
+  bool? mouth_sore;
+  bool? pain_when_swallowing;
+  bool? hot_skin;
   bool? diarrhea;
   bool? vomit;
   bool? bruise;
-  bool? skinChange;
+  bool? skin_change;
   Patient? patient;
 
   PatientAnswers({
     this.id,
     this.felling,
     this.temperature,
-    this.difficultyBreathing,
+    this.difficulty_breathing,
     this.convulsion,
-    this.bodyAche,
+    this.body_ache,
     this.tiredness,
-    this.mouthSore,
-    this.painWhenSwallowing,
-    this.hotSkin,
+    this.mouth_sore,
+    this.pain_when_swallowing,
+    this.hot_skin,
     this.diarrhea,
     this.vomit,
     this.bruise,
-    this.skinChange,
+    this.skin_change,
     this.patient,
   });
 

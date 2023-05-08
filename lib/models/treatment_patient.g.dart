@@ -6,7 +6,8 @@ part of 'treatment_patient.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TreatmentPatient _$TreatmentPatientFromJson(Map json) => TreatmentPatient(
+TreatmentPatient _$TreatmentPatientFromJson(Map<String, dynamic> json) =>
+    TreatmentPatient(
       id: json['id'] as int?,
       patient_id: json['patient_id'] as int?,
       treatment_id: json['treatment_id'] as int?,
@@ -16,14 +17,13 @@ TreatmentPatient _$TreatmentPatientFromJson(Map json) => TreatmentPatient(
       dose_total: json['dose_total'] as String?,
       treatment: json['treatment'] == null
           ? null
-          : Treatment.fromJson(
-              Map<String, dynamic>.from(json['treatment'] as Map)),
+          : Treatment.fromJson(json['treatment'] as Map<String, dynamic>),
       cicle: json['cicle'] == null
           ? null
-          : Cicle.fromJson(Map<String, dynamic>.from(json['cicle'] as Map)),
+          : Cicle.fromJson(json['cicle'] as Map<String, dynamic>),
       drug: json['drug'] == null
           ? null
-          : Drugs.fromJson(Map<String, dynamic>.from(json['drug'] as Map)),
+          : Drugs.fromJson(json['drug'] as Map<String, dynamic>),
       drugs: json['drugs'] as List<dynamic>?,
     );
 

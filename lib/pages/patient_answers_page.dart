@@ -101,7 +101,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.difficultyBreathing,
+                radioButtonValue: patientAnswares!.difficulty_breathing,
               ),
               const SizedBox(
                 height: 20,
@@ -173,7 +173,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.bodyAche,
+                radioButtonValue: patientAnswares!.body_ache,
               ),
               const SizedBox(
                 height: 20,
@@ -245,7 +245,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.mouthSore,
+                radioButtonValue: patientAnswares!.mouth_sore,
               ),
               const SizedBox(
                 height: 20,
@@ -276,7 +276,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.painWhenSwallowing,
+                radioButtonValue: patientAnswares!.pain_when_swallowing,
               ),
               const SizedBox(
                 height: 20,
@@ -378,7 +378,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.skinChange,
+                radioButtonValue: patientAnswares!.skin_change,
               ),
               const SizedBox(
                 height: 20,
@@ -409,7 +409,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.hotSkin,
+                radioButtonValue: patientAnswares!.hot_skin,
               ),
               const SizedBox(
                 height: 20,

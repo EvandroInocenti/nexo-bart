@@ -6,24 +6,25 @@ part of 'patient_answers.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PatientAnswers _$PatientAnswersFromJson(Map json) => PatientAnswers(
+PatientAnswers _$PatientAnswersFromJson(Map<String, dynamic> json) =>
+    PatientAnswers(
       id: json['id'] as int?,
       felling: json['felling'] as int?,
       temperature: json['temperature'] as int?,
-      difficultyBreathing: json['difficultyBreathing'] as bool?,
+      difficulty_breathing: json['difficulty_breathing'] as bool?,
       convulsion: json['convulsion'] as bool?,
-      bodyAche: json['bodyAche'] as bool?,
+      body_ache: json['body_ache'] as bool?,
       tiredness: json['tiredness'] as bool?,
-      mouthSore: json['mouthSore'] as bool?,
-      painWhenSwallowing: json['painWhenSwallowing'] as bool?,
-      hotSkin: json['hotSkin'] as bool?,
+      mouth_sore: json['mouth_sore'] as bool?,
+      pain_when_swallowing: json['pain_when_swallowing'] as bool?,
+      hot_skin: json['hot_skin'] as bool?,
       diarrhea: json['diarrhea'] as bool?,
       vomit: json['vomit'] as bool?,
       bruise: json['bruise'] as bool?,
-      skinChange: json['skinChange'] as bool?,
+      skin_change: json['skin_change'] as bool?,
       patient: json['patient'] == null
           ? null
-          : Patient.fromJson(Map<String, dynamic>.from(json['patient'] as Map)),
+          : Patient.fromJson(json['patient'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PatientAnswersToJson(PatientAnswers instance) =>
@@ -31,16 +32,16 @@ Map<String, dynamic> _$PatientAnswersToJson(PatientAnswers instance) =>
       'id': instance.id,
       'felling': instance.felling,
       'temperature': instance.temperature,
-      'difficultyBreathing': instance.difficultyBreathing,
+      'difficulty_breathing': instance.difficulty_breathing,
       'convulsion': instance.convulsion,
-      'bodyAche': instance.bodyAche,
+      'body_ache': instance.body_ache,
       'tiredness': instance.tiredness,
-      'mouthSore': instance.mouthSore,
-      'painWhenSwallowing': instance.painWhenSwallowing,
-      'hotSkin': instance.hotSkin,
+      'mouth_sore': instance.mouth_sore,
+      'pain_when_swallowing': instance.pain_when_swallowing,
+      'hot_skin': instance.hot_skin,
       'diarrhea': instance.diarrhea,
       'vomit': instance.vomit,
       'bruise': instance.bruise,
-      'skinChange': instance.skinChange,
+      'skin_change': instance.skin_change,
       'patient': instance.patient,
     };

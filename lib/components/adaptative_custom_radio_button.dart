@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:cupertino_radio_choice/cupertino_radio_choice.dart';
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class AdaptativeCustomRadioButton extends StatelessWidget {
   double elevation;
   double padding;

@@ -6,7 +6,7 @@ part of 'cicle.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Cicle _$CicleFromJson(Map json) => Cicle(
+Cicle _$CicleFromJson(Map<String, dynamic> json) => Cicle(
       id: json['id'] as int?,
       name: json['name'] as String?,
       days: json['days'] as int?,
