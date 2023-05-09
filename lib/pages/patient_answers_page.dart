@@ -1,14 +1,18 @@
+import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nexo_onco/models/patient_answers.dart';
+import 'package:nexo_onco/models/patient_answers_list.dart';
 import 'package:provider/provider.dart';
 
 import '../components/adaptative_custom_radio_button.dart';
 import '../components/app_rating_bar.dart';
-import '../models/patient_list.dart';
 
 class PatientAnswersPage extends StatefulWidget {
-  PatientAnswersPage({super.key});
+  PatientAnswersPage({
+    super.key,
+  });
 
   @override
   State<PatientAnswersPage> createState() => _PatienAnswersState();
@@ -16,6 +20,7 @@ class PatientAnswersPage extends StatefulWidget {
 
 class _PatienAnswersState extends State<PatientAnswersPage> {
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
   int _activeStateIndex = 0;
   bool isCompleted = false;
   PatientAnswers? patientAnswares;
@@ -37,7 +42,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
               const SizedBox(
                 height: 5,
               ),
-              const AppRatingBar(),
+              AppRatingBar(),
               const SizedBox(
                 height: 20,
               ),
@@ -83,7 +88,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 textAlign: TextAlign.start,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              AdaptativeCustomRadioButton(
+              CustomRadioButton(
                 elevation: 5,
                 padding: 0,
                 height: 50,
@@ -92,7 +97,10 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 selectedColor: Theme.of(context).colorScheme.primary,
                 unSelectedColor: Theme.of(context).canvasColor,
                 absoluteZeroSpacing: false,
-                textStyle: Theme.of(context).textTheme.titleLarge!,
+                buttonTextStyle: ButtonTextStyle(
+                    selectedColor: Colors.white,
+                    unSelectedColor: Colors.black,
+                    textStyle: Theme.of(context).textTheme.titleLarge!),
                 buttonLables: const [
                   "Sim",
                   "Não",
@@ -101,7 +109,10 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.difficulty_breathing,
+                radioButtonValue: (value) {
+                  patientAnswares!.difficulty_breathing =
+                      value == "Sim" ? true : false;
+                },
               ),
               const SizedBox(
                 height: 20,
@@ -142,7 +153,8 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.convulsion,
+                radioButtonValue: (value) =>
+                    patientAnswares!.convulsion = value == "Sim" ? true : false,
               ),
               const SizedBox(
                 height: 20,
@@ -173,7 +185,8 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.body_ache,
+                radioButtonValue: (value) =>
+                    patientAnswares!.body_ache = value == "Sim" ? true : false,
               ),
               const SizedBox(
                 height: 20,
@@ -204,7 +217,8 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.tiredness,
+                radioButtonValue: (value) =>
+                    patientAnswares!.tiredness = value == "Sim" ? true : false,
               ),
               const SizedBox(
                 height: 20,
@@ -245,7 +259,8 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.mouth_sore,
+                radioButtonValue: (value) =>
+                    patientAnswares!.mouth_sore = value == "Sim" ? true : false,
               ),
               const SizedBox(
                 height: 20,
@@ -276,7 +291,8 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.pain_when_swallowing,
+                radioButtonValue: (value) => patientAnswares!
+                    .pain_when_swallowing = value == "Sim" ? true : false,
               ),
               const SizedBox(
                 height: 20,
@@ -307,7 +323,8 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.vomit,
+                radioButtonValue: (value) =>
+                    patientAnswares!.vomit = value == "Sim" ? true : false,
               ),
               const SizedBox(
                 height: 20,
@@ -347,7 +364,8 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.diarrhea,
+                radioButtonValue: (value) =>
+                    patientAnswares!.diarrhea = value == "Sim" ? true : false,
               ),
               const SizedBox(
                 height: 20,
@@ -378,7 +396,8 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.skin_change,
+                radioButtonValue: (value) => patientAnswares!.skin_change =
+                    value == "Sim" ? true : false,
               ),
               const SizedBox(
                 height: 20,
@@ -409,7 +428,8 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.hot_skin,
+                radioButtonValue: (value) =>
+                    patientAnswares!.hot_skin = value == "Sim" ? true : false,
               ),
               const SizedBox(
                 height: 20,
@@ -440,7 +460,8 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Sim",
                   "Não",
                 ],
-                radioButtonValue: patientAnswares!.bruise,
+                radioButtonValue: (value) =>
+                    patientAnswares!.bruise = value == "Sim" ? true : false,
               ),
               const SizedBox(
                 height: 20,
@@ -453,7 +474,6 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<PatientList>(context, listen: false).loadPatients();
     patientAnswares = PatientAnswers(
       temperature: int.tryParse(_temperatureCtrl.text) ?? 0,
     );
@@ -465,10 +485,39 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
     _temperatureCtrl.dispose();
   }
 
+  Future<void> _submitAnswers() async {
+    setState(() => _isLoading = true);
+    try {
+      await Provider.of<PatientAnswersList>(
+        context,
+        listen: false,
+      ).savePatientAnswers(patientAnswares!);
+
+      Navigator.of(context).pop();
+    } catch (error) {
+      await showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Ocorreu um erro!',
+              style: Theme.of(context).textTheme.titleLarge),
+          content: Text('Ocorreu erro ao salvar o questionamento.',
+              style: Theme.of(context).textTheme.titleMedium),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Ok', style: Theme.of(context).textTheme.titleMedium),
+            ),
+          ],
+        ),
+      );
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isLastStep = _activeStateIndex == stepList().length - 1;
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -479,129 +528,144 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
         centerTitle: true,
       ),
       body: isCompleted
-          ? Column(
+          ? ListView(
               children: [
-                Icon(
-                  Icons.cloud_done,
-                  color: Theme.of(context).colorScheme.primary,
-                  size: 250,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Respostas enviadas!',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
                   children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 5,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 50,
-                          vertical: 8,
-                        ),
+                    Icon(
+                      Icons.cloud_done,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 200,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Respostas enviadas!',
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Sair',
-                          style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 5,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 50,
+                              vertical: 8,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Sair',
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                          ),
+                          onPressed: () {
+                            SystemNavigator.pop();
+                          },
                         ),
-                      ),
-                      onPressed: () {
-                        SystemNavigator.pop();
-                      },
+                      ],
                     ),
                   ],
                 ),
               ],
             )
-          : Form(
-              key: _formKey,
-              child: Stepper(
-                type: StepperType.horizontal,
-                currentStep: _activeStateIndex,
-                steps: stepList(),
-                onStepContinue: () {
-                  if (isLastStep) {
-                    setState(() {
-                      isCompleted = true;
-                    });
-
-                    print('complete');
-
-                    // send data
-                  } else {
-                    if (!_formKey.currentState!.validate()) {
-                      return;
-                    }
-                    setState(() {
-                      _activeStateIndex += 1;
-                    });
-                  }
-                },
-                onStepCancel: () {
-                  _activeStateIndex == 0
-                      ? null
-                      : setState(() {
-                          _activeStateIndex -= 1;
+          : _isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Form(
+                  key: _formKey,
+                  child: Stepper(
+                    type: StepperType.horizontal,
+                    currentStep: _activeStateIndex,
+                    steps: stepList(),
+                    onStepContinue: () {
+                      if (isLastStep) {
+                        setState(() {
+                          isCompleted = true;
                         });
-                },
-                onStepTapped: (index) {
-                  setState(() {
-                    _activeStateIndex = index;
-                  });
-                },
-                controlsBuilder:
-                    (BuildContext context, ControlsDetails details) {
-                  return Container(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: details.onStepContinue,
-                            style: ElevatedButton.styleFrom(
-                              elevation: 5,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(14.0),
-                              child: Text(
-                                isLastStep ? 'Confirmar' : 'Próximo',
-                                style: Theme.of(context).textTheme.labelLarge,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        if (_activeStateIndex != 0)
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: details.onStepCancel,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                textStyle:
-                                    Theme.of(context).textTheme.labelLarge,
-                                elevation: 5,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(14.0),
-                                child: Text(
-                                  'Voltar',
-                                  style: Theme.of(context).textTheme.bodyMedium,
+
+                        if (kDebugMode) {
+                          print('complete');
+                        }
+
+                        _submitAnswers();
+
+                        // send data
+                      } else {
+                        if (!_formKey.currentState!.validate()) {
+                          return;
+                        }
+                        setState(() {
+                          _activeStateIndex += 1;
+                        });
+                      }
+                    },
+                    onStepCancel: () {
+                      _activeStateIndex == 0
+                          ? null
+                          : setState(() {
+                              _activeStateIndex -= 1;
+                            });
+                    },
+                    onStepTapped: (index) {
+                      setState(() {
+                        _activeStateIndex = index;
+                      });
+                    },
+                    controlsBuilder:
+                        (BuildContext context, ControlsDetails details) {
+                      return Container(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: details.onStepContinue,
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 5,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(14.0),
+                                  child: Text(
+                                    isLastStep ? 'Confirmar' : 'Próximo',
+                                    style:
+                                        Theme.of(context).textTheme.labelLarge,
+                                  ),
                                 ),
                               ),
                             ),
-                          )
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
+                            const SizedBox(width: 12),
+                            if (_activeStateIndex != 0)
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: details.onStepCancel,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    textStyle:
+                                        Theme.of(context).textTheme.labelLarge,
+                                    elevation: 5,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(14.0),
+                                    child: Text(
+                                      'Voltar',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                  ),
+                                ),
+                              )
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
     );
   }
 }

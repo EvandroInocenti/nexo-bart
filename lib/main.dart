@@ -11,6 +11,7 @@ import 'models/auth.dart';
 import 'models/cicle_list.dart';
 import 'models/drugs_list.dart';
 import 'models/environment.dart';
+import 'models/patient_answers_list.dart';
 import 'models/patient_list.dart';
 import 'models/treatment_list.dart';
 import 'pages/auth_or_home_page.dart';
@@ -93,6 +94,13 @@ class _MyHomePageState extends State<MyHomePage> {
           create: (_) => CicleList('', []),
           update: (ctx, auth, previous) {
             return CicleList(auth.token ?? '', previous?.items ?? []);
+          },
+        ),
+        ChangeNotifierProxyProvider<Auth, PatientAnswersList>(
+          create: (_) => PatientAnswersList('', 0, []),
+          update: (ctx, auth, previous) {
+            return PatientAnswersList(
+                auth.token ?? '', auth.id ?? 0, previous?.items ?? []);
           },
         ),
         ChangeNotifierProvider(

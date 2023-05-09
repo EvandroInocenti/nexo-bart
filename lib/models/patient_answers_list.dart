@@ -10,6 +10,7 @@ import 'patient_answers.dart';
 class PatientAnswersList with ChangeNotifier {
   final _url = dotenv.env['API_URL'];
   String token;
+  int idPatient;
 
   // Clona a lista de itens
   List<PatientAnswers> get items => [..._items];
@@ -17,6 +18,7 @@ class PatientAnswersList with ChangeNotifier {
   List<PatientAnswers> _items = [];
   PatientAnswersList(
     this.token,
+    this.idPatient,
     this._items,
   );
 
@@ -24,7 +26,7 @@ class PatientAnswersList with ChangeNotifier {
     return _items.length;
   }
 
-  Future<void> saveTreatmentPatient(PatientAnswers patientAnswers) async {
+  Future<void> savePatientAnswers(PatientAnswers patientAnswers) async {
     bool hasId = patientAnswers.id != null;
 
     if (!hasId) {
@@ -37,7 +39,7 @@ class PatientAnswersList with ChangeNotifier {
 
   Future<void> addTreatmentPatient(PatientAnswers patientAnswers) async {
     final response = await http.post(
-      Uri.parse('$_url/answers/${patientAnswers.patient!.id}'),
+      Uri.parse('$_url/answers/$idPatient'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -45,7 +47,7 @@ class PatientAnswersList with ChangeNotifier {
       },
       body: jsonEncode(
         {
-          "id": patientAnswers.id,
+          "id": idPatient,
           "felling": patientAnswers.felling,
           "temperature": patientAnswers.temperature,
           "difficulty_breathing": patientAnswers.difficulty_breathing,

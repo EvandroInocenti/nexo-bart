@@ -17,7 +17,7 @@ class AdaptativeCustomRadioButton extends StatelessWidget {
   bool enableShape;
   List<String> buttonLables;
   List<String> buttonValues;
-  bool? radioButtonValue;
+  void Function(String) radioButtonValue;
 
   AdaptativeCustomRadioButton({
     Key? key,
@@ -61,9 +61,7 @@ class AdaptativeCustomRadioButton extends StatelessWidget {
                 textStyle: textStyle),
             buttonLables: buttonLables,
             buttonValues: buttonValues,
-            radioButtonValue: (value) {
-              radioButtonValue = value == "Sim" ? true : false;
-            },
+            radioButtonValue: radioButtonValue,
           );
   }
 }
