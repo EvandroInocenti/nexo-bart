@@ -7,7 +7,7 @@ import 'package:nexo_onco/models/patient_answers_list.dart';
 import 'package:provider/provider.dart';
 
 import '../components/adaptative_custom_radio_button.dart';
-import '../components/app_rating_bar.dart';
+import '../components/adaptative_rating_bar.dart';
 
 class PatientAnswersPage extends StatefulWidget {
   PatientAnswersPage({
@@ -21,6 +21,7 @@ class PatientAnswersPage extends StatefulWidget {
 class _PatienAnswersState extends State<PatientAnswersPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+  double _rating = -1;
   int _activeStateIndex = 0;
   bool isCompleted = false;
   PatientAnswers? patientAnswares;
@@ -42,7 +43,20 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
               const SizedBox(
                 height: 5,
               ),
-              AppRatingBar(),
+              AdaptativeRatingBar(
+                initialRating: _rating,
+                itemPadding: const EdgeInsets.symmetric(horizontal: 2),
+                itemSize: 60,
+                onRatingUpdate: (rating) {
+                  setState(() {
+                    _rating = rating;
+                    patientAnswares!.felling = _rating.toInt();
+                  });
+                },
+                updateOnDrag: true,
+                itemCount: 5,
+                direction: Axis.horizontal,
+              ),
               const SizedBox(
                 height: 20,
               ),
