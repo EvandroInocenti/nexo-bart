@@ -22,9 +22,7 @@ PatientAnswers _$PatientAnswersFromJson(Map<String, dynamic> json) =>
       vomit: json['vomit'] as bool?,
       bruise: json['bruise'] as bool?,
       skin_change: json['skin_change'] as bool?,
-      patient: json['patient'] == null
-          ? null
-          : Patient.fromJson(json['patient'] as Map<String, dynamic>),
+      patient_id: json['patient_id'] as int?,
     );
 
 Map<String, dynamic> _$PatientAnswersToJson(PatientAnswers instance) =>
@@ -43,5 +41,5 @@ Map<String, dynamic> _$PatientAnswersToJson(PatientAnswers instance) =>
       'vomit': instance.vomit,
       'bruise': instance.bruise,
       'skin_change': instance.skin_change,
-      'patient': instance.patient,
+      'patient_id': instance.patient_id,
     };

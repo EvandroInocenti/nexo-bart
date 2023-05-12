@@ -30,16 +30,16 @@ class PatientAnswersList with ChangeNotifier {
     bool hasId = patientAnswers.id != null;
 
     if (!hasId) {
-      return addTreatmentPatient(patientAnswers);
+      return addPatientAnsware(patientAnswers);
     }
     // else {
     //   return updateTreatmentPatient(patientAnswers);
     // }
   }
 
-  Future<void> addTreatmentPatient(PatientAnswers patientAnswers) async {
+  Future<void> addPatientAnsware(PatientAnswers patientAnswers) async {
     final response = await http.post(
-      Uri.parse('$_url/answers/$idPatient'),
+      Uri.parse('$_url/patients/answers/$idPatient'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -47,7 +47,7 @@ class PatientAnswersList with ChangeNotifier {
       },
       body: jsonEncode(
         {
-          "id": idPatient,
+          "patient_id": idPatient,
           "felling": patientAnswers.felling,
           "temperature": patientAnswers.temperature,
           "difficulty_breathing": patientAnswers.difficulty_breathing,
@@ -89,6 +89,7 @@ class PatientAnswersList with ChangeNotifier {
         vomit: patientAnswers.vomit,
         bruise: patientAnswers.bruise,
         skin_change: patientAnswers.skin_change,
+        patient_id: idPatient,
       ),
     );
 

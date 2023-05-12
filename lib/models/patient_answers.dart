@@ -22,7 +22,7 @@ class PatientAnswers with ChangeNotifier {
   bool? vomit;
   bool? bruise;
   bool? skin_change;
-  Patient? patient;
+  int? patient_id;
 
   PatientAnswers({
     this.id,
@@ -39,7 +39,7 @@ class PatientAnswers with ChangeNotifier {
     this.vomit,
     this.bruise,
     this.skin_change,
-    this.patient,
+    this.patient_id,
   });
 
   factory PatientAnswers.fromJson(Map<String, dynamic> json) =>

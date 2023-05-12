@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../models/patient.dart';
-import '../models/patient_list.dart';
 
 class ImplantedCatheterPage extends StatefulWidget {
   ImplantedCatheterPage({super.key});

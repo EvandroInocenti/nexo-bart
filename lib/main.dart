@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -100,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
           create: (_) => PatientAnswersList('', 0, []),
           update: (ctx, auth, previous) {
             return PatientAnswersList(
-                auth.token ?? '', auth.id ?? 0, previous?.items ?? []);
+                auth.token ?? '', auth.idPatient ?? 0, previous?.items ?? []);
           },
         ),
         ChangeNotifierProvider(

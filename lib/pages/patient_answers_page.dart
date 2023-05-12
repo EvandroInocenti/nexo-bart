@@ -8,6 +8,9 @@ import 'package:provider/provider.dart';
 
 import '../components/adaptative_custom_radio_button.dart';
 import '../components/adaptative_rating_bar.dart';
+import '../models/auth.dart';
+import '../models/patient_list.dart';
+import '../utils/app_routes.dart';
 
 class PatientAnswersPage extends StatefulWidget {
   PatientAnswersPage({
@@ -70,27 +73,36 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
               ),
               SizedBox(
                 width: 250,
-                child: TextFormField(
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(16, 0, 8, 0),
-                    border: OutlineInputBorder(),
-                    labelText: 'Temperatura °C',
+                child: GestureDetector(
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.fromLTRB(16, 0, 8, 0),
+                      border: OutlineInputBorder(),
+                      labelText: 'Temperatura °C',
+                    ),
+                    maxLength: 2,
+                    controller: _temperatureCtrl,
+                    onChanged: (value) => patientAnswares?.temperature =
+                        int.parse(_temperatureCtrl.text),
+                    validator: (value) {
+                      final temperatura = value ?? '';
+                      if (temperatura.trim().isEmpty) {
+                        return 'Informe sua temperatura.';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      patientAnswares?.temperature = int.parse(value!);
+                    },
                   ),
-                  maxLength: 2,
-                  controller: _temperatureCtrl,
-                  onChanged: (value) => patientAnswares?.temperature =
-                      int.parse(_temperatureCtrl.text),
-                  validator: (value) {
-                    final temperatura = value ?? '';
-                    if (temperatura.trim().isEmpty) {
-                      return 'Informe sua temperatura.';
+                  onTap: () {
+                    FocusScopeNode currentFocus = FocusScope.of(context);
+                    if (!currentFocus.hasPrimaryFocus &&
+                        currentFocus.focusedChild != null) {
+                      FocusManager.instance.primaryFocus?.unfocus();
                     }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    patientAnswares?.temperature = int.parse(value!);
                   },
                 ),
               ),
@@ -488,6 +500,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
   @override
   void initState() {
     super.initState();
+    Provider.of<PatientList>(context, listen: false).loadPatients();
     patientAnswares = PatientAnswers(
       temperature: int.tryParse(_temperatureCtrl.text) ?? 0,
     );
@@ -506,20 +519,28 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
         context,
         listen: false,
       ).savePatientAnswers(patientAnswares!);
-
-      Navigator.of(context).pop();
     } catch (error) {
       await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
           title: Text('Ocorreu um erro!',
               style: Theme.of(context).textTheme.titleLarge),
-          content: Text('Ocorreu erro ao salvar o questionamento.',
+          content: Text(
+              'Ocorreu erro ao salvar o questionamento, tente novamente mais tarde.',
               style: Theme.of(context).textTheme.titleMedium),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('Ok', style: Theme.of(context).textTheme.titleMedium),
+              onPressed: () {
+                Provider.of<Auth>(context, listen: false).logout();
+                Navigator.of(context).pushReplacementNamed(
+                  AppRoutes.authOrHome,
+                );
+                Navigator.of(context, rootNavigator: true).pop();
+              },
+              child: Text(
+                'Fechar',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
             ),
           ],
         ),
@@ -597,8 +618,9 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                     type: StepperType.horizontal,
                     currentStep: _activeStateIndex,
                     steps: stepList(),
-                    onStepContinue: () {
+                    onStepContinue: () async {
                       if (isLastStep) {
+                        await _submitAnswers();
                         setState(() {
                           isCompleted = true;
                         });
@@ -606,10 +628,6 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                         if (kDebugMode) {
                           print('complete');
                         }
-
-                        _submitAnswers();
-
-                        // send data
                       } else {
                         if (!_formKey.currentState!.validate()) {
                           return;

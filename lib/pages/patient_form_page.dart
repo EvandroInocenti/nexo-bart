@@ -115,7 +115,8 @@ class _PatientFormPageState extends State<PatientFormPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Ok', style: Theme.of(context).textTheme.titleMedium),
+              child: Text('Fechar',
+                  style: Theme.of(context).textTheme.titleMedium),
             ),
           ],
         ),

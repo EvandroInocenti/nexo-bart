@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 class Auth with ChangeNotifier {
   String? _token;
   String? _email;
-  int? _id;
+  int? _idPatient;
   String? _role;
   bool? _confirmed;
   int? _institutionId;
@@ -24,8 +24,8 @@ class Auth with ChangeNotifier {
     return isAuth ? _email : null;
   }
 
-  int? get id {
-    return isAuth ? _id : null;
+  int? get idPatient {
+    return isAuth ? _idPatient : null;
   }
 
   String? get role {
@@ -58,9 +58,11 @@ class Auth with ChangeNotifier {
 
     if (response.statusCode == 200) {
       _token = body['authToken']['token'];
-      _id = body['user']['id'];
-      _email = body['user']['email'];
       _role = body['user']['role'];
+      if (_role == "P") {
+        _idPatient = body['user']['patient']['id'];
+      }
+      _email = body['user']['email'];
       _confirmed = body['user']['confirmed'];
       _institutionId = body['user']['institution_id'];
 
@@ -75,7 +77,7 @@ class Auth with ChangeNotifier {
   void logout() {
     _token = null;
     _email = null;
-    _id = null;
+    _idPatient = null;
     _role = null;
     _confirmed = null;
     _institutionId = null;
