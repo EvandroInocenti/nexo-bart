@@ -523,6 +523,10 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
       await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
+          icon: Icon(
+            Icons.error_outlined,
+            color: Theme.of(context).colorScheme.error,
+          ),
           title: Text('Ocorreu um erro!',
               style: Theme.of(context).textTheme.titleLarge),
           content: Text(

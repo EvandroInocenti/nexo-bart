@@ -4,6 +4,7 @@ import 'package:nexo_onco/models/tumor_list.dart';
 import 'package:nexo_onco/pages/implanted_catheter_page.dart';
 import 'package:nexo_onco/pages/oncological_cirurgian_page.dart';
 import 'package:nexo_onco/pages/patient_form_page.dart';
+import 'package:nexo_onco/services/patient_notifications_service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -106,6 +107,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         ChangeNotifierProvider(
           create: (_) => TabsPage(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PatientNotificationService(),
         ),
       ],
       child: MaterialApp(
