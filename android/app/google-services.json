@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1051249089364",
+    "project_id": "nexo-notification",
+    "storage_bucket": "nexo-notification.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1051249089364:android:88c5ad0ecaaa28898606c1",
+        "android_client_info": {
+          "package_name": "br.com.nexo.notification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1051249089364-5rc0r4j9a34c4c1traf2579ttn42ao4b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_Z-C9gOurEgrz27gJhU2CBlaW8ELF9Z8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1051249089364-5rc0r4j9a34c4c1traf2579ttn42ao4b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

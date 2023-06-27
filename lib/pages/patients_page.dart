@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:nexo_onco/models/patient_notification.dart';
 import 'package:nexo_onco/pages/notifications_page.dart';
 import 'package:provider/provider.dart';
 
@@ -103,6 +106,18 @@ class _PatientsPageState extends State<PatientsPage> {
           }
         },
       ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Provider.of<PatientNotificationService>(
+      //       context,
+      //       listen: false,
+      //     ).add(PatientNotification(
+      //       title: 'Mais uma notificação',
+      //       body: Random().nextDouble().toString(),
+      //     ));
+      //   },
+      //   child: Icon(Icons.add),
+      // ),
     );
   }
 }
