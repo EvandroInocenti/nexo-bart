@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:nexo_onco/pages/notifications_page.dart';
 import 'package:provider/provider.dart';
 
 import '../components/app_drawer.dart';
 import '../components/patient_item.dart';
 import '../models/patient_list.dart';
+import '../services/patient_notifications_service.dart';
 import '../utils/app_routes.dart';
 
 class PatientsPage extends StatefulWidget {
@@ -35,6 +37,34 @@ class _PatientsPageState extends State<PatientsPage> {
               );
             },
             icon: const Icon(Icons.person_add_alt_1_rounded),
+          ),
+          Stack(
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (ctx) {
+                      return NotificationsPage();
+                    }),
+                  );
+                },
+                icon: Icon(Icons.notifications_rounded),
+              ),
+              Positioned(
+                top: 5,
+                right: 5,
+                child: CircleAvatar(
+                  maxRadius: 10,
+                  backgroundColor: Colors.red.shade800,
+                  child: Text(
+                    '${Provider.of<PatientNotificationService>(context).itemsCount}',
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
