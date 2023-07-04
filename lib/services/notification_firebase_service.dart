@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../models/patient_message.dart';
+import '../models/patient_notification.dart';
 
-class MessageFirebaseService {
-  Stream<List<PatientMessage>> messagesStream() {
+class NotificationFirebaseService {
+  Stream<List<PatientNotification>> messagesStream() {
     final store = FirebaseFirestore.instance;
     final snapshots = store
         .collection('messages')
@@ -23,7 +23,7 @@ class MessageFirebaseService {
 
   // ChatMessage => Map<String, dynamic>
   Map<String, dynamic> _toFirestore(
-    PatientMessage msg,
+    PatientNotification msg,
     SetOptions? options,
   ) {
     return {
@@ -34,11 +34,11 @@ class MessageFirebaseService {
   }
 
   // Map<String, dynamic> => ChatMessage
-  PatientMessage _fromFirestore(
+  PatientNotification _fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> doc,
     SnapshotOptions? options,
   ) {
-    return PatientMessage(
+    return PatientNotification(
       // id: doc.id,
       text: doc['text'],
       // createdAt: DateTime.parse(doc['createdAt']),

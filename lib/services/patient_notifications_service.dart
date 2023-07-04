@@ -1,11 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:nexo_onco/models/patient_message.dart';
+import 'package:nexo_onco/models/patient_notification.dart';
 
 class PatientNotificationService with ChangeNotifier {
-  List<PatientMessage> _items = [];
+  List<PatientNotification> _items = [];
 
-  List<PatientMessage> get items {
+  List<PatientNotification> get items {
     return [..._items];
   }
 
@@ -13,7 +13,7 @@ class PatientNotificationService with ChangeNotifier {
     return _items.length;
   }
 
-  void add(PatientMessage notification) {
+  void add(PatientNotification notification) {
     _items.add(notification);
     notifyListeners();
   }
@@ -58,7 +58,7 @@ class PatientNotificationService with ChangeNotifier {
 
   void _messegeHandler(RemoteMessage? msg) {
     if (msg == null || msg.notification == null) return;
-    add(PatientMessage(
+    add(PatientNotification(
       patientName: msg.notification!.title ?? 'Sem usuário!',
       text: msg.notification!.body ?? 'Não informado!',
     ));

@@ -1,10 +1,10 @@
-class PatientMessage {
+class PatientNotification {
   // final String id;
   final String patientName;
   final String text;
   // final DateTime createdAt;
 
-  PatientMessage({
+  PatientNotification({
     // required this.id,
     required this.patientName,
     required this.text,
