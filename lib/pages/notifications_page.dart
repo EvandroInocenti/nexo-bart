@@ -16,8 +16,8 @@ class NotificationsPage extends StatelessWidget {
       body: ListView.builder(
         itemCount: service.itemsCount,
         itemBuilder: (ctx, i) => ListTile(
-          title: Text(items[i].title),
-          subtitle: Text(items[i].body),
+          title: Text(items[i].patientName),
+          subtitle: Text(items[i].text),
           onTap: () => service.remove(i),
         ),
       ),
