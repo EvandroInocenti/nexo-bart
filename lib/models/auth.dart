@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -11,6 +12,7 @@ class Auth with ChangeNotifier {
   String? _role;
   bool? _confirmed;
   int? _institutionId;
+  String? _firebaseToken;
 
   bool get isAuth {
     return _token != null;
@@ -38,6 +40,10 @@ class Auth with ChangeNotifier {
 
   int? get institutionId {
     return isAuth ? _institutionId : null;
+  }
+
+  String? get firebaseToken {
+    return isAuth ? _firebaseToken : null;
   }
 
   Future<void> _authenticate(String email, String password) async {
@@ -70,6 +76,19 @@ class Auth with ChangeNotifier {
     }
   }
 
+  // final fcmToken = FirebaseMessaging.instance.getToken();
+
+  // FirebaseMessaging.instance.onTokenRefresh
+  //   .listen((fcmToken) {
+  //     // TODO: If necessary send token to application server.
+
+  //     // Note: This callback is fired at each app startup and whenever a new
+  //     // token is generated.
+  //   })
+  //   .onError((err) {
+  //     // Error getting token.
+  //   });
+
   Future<void> login(String email, String password) async {
     return _authenticate(email, password);
   }
@@ -81,6 +100,7 @@ class Auth with ChangeNotifier {
     _role = null;
     _confirmed = null;
     _institutionId = null;
+    _firebaseToken = null;
     notifyListeners();
   }
 }
