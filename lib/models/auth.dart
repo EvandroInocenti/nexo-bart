@@ -76,7 +76,7 @@ class Auth with ChangeNotifier {
     }
   }
 
-  // final fcmToken = FirebaseMessaging.instance.getToken();
+  final fcmToken = FirebaseMessaging.instance.getToken();
 
   // FirebaseMessaging.instance.onTokenRefresh
   //   .listen((fcmToken) {

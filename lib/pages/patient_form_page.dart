@@ -37,7 +37,8 @@ class _PatientFormPageState extends State<PatientFormPage> {
 
   bool _isLoading = false;
 
-  Patient get patient => ModalRoute.of(context)?.settings.arguments as Patient;
+  Patient get patient =>
+      ModalRoute.of<Patient>(context)?.settings.arguments as Patient;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();

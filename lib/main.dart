@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:nexo_onco/models/treatment_patient_list.dart';
 import 'package:nexo_onco/models/tumor_list.dart';
@@ -23,6 +24,7 @@ import 'utils/app_routes.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: Environment.fileName);
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
