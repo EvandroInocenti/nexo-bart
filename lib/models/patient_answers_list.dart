@@ -5,10 +5,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import '../exceptions/http_exception.dart';
+import 'auth.dart';
 import 'patient_answers.dart';
 
 class PatientAnswersList with ChangeNotifier {
   final _url = dotenv.env['API_URL'];
+  final auth = Auth();
+
   String token;
   int idPatient;
 
@@ -92,6 +95,9 @@ class PatientAnswersList with ChangeNotifier {
         patient_id: idPatient,
       ),
     );
+
+    // final firebaseToken = await FirebaseMessaging.instance.getToken();
+    // auth.sendFirebaseToken(firebaseToken as String);
 
     notifyListeners();
   }

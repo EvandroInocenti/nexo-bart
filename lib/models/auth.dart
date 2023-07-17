@@ -72,35 +72,47 @@ class Auth with ChangeNotifier {
       _confirmed = body['user']['confirmed'];
       _institutionId = body['user']['institution_id'];
 
+      _firebaseToken = await FirebaseMessaging.instance.getToken();
+      await sendFirebaseToken(_firebaseToken!);
       notifyListeners();
     }
   }
 
-  final fcmToken = FirebaseMessaging.instance.getToken();
-
-  // FirebaseMessaging.instance.onTokenRefresh
-  //   .listen((fcmToken) {
-  //     // TODO: If necessary send token to application server.
-
-  //     // Note: This callback is fired at each app startup and whenever a new
-  //     // token is generated.
-  //   })
-  //   .onError((err) {
-  //     // Error getting token.
-  //   });
+  Future<void> sendFirebaseToken(String fcmToken) async {
+    final url =
+        Uri.parse('${dotenv.env['API_URL']}/users/refresh-notification-token');
+    final response = await http.patch(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({"notificationToken": fcmToken}),
+    );
+  }
 
   Future<void> login(String email, String password) async {
     return _authenticate(email, password);
   }
 
-  void logout() {
+  Future<void> logout() async {
+    final url = Uri.parse('${dotenv.env['API_URL']}/auth/logout');
+    await http.post(
+      url,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+    );
+
     _token = null;
     _email = null;
     _idPatient = null;
     _role = null;
     _confirmed = null;
     _institutionId = null;
-    _firebaseToken = null;
     notifyListeners();
   }
 }
