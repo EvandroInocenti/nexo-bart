@@ -12,11 +12,10 @@ class AuthOrHomePage extends StatelessWidget {
   AuthOrHomePage({super.key});
 
   Future<void> init(BuildContext context) async {
-    // await Firebase.initializeApp();
     await Provider.of<PatientNotificationService>(
       context,
       listen: false,
-    ).init();
+    ).initNotifications();
   }
 
   @override

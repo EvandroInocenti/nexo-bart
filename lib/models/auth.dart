@@ -75,6 +75,8 @@ class Auth with ChangeNotifier {
       _firebaseToken = await FirebaseMessaging.instance.getToken();
       await sendFirebaseToken(_firebaseToken!);
       notifyListeners();
+
+      print('AuthToken: ${_token}');
     }
   }
 

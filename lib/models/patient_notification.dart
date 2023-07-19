@@ -1,13 +1,11 @@
 class PatientNotification {
-  final String msgFire;
-  final String patientName;
-  final String text;
+  final String title;
+  final String body;
   // final DateTime createdAt;
 
   PatientNotification({
-    required this.msgFire,
-    required this.patientName,
-    required this.text,
+    required this.title,
+    required this.body,
     // required this.createdAt,
   });
 }

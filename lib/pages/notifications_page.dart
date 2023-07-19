@@ -17,10 +17,10 @@ class NotificationsPage extends StatelessWidget {
         itemCount: service.itemsCount,
         itemBuilder: (ctx, i) => ListTile(
           title: Text(
-            items[i].patientName,
+            items[i].title,
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          subtitle: Text(items[i].msgFire),
+          subtitle: Text(items[i].body),
           onTap: () => service.remove(i),
         ),
       ),
