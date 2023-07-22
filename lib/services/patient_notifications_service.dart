@@ -3,7 +3,15 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:nexo_onco/main.dart';
 import 'package:nexo_onco/models/patient_notification.dart';
+import 'package:nexo_onco/utils/app_routes.dart';
+
+Future<void> handleBackgroundMessage(RemoteMessage message) async {
+  print('Title: ${message.notification?.title}');
+  print('Body: ${message.notification?.body}');
+  print('Payload: ${message.data}');
+}
 
 class PatientNotificationService with ChangeNotifier {
   List<PatientNotification> _items = [];
@@ -16,100 +24,42 @@ class PatientNotificationService with ChangeNotifier {
     return _items.length;
   }
 
-  void add(PatientNotification notification) {
-    _items.add(notification);
-
-    if (kDebugMode) {
-      print(_items.length);
-    }
-    notifyListeners();
-  }
-
   void remove(int i) {
     _items.removeAt(i);
 
     if (kDebugMode) {
       print(_items.length);
     }
+
     notifyListeners();
   }
 
   // Push Notification
-//   Future<void> initNotifications() async {
-//     await _firebaseMessaging.requestPermission();
-//     final fCMToken = await _firebaseMessaging.getToken();
-
-//     print('Token: ${fCMToken}');
-//     await _configureTerminated();
-//     await _configureForeground();
-//     await _configureBackground();
-//   }
-
-//   Future<bool> get _isAutorized async {
-//     final messaging = FirebaseMessaging.instance;
-//     final settings = await messaging.requestPermission();
-//     return settings.authorizationStatus == AuthorizationStatus.authorized;
-//   }
-
-//   Future<void> _configureForeground() async {
-//     if (await _isAutorized) {
-//       FirebaseMessaging.onMessage.listen(_messegeHandler);
-//     }
-//   }
-
-//   Future<void> _configureBackground() async {
-//     if (await _isAutorized) {
-//       FirebaseMessaging.onMessageOpenedApp.listen(_messegeHandler);
-//     }
-//   }
-
-//   Future<void> _configureTerminated() async {
-//     if (await _isAutorized) {
-//       RemoteMessage? initialMsg =
-//           await FirebaseMessaging.instance.getInitialMessage();
-//       _messegeHandler(initialMsg);
-//     }
-//   }
-
-// // Verificar handler
-//   void _messegeHandler(RemoteMessage? msg) {
-//     if (msg == null || msg.notification == null) return;
-//     add(PatientNotification(
-//       patientName: msg.notification!.title ?? 'Sem usuário!',
-//       text: msg.notification!.body ?? 'Não informado!',
-//       msgFire: msg.messageId ?? 'Id não informado!',
-//     ));
-//   }
-
   final _firebaseMessaging = FirebaseMessaging.instance;
+
+  final _androidChannel = const AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    description:
+        'This channel is used for important notifications.', // description
+    importance: Importance.defaultImportance,
+  );
+
+  final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   final _localNotifications = FlutterLocalNotificationsPlugin();
-
-  Future<void> handleBackgroundMessage(RemoteMessage message) async {
-    print('Title: ${message.notification?.title}');
-    print('Body: ${message.notification?.body}');
-    print('Payload: ${message.data}');
-
-    add(
-      PatientNotification(
-        title: message.notification!.title ?? 'Sem usuário!',
-        body: message.notification!.body ?? 'Não informado!',
-      ),
-    );
-  }
 
   void handleMessage(RemoteMessage? message) {
     if (message == null) return;
-    // add(
-    //   PatientNotification(
-    //     title: message.notification!.title ?? 'Sem usuário!',
-    //     body: message.notification!.body ?? 'Não informado!',
-    //   ),
-    // );
+
+    navigatorKey.currentState?.pushNamed(
+      AppRoutes.route,
+      arguments: message,
+    );
   }
 
   Future initLocalNotifications() async {
     // const iOS = IOSInitializationSettings();
-    const android = AndroidInitializationSettings('@drawable/ic_launcher');
+    const android = AndroidInitializationSettings('@drawable/simbolo');
     const settings = InitializationSettings(android: android);
 
     await _localNotifications.initialize(
@@ -125,13 +75,6 @@ class PatientNotificationService with ChangeNotifier {
     await platform?.createNotificationChannel(_androidChannel);
   }
 
-  final _androidChannel = const AndroidNotificationChannel(
-    'high_importance_chanel',
-    'High Important Notifications',
-    description: 'This chanel is used for important notification',
-    importance: Importance.defaultImportance,
-  );
-
   Future initPushNotifications() async {
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
@@ -144,10 +87,9 @@ class PatientNotificationService with ChangeNotifier {
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
     FirebaseMessaging.onMessage.listen(
-      (message) {
+      (RemoteMessage message) {
         final notification = message.notification;
         if (notification == null) return;
-
         _localNotifications.show(
           notification.hashCode,
           notification.title,
@@ -157,16 +99,12 @@ class PatientNotificationService with ChangeNotifier {
               _androidChannel.id,
               _androidChannel.name,
               channelDescription: _androidChannel.description,
-              icon: '@drawable/ic_launcher',
+              icon: '@drawable/simbolo',
+              enableVibration: true,
+              playSound: true,
             ),
           ),
           payload: jsonEncode(message.toMap()),
-        );
-        add(
-          PatientNotification(
-            title: message.notification!.title ?? 'Sem usuário!',
-            body: message.notification!.body ?? 'Não informado!',
-          ),
         );
       },
     );
@@ -176,7 +114,8 @@ class PatientNotificationService with ChangeNotifier {
     await _firebaseMessaging.requestPermission();
     final fCMToken = await _firebaseMessaging.getToken();
 
-    print('Token: ${fCMToken}');
+    print('Token: $fCMToken');
+
     initPushNotifications();
     initLocalNotifications();
   }

@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';
 import 'package:nexo_onco/models/treatment_patient_list.dart';
 import 'package:nexo_onco/models/tumor_list.dart';
 import 'package:nexo_onco/pages/implanted_catheter_page.dart';
+import 'package:nexo_onco/pages/notifications_page.dart';
 import 'package:nexo_onco/pages/oncological_cirurgian_page.dart';
 import 'package:nexo_onco/pages/patient_form_page.dart';
 import 'package:nexo_onco/services/patient_notifications_service.dart';
@@ -23,7 +25,9 @@ import 'pages/radiotherapy_page.dart';
 import 'pages/tabs_page.dart';
 import 'utils/app_routes.dart';
 
-Future<void> main() async {
+final navigatorKey = GlobalKey<NavigatorState>();
+
+Future main() async {
   await dotenv.load(fileName: Environment.fileName);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -169,6 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
           AppRoutes.oncologicalForm: (ctx) => OncologicalCirurgianPage(),
           AppRoutes.catheterForm: (ctx) => ImplantedCatheterPage(),
           AppRoutes.radiotherapyForm: (ctx) => RadiotherapyPage(),
+          AppRoutes.route: (ctx) => const NotificationsPage(),
         },
       ),
     );

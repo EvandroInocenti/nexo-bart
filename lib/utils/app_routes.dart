@@ -6,4 +6,5 @@ class AppRoutes {
   static const oncologicalForm = 'oncological-form';
   static const catheterForm = 'catheter-form';
   static const radiotherapyForm = 'radiotherapy-form';
+  static const route = '/notification-page';
 }

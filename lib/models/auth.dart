@@ -109,7 +109,7 @@ class Auth with ChangeNotifier {
       },
     );
 
-    _token = null;
+    // _token = null;
     _email = null;
     _idPatient = null;
     _role = null;
