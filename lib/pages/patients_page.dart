@@ -46,12 +46,14 @@ class _PatientsPageState extends State<PatientsPage> {
               IconButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (ctx) {
-                      return NotificationsPage();
-                    }),
+                    MaterialPageRoute(
+                      builder: (ctx) {
+                        return const NotificationsPage();
+                      },
+                    ),
                   );
                 },
-                icon: Icon(Icons.notifications_rounded),
+                icon: const Icon(Icons.notifications_rounded),
               ),
               Positioned(
                 top: 5,
@@ -59,12 +61,21 @@ class _PatientsPageState extends State<PatientsPage> {
                 child: CircleAvatar(
                   maxRadius: 10,
                   backgroundColor: Colors.red.shade800,
-                  child: Text(
-                    '${Provider.of<PatientNotificationService>(context).itemsCount}',
-                    style: TextStyle(
-                      fontSize: 12,
-                    ),
-                  ),
+                  child: Provider.of<PatientNotificationService>(context)
+                              .itemsCount <
+                          99
+                      ? Text(
+                          '${Provider.of<PatientNotificationService>(context).itemsCount}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                          ),
+                        )
+                      : const Text(
+                          '+99',
+                          style: TextStyle(
+                            fontSize: 10,
+                          ),
+                        ),
                 ),
               ),
             ],

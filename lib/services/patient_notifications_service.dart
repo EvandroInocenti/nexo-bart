@@ -7,30 +7,30 @@ import 'package:nexo_onco/main.dart';
 import 'package:nexo_onco/models/patient_notification.dart';
 import 'package:nexo_onco/utils/app_routes.dart';
 
-Future<void> handleBackgroundMessage(RemoteMessage message) async {
-  print('Title: ${message.notification?.title}');
-  print('Body: ${message.notification?.body}');
-  print('Payload: ${message.data}');
-}
-
 class PatientNotificationService with ChangeNotifier {
   List<PatientNotification> _items = [];
-
-  List<PatientNotification> get items {
-    return [..._items];
-  }
 
   int get itemsCount {
     return _items.length;
   }
 
-  void remove(int i) {
-    _items.removeAt(i);
+  List<PatientNotification> get items {
+    return [..._items];
+  }
 
+  void add(PatientNotification notification) {
+    _items.add(notification);
     if (kDebugMode) {
       print(_items.length);
     }
+    notifyListeners();
+  }
 
+  void remove(int i) {
+    _items.removeAt(i);
+    if (kDebugMode) {
+      print(_items.length);
+    }
     notifyListeners();
   }
 
@@ -45,8 +45,21 @@ class PatientNotificationService with ChangeNotifier {
     importance: Importance.defaultImportance,
   );
 
-  final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  // final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   final _localNotifications = FlutterLocalNotificationsPlugin();
+
+  Future<void> handleBackgroundMessage(RemoteMessage message) async {
+    print('Title: ${message.notification?.title}');
+    print('Body: ${message.notification?.body}');
+    print('Payload: ${message.data}');
+
+    // add(
+    //   PatientNotification(
+    //     title: message.notification!.title ?? 'Sem usuário!',
+    //     body: message.notification!.body ?? 'Não informado!',
+    //   ),
+    // );
+  }
 
   void handleMessage(RemoteMessage? message) {
     if (message == null) return;
@@ -55,6 +68,13 @@ class PatientNotificationService with ChangeNotifier {
       AppRoutes.route,
       arguments: message,
     );
+
+    // add(
+    //   PatientNotification(
+    //     title: message.notification!.title ?? 'Sem usuário!',
+    //     body: message.notification!.body ?? 'Não informado!',
+    //   ),
+    // );
   }
 
   Future initLocalNotifications() async {
@@ -105,6 +125,12 @@ class PatientNotificationService with ChangeNotifier {
             ),
           ),
           payload: jsonEncode(message.toMap()),
+        );
+        add(
+          PatientNotification(
+            title: message.notification!.title ?? 'Sem usuário!',
+            body: message.notification!.body ?? 'Não informado!',
+          ),
         );
       },
     );

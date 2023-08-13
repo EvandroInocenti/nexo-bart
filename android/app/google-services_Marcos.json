@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "465248991547",
+    "project_id": "nexo-bart-88edb",
+    "storage_bucket": "nexo-bart-88edb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:465248991547:android:04b92219336bfae132df1e",
+        "android_client_info": {
+          "package_name": "br.com.nexo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "465248991547-3nri58utecndpa2rqgsm0344an5gsj7n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdAeRpgSulpazx-rD2to4cBkFeTaoC0Fo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "465248991547-3nri58utecndpa2rqgsm0344an5gsj7n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

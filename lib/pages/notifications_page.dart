@@ -11,7 +11,7 @@ class NotificationsPage extends StatelessWidget {
     final items = service.items;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Minhas notificações'),
+        title: const Text('Minhas Notificações'),
       ),
       body: ListView.builder(
         itemCount: service.itemsCount,
@@ -19,6 +19,10 @@ class NotificationsPage extends StatelessWidget {
           title: Text(
             items[i].title,
             style: Theme.of(context).textTheme.titleLarge,
+          ),
+          subtitle: Text(
+            items[i].body,
+            style: Theme.of(context).textTheme.titleSmall,
           ),
           onTap: () => service.remove(i),
         ),
