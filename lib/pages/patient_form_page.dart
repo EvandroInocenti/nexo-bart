@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:nexo_onco/components/adaptative_dropdown_button_form_field.dart';
 import 'package:provider/provider.dart';
 
-import '../models/patient.dart';
 import '../models/patient_list.dart';
 import '../components/adaptative_text_form_field.dart';
 import '../models/tumor_list.dart';
