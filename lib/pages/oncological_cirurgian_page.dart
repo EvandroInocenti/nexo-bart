@@ -78,6 +78,7 @@ class _OncologicalCirurgianPageState extends State<OncologicalCirurgianPage> {
                   },
                 ),
               ),
+              const SizedBox(width: 15),
               Expanded(
                 flex: 8,
                 child: Text(
@@ -106,6 +107,7 @@ class _OncologicalCirurgianPageState extends State<OncologicalCirurgianPage> {
                   },
                 ),
               ),
+              const SizedBox(width: 15),
               Expanded(
                 flex: 8,
                 child: Text(
@@ -134,6 +136,7 @@ class _OncologicalCirurgianPageState extends State<OncologicalCirurgianPage> {
                   },
                 ),
               ),
+              const SizedBox(width: 15),
               Expanded(
                 flex: 8,
                 child: Text(
@@ -162,6 +165,7 @@ class _OncologicalCirurgianPageState extends State<OncologicalCirurgianPage> {
                   },
                 ),
               ),
+              const SizedBox(width: 15),
               Expanded(
                 flex: 8,
                 child: Text(
@@ -190,6 +194,7 @@ class _OncologicalCirurgianPageState extends State<OncologicalCirurgianPage> {
                   },
                 ),
               ),
+              const SizedBox(width: 15),
               Expanded(
                 flex: 8,
                 child: Text(

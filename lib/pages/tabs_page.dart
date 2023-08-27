@@ -4,6 +4,7 @@ import 'oncological_cirurgian_page.dart';
 import 'patient_form_page.dart';
 import 'radiotherapy_page.dart';
 
+// ignore: must_be_immutable
 class TabsPage extends StatefulWidget with ChangeNotifier {
   TabsPage({super.key});
 
@@ -36,6 +37,7 @@ class _TabsPageState extends State<TabsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text(
           _pages[_selectedPageIndex]['title'] as String,
         ),
@@ -47,7 +49,10 @@ class _TabsPageState extends State<TabsPage> {
               //   listen: false,
               // ).savePatient();
             },
-            icon: const Icon(Icons.save),
+            icon: Icon(
+              Icons.save,
+              color: Theme.of(context).colorScheme.onSecondary,
+            ),
           )
         ],
       ),

@@ -37,8 +37,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
 
   bool _isLoading = false;
 
-  Patient get patient =>
-      ModalRoute.of<Patient>(context)?.settings.arguments as Patient;
+  dynamic get patient => ModalRoute.of(context)?.settings.arguments;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
@@ -151,6 +150,24 @@ class _PatientFormPageState extends State<PatientFormPage> {
         initialDate: DateTime.now(),
         firstDate: DateTime(2023 - 100),
         lastDate: DateTime.now(),
+        builder: (context, child) {
+          return Theme(
+              data: Theme.of(context).copyWith(
+                colorScheme: ColorScheme.light(
+                  primary: Theme.of(context).colorScheme.secondary,
+                  onPrimary: Theme.of(context).colorScheme.primary,
+                  onSurface: Theme.of(context).colorScheme.primary,
+                ),
+                textButtonTheme: TextButtonThemeData(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context)
+                        .colorScheme
+                        .primary, // button text color
+                  ),
+                ),
+              ),
+              child: child!);
+        },
       );
       if (picked != null) {
         String formatDate = DateFormat('dd/MM/yyyy').format(picked);
@@ -458,7 +475,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           label: patient != null
                               ? patient.staging.round().toInt().toString()
                               : '',
-                          min: 1,
+                          min: 0,
                           max: 4,
                           divisions: 3,
                           value: patient.staging.round().toDouble(),
@@ -489,6 +506,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           },
                         ),
                       ),
+                      SizedBox(width: 15),
                       Expanded(
                         flex: 8,
                         child: Text('Liberado',
@@ -509,6 +527,13 @@ class _PatientFormPageState extends State<PatientFormPage> {
                             _submitForm();
                           }
                         },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

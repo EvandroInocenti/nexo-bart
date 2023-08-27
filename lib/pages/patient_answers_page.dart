@@ -559,6 +559,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
     final isLastStep = _activeStateIndex == stepList().length - 1;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         automaticallyImplyLeading: false,
         title: Text(
           'Acompanhamento clinico',

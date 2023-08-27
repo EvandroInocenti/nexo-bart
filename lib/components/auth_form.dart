@@ -74,7 +74,7 @@ class _AuthFormState extends State<AuthForm> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         height: 300,
         width: deviceSize.width * 0.80,
         child: Form(
@@ -119,8 +119,9 @@ class _AuthFormState extends State<AuthForm> {
                 ElevatedButton(
                   onPressed: _submit,
                   style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 8)),

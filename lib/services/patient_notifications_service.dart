@@ -1,36 +1,92 @@
 import 'dart:convert';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:nexo_onco/main.dart';
 import 'package:nexo_onco/models/patient_notification.dart';
+import 'package:nexo_onco/services/databaseController.dart';
 import 'package:nexo_onco/utils/app_routes.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  PatientNotificationService().add(
+    PatientNotification(
+      title: message.notification!.title ?? 'Sem usuário!',
+      body: message.notification!.body ?? 'Não informado!',
+      lida: 0,
+      id: 0,
+    ),
+  );
+}
+
+Future<void> _message(
+    RemoteMessage message,
+    FlutterLocalNotificationsPlugin _localNotifications,
+    AndroidNotificationChannel _androidChannel) async {
+  final notification = message.notification;
+  if (notification == null) return;
+  _localNotifications.show(
+    notification.hashCode,
+    notification.title,
+    notification.body,
+    NotificationDetails(
+      android: AndroidNotificationDetails(
+        _androidChannel.id,
+        _androidChannel.name,
+        channelDescription: _androidChannel.description,
+        icon: '@drawable/simbolo',
+        enableVibration: true,
+        playSound: true,
+      ),
+    ),
+    payload: jsonEncode(message.toMap()),
+  );
+  print("recebido");
+
+  PatientNotificationService().add(
+    PatientNotification(
+      title: message.notification!.title ?? 'Sem usuário!',
+      body: message.notification!.body ?? 'Não informado!',
+      lida: 0,
+      id: 0,
+    ),
+  );
+}
 
 class PatientNotificationService with ChangeNotifier {
   List<PatientNotification> _items = [];
-
-  int get itemsCount {
+  Future<int> itemsCount() async {
+    await fetchNotifications();
+    notifyListeners();
     return _items.length;
   }
 
-  List<PatientNotification> get items {
-    return [..._items];
+  Future<List<PatientNotification>> fetchNotifications() async {
+    _items = await new DatabaseController().getNotificacao();
+    notifyListeners();
+    return _items;
   }
 
-  void add(PatientNotification notification) {
-    _items.add(notification);
-    if (kDebugMode) {
-      print(_items.length);
-    }
+  Future<List<PatientNotification>> items() async {
+    notifyListeners();
+
+    return _items;
+  }
+
+  Future<void> add(PatientNotification notification) async {
+    // Verificar se a notificação já existe na lista
+
+    new DatabaseController()
+        .insertNotificacao(notification.title, notification.body, 0);
+
     notifyListeners();
   }
 
-  void remove(int i) {
-    _items.removeAt(i);
-    if (kDebugMode) {
-      print(_items.length);
-    }
+  Future<void> remove(int i) async {
+    new DatabaseController().deleteNotificacao(i);
+    print("clicouprr" + i.toString());
+
     notifyListeners();
   }
 
@@ -48,19 +104,6 @@ class PatientNotificationService with ChangeNotifier {
   // final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   final _localNotifications = FlutterLocalNotificationsPlugin();
 
-  Future<void> handleBackgroundMessage(RemoteMessage message) async {
-    print('Title: ${message.notification?.title}');
-    print('Body: ${message.notification?.body}');
-    print('Payload: ${message.data}');
-
-    // add(
-    //   PatientNotification(
-    //     title: message.notification!.title ?? 'Sem usuário!',
-    //     body: message.notification!.body ?? 'Não informado!',
-    //   ),
-    // );
-  }
-
   void handleMessage(RemoteMessage? message) {
     if (message == null) return;
 
@@ -69,12 +112,14 @@ class PatientNotificationService with ChangeNotifier {
       arguments: message,
     );
 
-    // add(
-    //   PatientNotification(
-    //     title: message.notification!.title ?? 'Sem usuário!',
-    //     body: message.notification!.body ?? 'Não informado!',
-    //   ),
-    // );
+    add(
+      PatientNotification(
+        title: message.notification!.title ?? 'Sem usuário!',
+        body: message.notification!.body ?? 'Não informado!',
+        lida: 0,
+        id: 0,
+      ),
+    );
   }
 
   Future initLocalNotifications() async {
@@ -95,7 +140,7 @@ class PatientNotificationService with ChangeNotifier {
     await platform?.createNotificationChannel(_androidChannel);
   }
 
-  Future initPushNotifications() async {
+  void initPushNotifications() async {
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
       alert: true,
@@ -105,35 +150,10 @@ class PatientNotificationService with ChangeNotifier {
 
     FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
-    FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
     FirebaseMessaging.onMessage.listen(
-      (RemoteMessage message) {
-        final notification = message.notification;
-        if (notification == null) return;
-        _localNotifications.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              _androidChannel.id,
-              _androidChannel.name,
-              channelDescription: _androidChannel.description,
-              icon: '@drawable/simbolo',
-              enableVibration: true,
-              playSound: true,
-            ),
-          ),
-          payload: jsonEncode(message.toMap()),
-        );
-        add(
-          PatientNotification(
-            title: message.notification!.title ?? 'Sem usuário!',
-            body: message.notification!.body ?? 'Não informado!',
-          ),
-        );
-      },
-    );
+        (message) => _message(message, _localNotifications, _androidChannel));
   }
 
   Future<void> initNotifications() async {
@@ -144,5 +164,6 @@ class PatientNotificationService with ChangeNotifier {
 
     initPushNotifications();
     initLocalNotifications();
+    fetchNotifications();
   }
 }

@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:nexo_onco/models/patient_notification.dart';
 import 'package:nexo_onco/pages/notifications_page.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +7,7 @@ import '../components/patient_item.dart';
 import '../models/patient_list.dart';
 import '../services/patient_notifications_service.dart';
 import '../utils/app_routes.dart';
+import 'dart:async';
 
 class PatientsPage extends StatefulWidget {
   const PatientsPage({super.key});
@@ -23,11 +21,24 @@ class _PatientsPageState extends State<PatientsPage> {
     return Provider.of<PatientList>(context, listen: false).loadPatients();
   }
 
+  int itemsCount = 0;
+
   @override
   Widget build(BuildContext context) {
+    Timer.periodic(Duration(seconds: 1), (Timer timer) async {
+      var itemsCountFuture =
+          await Provider.of<PatientNotificationService>(context, listen: false)
+              .itemsCount();
+      if (itemsCount != itemsCountFuture) {
+        setState(() {
+          itemsCount = itemsCountFuture;
+        });
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text(
           'Pacientes',
           style: Theme.of(context).textTheme.labelLarge,
@@ -39,12 +50,16 @@ class _PatientsPageState extends State<PatientsPage> {
                 AppRoutes.tabsPage,
               );
             },
-            icon: const Icon(Icons.person_add_alt_1_rounded),
+            icon: const Icon(
+              Icons.person_add_alt_1_rounded,
+              color: Colors.white,
+            ),
           ),
           Stack(
             children: [
               IconButton(
                 onPressed: () {
+                  setState(() {});
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (ctx) {
@@ -53,36 +68,37 @@ class _PatientsPageState extends State<PatientsPage> {
                     ),
                   );
                 },
-                icon: const Icon(Icons.notifications_rounded),
+                icon: const Icon(
+                  Icons.notifications_rounded,
+                  color: Colors.white,
+                ),
               ),
               Positioned(
                 top: 5,
                 right: 5,
                 child: CircleAvatar(
-                  maxRadius: 10,
-                  backgroundColor: Colors.red.shade800,
-                  child: Provider.of<PatientNotificationService>(context)
-                              .itemsCount <
-                          99
-                      ? Text(
-                          '${Provider.of<PatientNotificationService>(context).itemsCount}',
-                          style: const TextStyle(
-                            fontSize: 12,
-                          ),
-                        )
-                      : const Text(
-                          '+99',
-                          style: TextStyle(
-                            fontSize: 10,
-                          ),
-                        ),
-                ),
+                    maxRadius: 10,
+                    backgroundColor: Colors.red.shade800,
+                    child: itemsCount < 99
+                        ? Text(
+                            '$itemsCount',
+                            style: const TextStyle(
+                              fontSize: 12,
+                            ),
+                          )
+                        : const Text(
+                            '+99',
+                            style: TextStyle(
+                              fontSize: 10,
+                            ),
+                          )),
               ),
             ],
           ),
         ],
       ),
       drawer: const Drawer(
+        backgroundColor: Colors.white,
         child: AppDrawer(),
       ),
       body: FutureBuilder(

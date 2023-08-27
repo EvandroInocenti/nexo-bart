@@ -77,6 +77,7 @@ class _ImplantedCatheterPageState extends State<ImplantedCatheterPage> {
                   },
                 ),
               ),
+              const SizedBox(width: 15),
               Expanded(
                 flex: 8,
                 child: Text(
@@ -105,6 +106,7 @@ class _ImplantedCatheterPageState extends State<ImplantedCatheterPage> {
                   },
                 ),
               ),
+              const SizedBox(width: 15),
               Expanded(
                 flex: 8,
                 child: Text(
@@ -133,6 +135,7 @@ class _ImplantedCatheterPageState extends State<ImplantedCatheterPage> {
                   },
                 ),
               ),
+              const SizedBox(width: 15),
               Expanded(
                 flex: 8,
                 child: Text(
@@ -161,6 +164,7 @@ class _ImplantedCatheterPageState extends State<ImplantedCatheterPage> {
                   },
                 ),
               ),
+              const SizedBox(width: 15),
               Expanded(
                 flex: 8,
                 child: Text(
@@ -189,6 +193,7 @@ class _ImplantedCatheterPageState extends State<ImplantedCatheterPage> {
                   },
                 ),
               ),
+              const SizedBox(width: 15),
               Expanded(
                 flex: 8,
                 child: Text(

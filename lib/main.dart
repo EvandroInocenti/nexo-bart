@@ -44,7 +44,20 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: const Color.fromARGB(255, 10, 83, 148),
+        colorScheme: const ColorScheme(
+          primary: Color.fromARGB(255, 10, 83, 148),
+          secondary: Color.fromARGB(255, 244, 153, 55),
+          background: Colors.white,
+          brightness: Brightness.light,
+          onPrimary: Color.fromARGB(255, 10, 83, 148),
+          onSecondary: Colors.white,
+          error: Colors.red,
+          onError: Colors.red,
+          onBackground: Colors.white,
+          surface: Colors.white,
+          onSurface: Colors.white,
+        ),
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -127,6 +140,15 @@ class _MyHomePageState extends State<MyHomePage> {
           colorScheme: tema.colorScheme.copyWith(
             primary: const Color.fromARGB(255, 10, 83, 148),
             secondary: const Color.fromARGB(255, 244, 153, 55),
+            background: Colors.white,
+            brightness: Brightness.light,
+            onPrimary: Colors.blue,
+            onSecondary: Colors.white,
+            error: Colors.red,
+            onError: Colors.red,
+            onBackground: Colors.white,
+            surface: Colors.white,
+            onSurface: Colors.white,
           ),
           textTheme: tema.textTheme.copyWith(
             titleLarge: const TextStyle(

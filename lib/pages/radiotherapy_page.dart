@@ -122,10 +122,29 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
         initialDate: DateTime.now(),
         firstDate: DateTime(2023 - 100),
         lastDate: DateTime.now(),
+        builder: (context, child) {
+          return Theme(
+              data: Theme.of(context).copyWith(
+                colorScheme: ColorScheme.light(
+                  primary: Theme.of(context).colorScheme.secondary,
+                  onPrimary: Theme.of(context).colorScheme.primary,
+                  onSurface: Theme.of(context).colorScheme.primary,
+                ),
+                textButtonTheme: TextButtonThemeData(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context)
+                        .colorScheme
+                        .primary, // button text color
+                  ),
+                ),
+              ),
+              child: child!);
+        },
       );
       if (picked != null) {
         String formatDate = DateFormat('dd/MM/yyyy').format(picked);
         String dateDb = DateFormat('yyyy-MM-dd').format(picked);
+
         setState(
           () => {
             treatmentPatient.start_date = dateDb,
@@ -188,6 +207,7 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                                   value: treatmentPatient.id.toString(),
                                   child: Text(
                                     '${treatmentPatient.getformatedDate(treatmentPatient.start_date!)} ${' - '} ${treatmentPatient.treatment!.name!}',
+                                    style: const TextStyle(fontSize: 16),
                                   ),
                                 );
                               }).toList(),
@@ -202,15 +222,25 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                           children: [
                             Container(
                               height: 48,
-                              child: ButtonTheme(
-                                child: ElevatedButton(
-                                  onPressed: clearFields,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.add),
-                                    ],
+                              child: ElevatedButton(
+                                onPressed: clearFields,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 8),
+                                ),
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                    ),
+                                  ],
                                 ),
                               ),
                             )
@@ -318,7 +348,13 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                                 });
                                 _multiSelectKey.currentState!.validate();
                               },
+                              checkColor: Theme.of(context).colorScheme.primary,
+                              selectedColor: Colors.indigo.shade50,
                               chipDisplay: MultiSelectChipDisplay(
+                                chipColor: Colors.indigo.shade50,
+                                textStyle: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
                                 onTap: (item) {
                                   setState(() {
                                     selectedDrugs!.remove(item);
@@ -474,10 +510,20 @@ class _RadiotherapyPageState extends State<RadiotherapyPage> {
                             _submitForm();
                           }
                         },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.check),
+                            const Icon(
+                              Icons.check,
+                              color: Colors.white,
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(14.0),
                               child: Text("Salvar",

@@ -53,7 +53,7 @@ class _PatientItemState extends State<PatientItem> {
     nomeInicial += widget.patient.user!.name[1].toUpperCase();
     return Material(
       elevation: 4,
-      borderRadius: const BorderRadius.all(Radius.circular(8)),
+      borderRadius: const BorderRadius.all(Radius.circular(6)),
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: Theme.of(context).colorScheme.primary,
@@ -70,8 +70,8 @@ class _PatientItemState extends State<PatientItem> {
           widget.patient.user!.email,
           style: Theme.of(context).textTheme.titleSmall,
         ),
-        trailing: Container(
-          width: 150,
+        trailing: SizedBox(
+          width: 130,
           child: Row(
             children: [
               Flexible(
@@ -86,6 +86,7 @@ class _PatientItemState extends State<PatientItem> {
                   },
                 ),
               ),
+              const SizedBox(width: 20),
               IconButton(
                 icon: const Icon(Icons.edit),
                 color: Theme.of(context).colorScheme.primary,

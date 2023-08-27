@@ -15,7 +15,7 @@ class AuthOrHomePage extends StatelessWidget {
     await Provider.of<PatientNotificationService>(
       context,
       listen: false,
-    ).initNotifications();
+    );
   }
 
   @override
