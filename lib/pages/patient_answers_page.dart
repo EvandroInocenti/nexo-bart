@@ -6,7 +6,6 @@ import 'package:nexo_onco/models/patient_answers.dart';
 import 'package:nexo_onco/models/patient_answers_list.dart';
 import 'package:provider/provider.dart';
 
-import '../components/adaptative_custom_radio_button.dart';
 import '../components/adaptative_rating_bar.dart';
 import '../models/auth.dart';
 import '../models/patient_list.dart';
@@ -120,13 +119,17 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 height: 50,
                 width: 150,
                 enableShape: true,
+                shapeRadius: 10,
                 selectedColor: Theme.of(context).colorScheme.primary,
                 unSelectedColor: Theme.of(context).canvasColor,
+                selectedBorderColor: Colors.transparent,
+                unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
                 buttonTextStyle: ButtonTextStyle(
-                    selectedColor: Colors.white,
-                    unSelectedColor: Colors.black,
-                    textStyle: Theme.of(context).textTheme.titleLarge!),
+                  selectedColor: Colors.white,
+                  unSelectedColor: Colors.black,
+                  textStyle: Theme.of(context).textTheme.titleLarge!,
+                ),
                 buttonLables: const [
                   "Sim",
                   "Não",
@@ -161,16 +164,23 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
               const SizedBox(
                 height: 5,
               ),
-              AdaptativeCustomRadioButton(
+              CustomRadioButton(
                 elevation: 5,
                 padding: 0,
                 height: 50,
                 width: 150,
                 enableShape: true,
+                shapeRadius: 10,
                 selectedColor: Theme.of(context).colorScheme.primary,
                 unSelectedColor: Theme.of(context).canvasColor,
+                selectedBorderColor: Colors.transparent,
+                unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
-                textStyle: Theme.of(context).textTheme.titleLarge!,
+                buttonTextStyle: ButtonTextStyle(
+                  selectedColor: Colors.white,
+                  unSelectedColor: Colors.black,
+                  textStyle: Theme.of(context).textTheme.titleLarge!,
+                ),
                 buttonLables: const [
                   "Sim",
                   "Não",
@@ -193,16 +203,23 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
               const SizedBox(
                 height: 5,
               ),
-              AdaptativeCustomRadioButton(
+              CustomRadioButton(
                 elevation: 5,
                 padding: 0,
                 height: 50,
                 width: 150,
                 enableShape: true,
+                shapeRadius: 10,
                 selectedColor: Theme.of(context).colorScheme.primary,
                 unSelectedColor: Theme.of(context).canvasColor,
+                selectedBorderColor: Colors.transparent,
+                unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
-                textStyle: Theme.of(context).textTheme.titleLarge!,
+                buttonTextStyle: ButtonTextStyle(
+                  selectedColor: Colors.white,
+                  unSelectedColor: Colors.black,
+                  textStyle: Theme.of(context).textTheme.titleLarge!,
+                ),
                 buttonLables: const [
                   "Sim",
                   "Não",
@@ -225,16 +242,23 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
               const SizedBox(
                 height: 5,
               ),
-              AdaptativeCustomRadioButton(
+              CustomRadioButton(
                 elevation: 5,
                 padding: 0,
                 height: 50,
                 width: 150,
                 enableShape: true,
+                shapeRadius: 10,
                 selectedColor: Theme.of(context).colorScheme.primary,
                 unSelectedColor: Theme.of(context).canvasColor,
+                selectedBorderColor: Colors.transparent,
+                unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
-                textStyle: Theme.of(context).textTheme.titleLarge!,
+                buttonTextStyle: ButtonTextStyle(
+                  selectedColor: Colors.white,
+                  unSelectedColor: Colors.black,
+                  textStyle: Theme.of(context).textTheme.titleLarge!,
+                ),
                 buttonLables: const [
                   "Sim",
                   "Não",
@@ -267,16 +291,23 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
               const SizedBox(
                 height: 5,
               ),
-              AdaptativeCustomRadioButton(
+              CustomRadioButton(
                 elevation: 5,
                 padding: 0,
                 height: 50,
                 width: 150,
                 enableShape: true,
+                shapeRadius: 10,
                 selectedColor: Theme.of(context).colorScheme.primary,
                 unSelectedColor: Theme.of(context).canvasColor,
+                selectedBorderColor: Colors.transparent,
+                unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
-                textStyle: Theme.of(context).textTheme.titleLarge!,
+                buttonTextStyle: ButtonTextStyle(
+                  selectedColor: Colors.white,
+                  unSelectedColor: Colors.black,
+                  textStyle: Theme.of(context).textTheme.titleLarge!,
+                ),
                 buttonLables: const [
                   "Sim",
                   "Não",
@@ -299,16 +330,23 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
               const SizedBox(
                 height: 5,
               ),
-              AdaptativeCustomRadioButton(
+              CustomRadioButton(
                 elevation: 5,
                 padding: 0,
                 height: 50,
                 width: 150,
                 enableShape: true,
+                shapeRadius: 10,
                 selectedColor: Theme.of(context).colorScheme.primary,
                 unSelectedColor: Theme.of(context).canvasColor,
+                selectedBorderColor: Colors.transparent,
+                unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
-                textStyle: Theme.of(context).textTheme.titleLarge!,
+                buttonTextStyle: ButtonTextStyle(
+                  selectedColor: Colors.white,
+                  unSelectedColor: Colors.black,
+                  textStyle: Theme.of(context).textTheme.titleLarge!,
+                ),
                 buttonLables: const [
                   "Sim",
                   "Não",
@@ -331,16 +369,23 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
               const SizedBox(
                 height: 5,
               ),
-              AdaptativeCustomRadioButton(
+              CustomRadioButton(
                 elevation: 5,
                 padding: 0,
                 height: 50,
                 width: 150,
                 enableShape: true,
+                shapeRadius: 10,
                 selectedColor: Theme.of(context).colorScheme.primary,
                 unSelectedColor: Theme.of(context).canvasColor,
+                selectedBorderColor: Colors.transparent,
+                unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
-                textStyle: Theme.of(context).textTheme.titleLarge!,
+                buttonTextStyle: ButtonTextStyle(
+                  selectedColor: Colors.white,
+                  unSelectedColor: Colors.black,
+                  textStyle: Theme.of(context).textTheme.titleLarge!,
+                ),
                 buttonLables: const [
                   "Sim",
                   "Não",
@@ -372,16 +417,23 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
               const SizedBox(
                 height: 5,
               ),
-              AdaptativeCustomRadioButton(
+              CustomRadioButton(
                 elevation: 5,
                 padding: 0,
                 height: 50,
                 width: 150,
                 enableShape: true,
+                shapeRadius: 10,
                 selectedColor: Theme.of(context).colorScheme.primary,
                 unSelectedColor: Theme.of(context).canvasColor,
+                selectedBorderColor: Colors.transparent,
+                unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
-                textStyle: Theme.of(context).textTheme.titleLarge!,
+                buttonTextStyle: ButtonTextStyle(
+                  selectedColor: Colors.white,
+                  unSelectedColor: Colors.black,
+                  textStyle: Theme.of(context).textTheme.titleLarge!,
+                ),
                 buttonLables: const [
                   "Sim",
                   "Não",
@@ -404,16 +456,23 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
               const SizedBox(
                 height: 5,
               ),
-              AdaptativeCustomRadioButton(
+              CustomRadioButton(
                 elevation: 5,
                 padding: 0,
                 height: 50,
                 width: 150,
                 enableShape: true,
+                shapeRadius: 10,
                 selectedColor: Theme.of(context).colorScheme.primary,
                 unSelectedColor: Theme.of(context).canvasColor,
+                selectedBorderColor: Colors.transparent,
+                unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
-                textStyle: Theme.of(context).textTheme.titleLarge!,
+                buttonTextStyle: ButtonTextStyle(
+                  selectedColor: Colors.white,
+                  unSelectedColor: Colors.black,
+                  textStyle: Theme.of(context).textTheme.titleLarge!,
+                ),
                 buttonLables: const [
                   "Sim",
                   "Não",
@@ -436,16 +495,23 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
               const SizedBox(
                 height: 5,
               ),
-              AdaptativeCustomRadioButton(
+              CustomRadioButton(
                 elevation: 5,
                 padding: 0,
                 height: 50,
                 width: 150,
                 enableShape: true,
+                shapeRadius: 10,
                 selectedColor: Theme.of(context).colorScheme.primary,
                 unSelectedColor: Theme.of(context).canvasColor,
+                selectedBorderColor: Colors.transparent,
+                unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
-                textStyle: Theme.of(context).textTheme.titleLarge!,
+                buttonTextStyle: ButtonTextStyle(
+                  selectedColor: Colors.white,
+                  unSelectedColor: Colors.black,
+                  textStyle: Theme.of(context).textTheme.titleLarge!,
+                ),
                 buttonLables: const [
                   "Sim",
                   "Não",
@@ -468,16 +534,23 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
               const SizedBox(
                 height: 5,
               ),
-              AdaptativeCustomRadioButton(
+              CustomRadioButton(
                 elevation: 5,
                 padding: 0,
                 height: 50,
                 width: 150,
                 enableShape: true,
+                shapeRadius: 10,
                 selectedColor: Theme.of(context).colorScheme.primary,
                 unSelectedColor: Theme.of(context).canvasColor,
+                selectedBorderColor: Colors.transparent,
+                unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
-                textStyle: Theme.of(context).textTheme.titleLarge!,
+                buttonTextStyle: ButtonTextStyle(
+                  selectedColor: Colors.white,
+                  unSelectedColor: Colors.black,
+                  textStyle: Theme.of(context).textTheme.titleLarge!,
+                ),
                 buttonLables: const [
                   "Sim",
                   "Não",
@@ -520,6 +593,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
         listen: false,
       ).savePatientAnswers(patientAnswares!);
     } catch (error) {
+      // ignore: use_build_context_synchronously
       await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -664,13 +738,21 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                                 onPressed: details.onStepContinue,
                                 style: ElevatedButton.styleFrom(
                                   elevation: 5,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(14.0),
-                                  child: Text(
-                                    isLastStep ? 'Confirmar' : 'Próximo',
-                                    style:
-                                        Theme.of(context).textTheme.labelLarge,
+                                child: Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text(
+                                      isLastStep ? 'Confirmar' : 'Próximo',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -681,13 +763,16 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                                 child: ElevatedButton(
                                   onPressed: details.onStepCancel,
                                   style: ElevatedButton.styleFrom(
+                                    elevation: 5,
                                     backgroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
                                     textStyle:
                                         Theme.of(context).textTheme.labelLarge,
-                                    elevation: 5,
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(14.0),
+                                    padding: const EdgeInsets.all(10.0),
                                     child: Text(
                                       'Voltar',
                                       style: Theme.of(context)

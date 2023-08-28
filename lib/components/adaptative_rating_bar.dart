@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+// ignore: must_be_immutable
 class AdaptativeRatingBar extends StatelessWidget {
   double initialRating;
   Axis direction;

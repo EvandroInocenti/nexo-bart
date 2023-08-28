@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+// ignore: must_be_immutable
 class AdaptativeTextFormField extends StatelessWidget {
   final String? initialValue;
   final String label;
