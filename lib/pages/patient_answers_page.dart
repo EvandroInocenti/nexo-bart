@@ -665,13 +665,14 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             elevation: 5,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 50,
-                              vertical: 8,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(10.0),
                             child: Text(
                               'Sair',
                               style: Theme.of(context).textTheme.labelLarge,
