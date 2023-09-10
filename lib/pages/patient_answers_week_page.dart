@@ -7,24 +7,22 @@ import 'package:nexo_onco/models/patient_answers.dart';
 import 'package:nexo_onco/models/patient_answers_list.dart';
 import 'package:provider/provider.dart';
 
-import '../components/adaptative_rating_bar.dart';
 import '../models/auth.dart';
 import '../models/patient_list.dart';
 import '../utils/app_routes.dart';
 
-class PatientAnswersPage extends StatefulWidget {
-  PatientAnswersPage({
+class patientAnswersWeekPage extends StatefulWidget {
+  patientAnswersWeekPage({
     super.key,
   });
 
   @override
-  State<PatientAnswersPage> createState() => _PatienAnswersState();
+  State<patientAnswersWeekPage> createState() => _PatienAnswersState();
 }
 
-class _PatienAnswersState extends State<PatientAnswersPage> {
+class _PatienAnswersState extends State<patientAnswersWeekPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-  double _rating = -1;
   int _activeStateIndex = 0;
   bool isCompleted = false;
   PatientAnswers? patientAnswares;
@@ -39,78 +37,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
           content: Column(
             children: [
               Text(
-                'Como você está se sentindo hoje?',
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              AdaptativeRatingBar(
-                initialRating: _rating,
-                itemPadding: const EdgeInsets.symmetric(horizontal: 2),
-                itemSize: 60,
-                onRatingUpdate: (rating) {
-                  setState(() {
-                    _rating = rating;
-                    patientAnswares!.felling = _rating.toInt();
-                  });
-                },
-                updateOnDrag: true,
-                itemCount: 5,
-                direction: Axis.horizontal,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Qual sua temperatura agora?',
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              SizedBox(
-                width: 250,
-                child: GestureDetector(
-                  child: TextFormField(
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.fromLTRB(16, 0, 8, 0),
-                      border: OutlineInputBorder(),
-                      labelText: 'Temperatura °C',
-                    ),
-                    maxLength: 2,
-                    controller: _temperatureCtrl,
-                    onChanged: (value) => patientAnswares?.temperature =
-                        int.parse(_temperatureCtrl.text),
-                    validator: (value) {
-                      final temperatura = value ?? '';
-                      if (temperatura.trim().isEmpty) {
-                        return 'Informe sua temperatura.';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      patientAnswares?.temperature = int.parse(value!);
-                    },
-                  ),
-                  onTap: () {
-                    FocusScopeNode currentFocus = FocusScope.of(context);
-                    if (!currentFocus.hasPrimaryFocus &&
-                        currentFocus.focusedChild != null) {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    }
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Está com dificuldade para respirar?',
+                'Perdeu o apetite na última semana?',
                 textAlign: TextAlign.start,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
@@ -144,11 +71,94 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                       value == "Sim" ? true : false;
                 },
               ),
+              const SizedBox(height: 20),
+              Text(
+                'Sentiu algum tipo de perda de força muscular?',
+                textAlign: TextAlign.start,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              CustomRadioButton(
+                elevation: 5,
+                padding: 0,
+                height: 50,
+                width: 150,
+                enableShape: true,
+                shapeRadius: 10,
+                selectedColor: Theme.of(context).colorScheme.primary,
+                unSelectedColor: Theme.of(context).canvasColor,
+                selectedBorderColor: Colors.transparent,
+                unSelectedBorderColor: Colors.transparent,
+                absoluteZeroSpacing: false,
+                buttonTextStyle: ButtonTextStyle(
+                  selectedColor: Colors.white,
+                  unSelectedColor: Colors.black,
+                  textStyle: Theme.of(context).textTheme.titleLarge!,
+                ),
+                buttonLables: const [
+                  "Sim",
+                  "Não",
+                ],
+                buttonValues: const [
+                  "Sim",
+                  "Não",
+                ],
+                radioButtonValue: (value) {
+                  patientAnswares!.difficulty_breathing =
+                      value == "Sim" ? true : false;
+                },
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'A perda de força limitou ou impediu a realização de alguma atividade? Qual?',
+                textAlign: TextAlign.start,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              SizedBox(
+                // width: 380,
+                child: GestureDetector(
+                  child: TextFormField(
+                    keyboardType: TextInputType.text,
+                    // inputFormatters: [
+                    //   FilteringTextInputFormatter.singleLineFormatter
+                    // ],
+                    maxLines: 3,
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.fromLTRB(16, 0, 8, 0),
+                      border: OutlineInputBorder(),
+                      labelText: 'Limitação por perda de força',
+                    ),
+                    // maxLength: 2,
+                    controller: _temperatureCtrl,
+                    onChanged: (value) => patientAnswares?.temperature =
+                        int.parse(_temperatureCtrl.text),
+                    validator: (value) {
+                      final temperatura = value ?? '';
+                      if (temperatura.trim().isEmpty) {
+                        return 'Informe a limitação.';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      patientAnswares?.temperature = int.parse(value!);
+                    },
+                  ),
+                  onTap: () {
+                    FocusScopeNode currentFocus = FocusScope.of(context);
+                    if (!currentFocus.hasPrimaryFocus &&
+                        currentFocus.focusedChild != null) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    }
+                  },
+                ),
+              ),
               const SizedBox(
                 height: 20,
               ),
               Text(
-                'Teve convulsão?',
+                'Teve dificuldade para dormir?',
                 textAlign: TextAlign.start,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
@@ -197,7 +207,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
           content: Column(
             children: [
               Text(
-                'Está com dor no corpo?',
+                'Teve problema emocional?',
                 textAlign: TextAlign.start,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
@@ -236,7 +246,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 height: 20,
               ),
               Text(
-                'Sente cansaço?',
+                'Teve problema sexual?',
                 textAlign: TextAlign.start,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
@@ -274,8 +284,45 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
               const SizedBox(
                 height: 20,
               ),
+              SizedBox(
+                // width: 250,
+                child: GestureDetector(
+                  child: TextFormField(
+                    keyboardType: TextInputType.text,
+                    // inputFormatters: [
+                    //   FilteringTextInputFormatter.singleLineFormatter
+                    // ],
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.fromLTRB(16, 0, 8, 0),
+                      border: OutlineInputBorder(),
+                      labelText: 'Se desejar informe qual',
+                    ),
+                    // maxLength: 2,
+                    controller: _temperatureCtrl,
+                    onChanged: (value) => patientAnswares?.temperature =
+                        int.parse(_temperatureCtrl.text),
+                    validator: (value) {
+                      final temperatura = value ?? '';
+                      if (temperatura.trim().isEmpty) {
+                        return 'Problema sexual.';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      patientAnswares?.temperature = int.parse(value!);
+                    },
+                  ),
+                  onTap: () {
+                    FocusScopeNode currentFocus = FocusScope.of(context);
+                    if (!currentFocus.hasPrimaryFocus &&
+                        currentFocus.focusedChild != null) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    }
+                  },
+                ),
+              ),
               Text(
-                'Tem alguma ferida na boca?',
+                'Tem percebido problemas de memória?',
                 textAlign: TextAlign.start,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
@@ -309,259 +356,6 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 ],
                 radioButtonValue: (value) =>
                     patientAnswares!.mouth_sore = value == "Sim" ? true : false,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-            ],
-          ),
-        ),
-        Step(
-          state:
-              _activeStateIndex <= 2 ? StepState.disabled : StepState.complete,
-          isActive: _activeStateIndex >= 2,
-          title: const Text(''),
-          content: Column(
-            children: [
-              Text(
-                'Sente dor ao engolir?',
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              CustomRadioButton(
-                elevation: 5,
-                padding: 0,
-                height: 50,
-                width: 150,
-                enableShape: true,
-                shapeRadius: 10,
-                selectedColor: Theme.of(context).colorScheme.primary,
-                unSelectedColor: Theme.of(context).canvasColor,
-                selectedBorderColor: Colors.transparent,
-                unSelectedBorderColor: Colors.transparent,
-                absoluteZeroSpacing: false,
-                buttonTextStyle: ButtonTextStyle(
-                  selectedColor: Colors.white,
-                  unSelectedColor: Colors.black,
-                  textStyle: Theme.of(context).textTheme.titleLarge!,
-                ),
-                buttonLables: const [
-                  "Sim",
-                  "Não",
-                ],
-                buttonValues: const [
-                  "Sim",
-                  "Não",
-                ],
-                radioButtonValue: (value) => patientAnswares!
-                    .pain_when_swallowing = value == "Sim" ? true : false,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Teve algum episódio de vômito?',
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              CustomRadioButton(
-                elevation: 5,
-                padding: 0,
-                height: 50,
-                width: 150,
-                enableShape: true,
-                shapeRadius: 10,
-                selectedColor: Theme.of(context).colorScheme.primary,
-                unSelectedColor: Theme.of(context).canvasColor,
-                selectedBorderColor: Colors.transparent,
-                unSelectedBorderColor: Colors.transparent,
-                absoluteZeroSpacing: false,
-                buttonTextStyle: ButtonTextStyle(
-                  selectedColor: Colors.white,
-                  unSelectedColor: Colors.black,
-                  textStyle: Theme.of(context).textTheme.titleLarge!,
-                ),
-                buttonLables: const [
-                  "Sim",
-                  "Não",
-                ],
-                buttonValues: const [
-                  "Sim",
-                  "Não",
-                ],
-                radioButtonValue: (value) =>
-                    patientAnswares!.vomit = value == "Sim" ? true : false,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Apresenta diarreia?',
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              CustomRadioButton(
-                elevation: 5,
-                padding: 0,
-                height: 50,
-                width: 150,
-                enableShape: true,
-                shapeRadius: 10,
-                selectedColor: Theme.of(context).colorScheme.primary,
-                unSelectedColor: Theme.of(context).canvasColor,
-                selectedBorderColor: Colors.transparent,
-                unSelectedBorderColor: Colors.transparent,
-                absoluteZeroSpacing: false,
-                buttonTextStyle: ButtonTextStyle(
-                  selectedColor: Colors.white,
-                  unSelectedColor: Colors.black,
-                  textStyle: Theme.of(context).textTheme.titleLarge!,
-                ),
-                buttonLables: const [
-                  "Sim",
-                  "Não",
-                ],
-                buttonValues: const [
-                  "Sim",
-                  "Não",
-                ],
-                radioButtonValue: (value) =>
-                    patientAnswares!.diarrhea = value == "Sim" ? true : false,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-            ],
-          ),
-        ),
-        Step(
-          isActive: _activeStateIndex >= 3,
-          state: StepState.complete,
-          title: const Text(''),
-          content: Column(
-            children: [
-              Text(
-                'Percebe alguma mudança na pele?',
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              CustomRadioButton(
-                elevation: 5,
-                padding: 0,
-                height: 50,
-                width: 150,
-                enableShape: true,
-                shapeRadius: 10,
-                selectedColor: Theme.of(context).colorScheme.primary,
-                unSelectedColor: Theme.of(context).canvasColor,
-                selectedBorderColor: Colors.transparent,
-                unSelectedBorderColor: Colors.transparent,
-                absoluteZeroSpacing: false,
-                buttonTextStyle: ButtonTextStyle(
-                  selectedColor: Colors.white,
-                  unSelectedColor: Colors.black,
-                  textStyle: Theme.of(context).textTheme.titleLarge!,
-                ),
-                buttonLables: const [
-                  "Sim",
-                  "Não",
-                ],
-                buttonValues: const [
-                  "Sim",
-                  "Não",
-                ],
-                radioButtonValue: (value) => patientAnswares!.skin_change =
-                    value == "Sim" ? true : false,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                'A pele está quente ao toque?',
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              CustomRadioButton(
-                elevation: 5,
-                padding: 0,
-                height: 50,
-                width: 150,
-                enableShape: true,
-                shapeRadius: 10,
-                selectedColor: Theme.of(context).colorScheme.primary,
-                unSelectedColor: Theme.of(context).canvasColor,
-                selectedBorderColor: Colors.transparent,
-                unSelectedBorderColor: Colors.transparent,
-                absoluteZeroSpacing: false,
-                buttonTextStyle: ButtonTextStyle(
-                  selectedColor: Colors.white,
-                  unSelectedColor: Colors.black,
-                  textStyle: Theme.of(context).textTheme.titleLarge!,
-                ),
-                buttonLables: const [
-                  "Sim",
-                  "Não",
-                ],
-                buttonValues: const [
-                  "Sim",
-                  "Não",
-                ],
-                radioButtonValue: (value) =>
-                    patientAnswares!.hot_skin = value == "Sim" ? true : false,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Tem sangramento ou hematoma?',
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              CustomRadioButton(
-                elevation: 5,
-                padding: 0,
-                height: 50,
-                width: 150,
-                enableShape: true,
-                shapeRadius: 10,
-                selectedColor: Theme.of(context).colorScheme.primary,
-                unSelectedColor: Theme.of(context).canvasColor,
-                selectedBorderColor: Colors.transparent,
-                unSelectedBorderColor: Colors.transparent,
-                absoluteZeroSpacing: false,
-                buttonTextStyle: ButtonTextStyle(
-                  selectedColor: Colors.white,
-                  unSelectedColor: Colors.black,
-                  textStyle: Theme.of(context).textTheme.titleLarge!,
-                ),
-                buttonLables: const [
-                  "Sim",
-                  "Não",
-                ],
-                buttonValues: const [
-                  "Sim",
-                  "Não",
-                ],
-                radioButtonValue: (value) =>
-                    patientAnswares!.bruise = value == "Sim" ? true : false,
               ),
               const SizedBox(
                 height: 20,
@@ -637,7 +431,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         automaticallyImplyLeading: false,
         title: Text(
-          'Acompanhamento clínico diário',
+          'Acompanhamento clínico semanal',
           style: Theme.of(context).textTheme.labelLarge,
         ),
         centerTitle: true,
@@ -687,13 +481,15 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                                       ),
                                     ],
                                     totalRepeatCount: 30,
+                                    // pause: const Duration(milliseconds: 1000),
+                                    // displayFullTextOnTap: true,
+                                    // stopPauseOnTap: true,
+                                    // onTap: () {
+                                    //   print("Tap Event");
+                                    // },
                                   ),
                                 )
-                              : Text(
-                                  'Tenha um ótimo dia!',
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
+                              : const Text('Tenha um ótimo dia!'),
                         ],
                       ),
                     ),

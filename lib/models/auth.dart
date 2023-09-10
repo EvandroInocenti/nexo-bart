@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -76,7 +76,9 @@ class Auth with ChangeNotifier {
       await sendFirebaseToken(_firebaseToken!);
       notifyListeners();
 
-      print('AuthToken: ${_token}');
+      if (kDebugMode) {
+        print('AuthToken: ${_token}');
+      }
     }
   }
 

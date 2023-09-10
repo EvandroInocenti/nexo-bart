@@ -1,5 +1,6 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:nexo_onco/pages/patient_answers_week_page.dart';
 import 'package:provider/provider.dart';
 
 import '../models/auth.dart';
@@ -27,12 +28,19 @@ class AuthOrHomePage extends StatelessWidget {
       builder: (ctx, snapshot) {
         if (auth.isAuth) {
           if (auth.role == 'P') {
-            return PatientAnswersPage();
+            final moonLanding = DateTime.parse('1969-07-20 20:18:04Z');
+            // assert(moonLanding.weekday == DateTime.sunday);
+            print(moonLanding.weekday); // 7
+            if (moonLanding.weekday == DateTime.friday) {
+              return patientAnswersWeekPage();
+            } else {
+              return PatientAnswersPage();
+            }
           } else {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             } else {
-              return PatientsPage();
+              return const PatientsPage();
             }
           }
         } else {

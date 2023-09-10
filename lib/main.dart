@@ -6,6 +6,7 @@ import 'package:nexo_onco/models/tumor_list.dart';
 import 'package:nexo_onco/pages/implanted_catheter_page.dart';
 import 'package:nexo_onco/pages/notifications_page.dart';
 import 'package:nexo_onco/pages/oncological_cirurgian_page.dart';
+import 'package:nexo_onco/pages/patient_answers_week_page.dart';
 import 'package:nexo_onco/pages/patient_form_page.dart';
 import 'package:nexo_onco/services/patient_notifications_service.dart';
 import 'package:provider/provider.dart';
@@ -189,6 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
         routes: {
           AppRoutes.authOrHome: (ctx) => AuthOrHomePage(),
           AppRoutes.answresForm: (ctx) => PatientAnswersPage(),
+          AppRoutes.answresWeekForm: (ctx) => patientAnswersWeekPage(),
           AppRoutes.tabsPage: (ctx) => TabsPage(),
           AppRoutes.patientForm: (ctx) => PatientFormPage(),
           AppRoutes.oncologicalForm: (ctx) => OncologicalCirurgianPage(),

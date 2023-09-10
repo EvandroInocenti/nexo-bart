@@ -50,7 +50,7 @@ class PatientAnswersList with ChangeNotifier {
       },
       body: jsonEncode(
         {
-          "patient_id": idPatient,
+          // "patient_id": idPatient,
           "felling": patientAnswers.felling,
           "temperature": patientAnswers.temperature,
           "difficulty_breathing": patientAnswers.difficulty_breathing,

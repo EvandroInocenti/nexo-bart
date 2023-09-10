@@ -77,21 +77,23 @@ class _PatientsPageState extends State<PatientsPage> {
                 top: 5,
                 right: 5,
                 child: CircleAvatar(
-                    maxRadius: 10,
-                    backgroundColor: Colors.red.shade800,
-                    child: itemsCount < 99
-                        ? Text(
-                            '$itemsCount',
-                            style: const TextStyle(
-                              fontSize: 12,
-                            ),
-                          )
-                        : const Text(
-                            '+99',
-                            style: TextStyle(
-                              fontSize: 10,
-                            ),
-                          )),
+                  maxRadius: 10,
+                  backgroundColor: Colors.red.shade800,
+                  child: itemsCount < 99
+                      ? Text(
+                          '$itemsCount',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text(
+                          '+99',
+                          style: TextStyle(
+                            fontSize: 10,
+                          ),
+                        ),
+                ),
               ),
             ],
           ),
