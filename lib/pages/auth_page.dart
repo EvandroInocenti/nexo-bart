@@ -24,20 +24,18 @@ class AuthPage extends StatelessWidget {
           ),
           ListView(
             children: [
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      child: SizedBox(
-                        width: 250,
-                        height: 250,
-                        child: Image.asset('assets/images/marca_principal.png'),
-                      ),
+                    SizedBox(
+                      width: 250,
+                      height: 250,
+                      child: Image.asset('assets/images/marca_principal.png'),
                     ),
-                    AuthForm(),
+                    const AuthForm(),
                   ],
                 ),
               ),

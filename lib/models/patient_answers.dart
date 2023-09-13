@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'patient.dart';
-
 part 'patient_answers.g.dart';
 
 @JsonSerializable()

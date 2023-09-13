@@ -34,14 +34,17 @@ Future<void> _message(
         _androidChannel.id,
         _androidChannel.name,
         channelDescription: _androidChannel.description,
-        icon: '@drawable/simbolo',
+        icon: '@drawable/marca_principal',
         enableVibration: true,
         playSound: true,
       ),
     ),
     payload: jsonEncode(message.toMap()),
   );
-  print("recebido");
+
+  if (kDebugMode) {
+    print("recebido");
+  }
 
   PatientNotificationService().add(
     PatientNotification(
@@ -62,7 +65,7 @@ class PatientNotificationService with ChangeNotifier {
   }
 
   Future<List<PatientNotification>> fetchNotifications() async {
-    _items = await new DatabaseController().getNotificacao();
+    _items = await DatabaseController().getNotificacao();
     notifyListeners();
     return _items;
   }
@@ -76,15 +79,17 @@ class PatientNotificationService with ChangeNotifier {
   Future<void> add(PatientNotification notification) async {
     // Verificar se a notificação já existe na lista
 
-    new DatabaseController()
+    DatabaseController()
         .insertNotificacao(notification.title, notification.body, 0);
 
     notifyListeners();
   }
 
   Future<void> remove(int i) async {
-    new DatabaseController().deleteNotificacao(i);
-    print("clicouprr" + i.toString());
+    DatabaseController().deleteNotificacao(i);
+    if (kDebugMode) {
+      print("clicouprr" + i.toString());
+    }
 
     notifyListeners();
   }
@@ -159,7 +164,9 @@ class PatientNotificationService with ChangeNotifier {
     await _firebaseMessaging.requestPermission();
     final fCMToken = await _firebaseMessaging.getToken();
 
-    print('Token: $fCMToken');
+    if (kDebugMode) {
+      print('Token: $fCMToken');
+    }
 
     initPushNotifications();
     initLocalNotifications();
