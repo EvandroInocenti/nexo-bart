@@ -2,24 +2,25 @@ import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nexo_onco/models/patient_weekly_answers.dart';
-import 'package:nexo_onco/models/patient_weekly_answers_list.dart';
+// import 'package:nexo_onco/models/patient_weekly_answers_list.dart';
 import 'package:provider/provider.dart';
 
 import '../models/auth.dart';
 import '../models/patient_list.dart';
+import '../models/patient_weekly_answers.dart';
+import '../models/patient_weekly_answers_list.dart';
 import '../utils/app_routes.dart';
 
-class patientAnswersWeeklyPage extends StatefulWidget {
-  patientAnswersWeeklyPage({
+class PatientWeeklyAnswersPage extends StatefulWidget {
+  PatientWeeklyAnswersPage({
     super.key,
   });
 
   @override
-  State<patientAnswersWeeklyPage> createState() => _PatienAnswersState();
+  State<PatientWeeklyAnswersPage> createState() => _PatienWeeklyAnswersState();
 }
 
-class _PatienAnswersState extends State<patientAnswersWeeklyPage> {
+class _PatienWeeklyAnswersState extends State<PatientWeeklyAnswersPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   int _activeStateIndex = 0;
@@ -106,55 +107,6 @@ class _PatienAnswersState extends State<patientAnswersWeeklyPage> {
                 },
               ),
               const SizedBox(height: 20),
-              // Text(
-              //   'A perda de força limitou ou impediu a realização de alguma atividade? Qual?',
-              //   textAlign: TextAlign.start,
-              //   style: Theme.of(context).textTheme.titleLarge,
-              // ),
-              // const SizedBox(
-              //   height: 5,
-              // ),
-              // SizedBox(
-              //   // width: 380,
-              //   child: GestureDetector(
-              //     child: TextFormField(
-              //       keyboardType: TextInputType.text,
-              //       // inputFormatters: [
-              //       //   FilteringTextInputFormatter.singleLineFormatter
-              //       // ],
-              //       maxLines: 3,
-              //       decoration: const InputDecoration(
-              //         contentPadding: EdgeInsets.fromLTRB(16, 0, 8, 0),
-              //         border: OutlineInputBorder(),
-              //         labelText: 'Limitação por perda de força',
-              //       ),
-              //       // maxLength: 2,
-              //       controller: _temperatureCtrl,
-              //       onChanged: (value) => patientAnswares?.temperature =
-              //           int.parse(_temperatureCtrl.text),
-              //       validator: (value) {
-              //         final temperatura = value ?? '';
-              //         if (temperatura.trim().isEmpty) {
-              //           return 'Informe a limitação.';
-              //         }
-              //         return null;
-              //       },
-              //       onSaved: (value) {
-              //         patientAnswares?.temperature = int.parse(value!);
-              //       },
-              //     ),
-              //     onTap: () {
-              //       FocusScopeNode currentFocus = FocusScope.of(context);
-              //       if (!currentFocus.hasPrimaryFocus &&
-              //           currentFocus.focusedChild != null) {
-              //         FocusManager.instance.primaryFocus?.unfocus();
-              //       }
-              //     },
-              //   ),
-              // ),
-              // const SizedBox(
-              //   height: 20,
-              // ),
               Text(
                 'Teve dificuldade para dormir?',
                 textAlign: TextAlign.start,
@@ -282,43 +234,6 @@ class _PatienAnswersState extends State<patientAnswersWeeklyPage> {
               const SizedBox(
                 height: 20,
               ),
-              // SizedBox(
-              //   // width: 250,
-              //   child: GestureDetector(
-              //     child: TextFormField(
-              //       keyboardType: TextInputType.text,
-              //       // inputFormatters: [
-              //       //   FilteringTextInputFormatter.singleLineFormatter
-              //       // ],
-              //       decoration: const InputDecoration(
-              //         contentPadding: EdgeInsets.fromLTRB(16, 0, 8, 0),
-              //         border: OutlineInputBorder(),
-              //         labelText: 'Se desejar informe qual',
-              //       ),
-              //       // maxLength: 2,
-              //       controller: _temperatureCtrl,
-              //       onChanged: (value) => patientAnswares?.temperature =
-              //           int.parse(_temperatureCtrl.text),
-              //       validator: (value) {
-              //         final temperatura = value ?? '';
-              //         if (temperatura.trim().isEmpty) {
-              //           return 'Problema sexual.';
-              //         }
-              //         return null;
-              //       },
-              //       onSaved: (value) {
-              //         patientAnswares?.temperature = int.parse(value!);
-              //       },
-              //     ),
-              //     onTap: () {
-              //       FocusScopeNode currentFocus = FocusScope.of(context);
-              //       if (!currentFocus.hasPrimaryFocus &&
-              //           currentFocus.focusedChild != null) {
-              //         FocusManager.instance.primaryFocus?.unfocus();
-              //       }
-              //     },
-              //   ),
-              // ),
               Text(
                 'Tem percebido problemas de memória?',
                 textAlign: TextAlign.start,
@@ -406,9 +321,7 @@ class _PatienAnswersState extends State<patientAnswersWeeklyPage> {
   void initState() {
     super.initState();
     Provider.of<PatientList>(context, listen: false).loadPatients();
-    // patientAnswersWeeklyPage = PatientWeeklyAnswers(
-    //   temperature: int.tryParse(_temperatureCtrl.text) ?? 0,
-    // );
+    patientWeeklyAnswares = PatientWeeklyAnswers();
   }
 
   @override
@@ -490,46 +403,6 @@ class _PatienAnswersState extends State<patientAnswersWeeklyPage> {
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
-                    // SizedBox(
-                    //   height: 30,
-                    //   child: Column(
-                    //     // mainAxisAlignment: MainAxisAlignment.start,
-                    //     children: [
-                    //       (patientAnswares!.temperature! > 37.5 ||
-                    //               patientAnswares!.convulsion! ||
-                    //               patientAnswares!.difficulty_breathing!)
-                    //           ? Container(
-                    //               alignment: AlignmentDirectional.bottomCenter,
-                    //               child: AnimatedTextKit(
-                    //                 animatedTexts: [
-                    //                   FadeAnimatedText(
-                    //                     'Atenção!',
-                    //                     textStyle: const TextStyle(
-                    //                         color: Colors.red,
-                    //                         fontSize: 25,
-                    //                         fontWeight: FontWeight.w500),
-                    //                   ),
-                    //                   FadeAnimatedText(
-                    //                     'Procure o serviço médico!',
-                    //                     textStyle: const TextStyle(
-                    //                         color: Colors.red,
-                    //                         fontSize: 25,
-                    //                         fontWeight: FontWeight.w500),
-                    //                   ),
-                    //                 ],
-                    //                 totalRepeatCount: 30,
-                    //                 // pause: const Duration(milliseconds: 1000),
-                    //                 // displayFullTextOnTap: true,
-                    //                 // stopPauseOnTap: true,
-                    //                 // onTap: () {
-                    //                 //   print("Tap Event");
-                    //                 // },
-                    //               ),
-                    //             )
-                    //           : const Text('Tenha um ótimo dia!'),
-                    //     ],
-                    //   ),
-                    // ),
                   ],
                 ),
                 const SizedBox(height: 10),

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
+import 'package:nexo_onco/models/patient_weekly_answers_list.dart';
 import 'package:nexo_onco/models/treatment_patient_list.dart';
 import 'package:nexo_onco/models/tumor_list.dart';
 import 'package:nexo_onco/pages/implanted_catheter_page.dart';
@@ -127,6 +128,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 auth.token ?? '', auth.idPatient ?? 0, previous?.items ?? []);
           },
         ),
+        ChangeNotifierProxyProvider<Auth, PatientWeeklyAnswersList>(
+          create: (_) => PatientWeeklyAnswersList('', 0, []),
+          update: (ctx, auth, previous) {
+            return PatientWeeklyAnswersList(
+                auth.token ?? '', auth.idPatient ?? 0, previous?.items ?? []);
+          },
+        ),
         ChangeNotifierProvider(
           create: (_) => TabsPage(),
         ),
@@ -190,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
         routes: {
           AppRoutes.authOrHome: (ctx) => AuthOrHomePage(),
           AppRoutes.answresForm: (ctx) => PatientAnswersPage(),
-          AppRoutes.answresWeekForm: (ctx) => patientAnswersWeeklyPage(),
+          AppRoutes.answresWeekForm: (ctx) => PatientWeeklyAnswersPage(),
           AppRoutes.tabsPage: (ctx) => TabsPage(),
           AppRoutes.patientForm: (ctx) => PatientFormPage(),
           AppRoutes.oncologicalForm: (ctx) => OncologicalCirurgianPage(),

@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:nexo_onco/models/patient_weekly_answers.dart';
 
 import '../exceptions/http_exception.dart';
 import 'auth.dart';
+import 'patient_weekly_answers.dart';
 
 class PatientWeeklyAnswersList with ChangeNotifier {
   final _url = dotenv.env['API_URL'];
@@ -66,7 +66,7 @@ class PatientWeeklyAnswersList with ChangeNotifier {
 
     if (response.statusCode >= 400) {
       throw HttpException(
-        msg: 'Não é possível salvar o tratamento do paciente',
+        msg: 'Não é possível salvar resposta do paciente',
         statusCode: response.statusCode,
       );
     }
@@ -74,6 +74,7 @@ class PatientWeeklyAnswersList with ChangeNotifier {
     final id = jsonDecode(response.body)['id'];
     _items.add(
       PatientWeeklyAnswers(
+        id: id,
         lost_appetite: patientWeeklyAnswers.lost_appetite,
         lost_strength: patientWeeklyAnswers.lost_strength,
         difficulty_sleeping: patientWeeklyAnswers.difficulty_sleeping,
@@ -81,7 +82,6 @@ class PatientWeeklyAnswersList with ChangeNotifier {
         sexual_problem: patientWeeklyAnswers.sexual_problem,
         memory_problem: patientWeeklyAnswers.sexual_problem,
         concentration_problem: patientWeeklyAnswers.concentration_problem,
-        id: id,
         patient_id: idPatient,
       ),
     );
