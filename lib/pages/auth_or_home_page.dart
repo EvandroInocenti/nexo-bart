@@ -36,8 +36,8 @@ class AuthOrHomePage extends StatelessWidget {
             if (kDebugMode) {
               print(DateTime.sunday);
             }
-            // if (moonLanding.weekday == DateTime.friday) {
-            if (moonLanding.weekday == DateTime.sunday) {
+            if (moonLanding.weekday == DateTime.friday) {
+              // if (moonLanding.weekday == DateTime.sunday) {
               return PatientWeeklyAnswersPage();
             } else {
               return PatientAnswersPage();

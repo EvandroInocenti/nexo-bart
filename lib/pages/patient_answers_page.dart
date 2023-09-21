@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../components/adaptative_rating_bar.dart';
 import '../models/auth.dart';
+import '../models/patient.dart';
 import '../models/patient_list.dart';
 import '../utils/app_routes.dart';
 
@@ -29,6 +30,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
   bool isCompleted = false;
   PatientAnswers? patientAnswares;
   final _temperatureCtrl = TextEditingController();
+  Patient? patient;
 
   List<Step> stepList() => [
         Step(
@@ -126,6 +128,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -140,8 +143,9 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Não",
                 ],
                 radioButtonValue: (value) {
-                  patientAnswares!.difficulty_breathing =
-                      value == "Sim" ? true : false;
+                  value == null
+                      ? patientAnswares!.difficulty_breathing = false
+                      : patientAnswares!.difficulty_breathing = true;
                 },
               ),
               const SizedBox(
@@ -167,6 +171,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -216,6 +221,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -255,6 +261,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -294,6 +301,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -343,6 +351,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -382,6 +391,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -421,6 +431,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -469,6 +480,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -508,6 +520,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -547,6 +560,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -569,6 +583,55 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
             ],
           ),
         ),
+        //   if (patient!.surgery)
+        //     Step(
+        //       isActive: _activeStateIndex >= 4,
+        //       state: StepState.complete,
+        //       title: const Text(''),
+        //       content: Column(
+        //         children: [
+        //           Text(
+        //             'Sente dor na ferida?',
+        //             textAlign: TextAlign.start,
+        //             style: Theme.of(context).textTheme.titleLarge,
+        //           ),
+        //           const SizedBox(
+        //             height: 5,
+        //           ),
+        //           CustomRadioButton(
+        //             elevation: 5,
+        //             padding: 0,
+        //             height: 50,
+        //             width: 150,
+        //             enableShape: true,
+        //             shapeRadius: 10,
+        //             selectedColor: Theme.of(context).colorScheme.primary,
+        //             unSelectedColor: Theme.of(context).canvasColor,
+        //             selectedBorderColor: Colors.transparent,
+        //             unSelectedBorderColor: Colors.transparent,
+        //             absoluteZeroSpacing: false,
+        //             buttonTextStyle: ButtonTextStyle(
+        //               selectedColor: Colors.white,
+        //               unSelectedColor: Colors.black,
+        //               textStyle: Theme.of(context).textTheme.titleLarge!,
+        //             ),
+        //             buttonLables: const [
+        //               "Sim",
+        //               "Não",
+        //             ],
+        //             buttonValues: const [
+        //               "Sim",
+        //               "Não",
+        //             ],
+        //             radioButtonValue: (value) =>
+        //                 patient?.surgery_pain = value == "Sim" ? true : false,
+        //           ),
+        //           const SizedBox(
+        //             height: 20,
+        //           ),
+        //         ],
+        //       ),
+        //     )
       ];
 
   @override
@@ -577,6 +640,17 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
     Provider.of<PatientList>(context, listen: false).loadPatients();
     patientAnswares = PatientAnswers(
       temperature: int.tryParse(_temperatureCtrl.text) ?? 0,
+      difficulty_breathing: false,
+      body_ache: false,
+      bruise: false,
+      convulsion: false,
+      diarrhea: false,
+      hot_skin: false,
+      mouth_sore: false,
+      pain_when_swallowing: false,
+      skin_change: false,
+      tiredness: false,
+      vomit: false,
     );
   }
 
