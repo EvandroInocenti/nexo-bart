@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:nexo_onco/components/adaptative_dropdown_button_form_field.dart';
 import 'package:provider/provider.dart';
 
+import '../models/patient.dart';
 import '../models/patient_list.dart';
 import '../components/adaptative_text_form_field.dart';
 import '../models/tumor_list.dart';
@@ -30,6 +31,8 @@ class _PatientFormPageState extends State<PatientFormPage> {
   final _bodySurfaceFocus = FocusNode();
   final _tumorFocus = FocusNode();
   final _stagingFocus = FocusNode();
+  final _surgeryFocus = FocusNode();
+  final _catheterFocus = FocusNode();
   final _confirmedFocus = FocusNode();
 
   final _formKey = GlobalKey<FormState>();
@@ -92,6 +95,8 @@ class _PatientFormPageState extends State<PatientFormPage> {
     _dateController.dispose();
     _cpfController.dispose();
     _foneController.dispose();
+    _surgeryFocus.dispose();
+    _catheterFocus.dispose();
   }
 
   Future<void> _submitForm() async {
@@ -128,6 +133,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
   @override
   Widget build(BuildContext context) {
     // final patient = ModalRoute.of(context)?.settings.arguments as Patient;
+    final patient = ModalRoute.of(context)?.settings.arguments as Patient;
 
     _nameController.text = patient.user!.name;
     _cpfController.text = UtilBrasilFields.obterCpf(patient.user!.cpf!);
@@ -474,10 +480,12 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           label: patient != null
                               ? patient.staging.round().toInt().toString()
                               : '',
-                          min: 0,
+                          min: 1,
                           max: 4,
                           divisions: 3,
-                          value: patient.staging.round().toDouble(),
+                          value: patient.staging > 0
+                              ? patient.staging.round().toDouble()
+                              : 1,
                           activeColor: Theme.of(context).colorScheme.primary,
                           onChanged: (value) {
                             setState(() {
@@ -495,6 +503,58 @@ class _PatientFormPageState extends State<PatientFormPage> {
                       Expanded(
                         flex: 1,
                         child: Switch(
+                          focusNode: _surgeryFocus,
+                          activeColor: Theme.of(context).colorScheme.primary,
+                          value: patient.surgery,
+                          onChanged: (value) {
+                            setState(() {
+                              patient.switchSurgery(value);
+                            });
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        flex: 8,
+                        child: Text(
+                          'Possui cirurgia oncológica recente?',
+                          style: Theme.of(context).textTheme.titleMedium,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Switch(
+                          focusNode: _catheterFocus,
+                          activeColor: Theme.of(context).colorScheme.primary,
+                          value: patient.catheter,
+                          onChanged: (value) {
+                            setState(() {
+                              patient.switchCatheter(value);
+                            });
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        flex: 8,
+                        child: Text(
+                          'Possui catéter implantado?',
+                          style: Theme.of(context).textTheme.titleMedium,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Switch(
                           focusNode: _confirmedFocus,
                           activeColor: Theme.of(context).colorScheme.primary,
                           value: patient.user!.confirmed!,
@@ -505,7 +565,7 @@ class _PatientFormPageState extends State<PatientFormPage> {
                           },
                         ),
                       ),
-                      SizedBox(width: 15),
+                      const SizedBox(width: 15),
                       Expanded(
                         flex: 8,
                         child: Text('Liberado',

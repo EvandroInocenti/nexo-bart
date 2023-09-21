@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'implanted_catheter_page.dart';
-import 'oncological_cirurgian_page.dart';
 import 'patient_form_page.dart';
 import 'radiotherapy_page.dart';
 
@@ -17,8 +16,8 @@ class _TabsPageState extends State<TabsPage> {
 
   final List<Map<String, Object>> _pages = [
     {'title': 'Informações do Paciente', 'page': PatientFormPage()},
-    {'title': 'Cirurgia Oncológica', 'page': OncologicalCirurgianPage()},
-    {'title': 'Catéter', 'page': ImplantedCatheterPage()},
+    // {'title': 'Cirurgia Oncológica', 'page': OncologicalCirurgianPage()},
+    // {'title': 'Catéter', 'page': ImplantedCatheterPage()},
     {'title': 'Radioterapia', 'page': RadiotherapyPage()},
   ];
 
@@ -70,16 +69,12 @@ class _TabsPageState extends State<TabsPage> {
             icon: const Icon(Icons.person_rounded),
             label: 'Geral',
           ),
-          BottomNavigationBarItem(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            icon: const Icon(Icons.medical_services_rounded),
-            label: 'Cirurgia Oncológica',
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            icon: const Icon(Icons.healing_rounded),
-            label: 'Catéter',
-          ),
+          // BottomNavigationBarItem(
+          //   backgroundColor: Theme.of(context).colorScheme.primary,
+          //   icon: const Icon(Icons.medical_services_rounded),
+          //   label: 'Cirurgia Oncológica',
+          // ),
+          // Bottom
           BottomNavigationBarItem(
             backgroundColor: Theme.of(context).colorScheme.primary,
             icon: const Icon(Icons.medication_rounded),
