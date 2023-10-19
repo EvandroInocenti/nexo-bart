@@ -58,6 +58,7 @@ class PatientList with ChangeNotifier {
   }
 
   Future<void> savePatient(Patient patient) {
+    // ignore: unnecessary_null_comparison
     bool hasId = patient.id != null;
 
     if (hasId) {

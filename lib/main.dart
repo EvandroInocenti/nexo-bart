@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'models/auth.dart';
+import 'models/auth_list.dart';
 import 'models/cicle_list.dart';
 import 'models/drugs_list.dart';
 import 'models/environment.dart';
@@ -84,6 +85,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ChangeNotifierProvider(
           create: (_) => Auth(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => AuthList(),
+        ),
         ChangeNotifierProxyProvider<Auth, PatientList>(
           create: (_) => PatientList('', []),
           update: (ctx, auth, previous) {
@@ -124,15 +128,15 @@ class _MyHomePageState extends State<MyHomePage> {
         ChangeNotifierProxyProvider<Auth, PatientAnswersList>(
           create: (_) => PatientAnswersList('', 0, []),
           update: (ctx, auth, previous) {
-            return PatientAnswersList(
-                auth.token ?? '', auth.idPatient ?? 0, previous?.items ?? []);
+            return PatientAnswersList(auth.token ?? '', auth.authIdPatient ?? 0,
+                previous?.items ?? []);
           },
         ),
         ChangeNotifierProxyProvider<Auth, PatientWeeklyAnswersList>(
           create: (_) => PatientWeeklyAnswersList('', 0, []),
           update: (ctx, auth, previous) {
-            return PatientWeeklyAnswersList(
-                auth.token ?? '', auth.idPatient ?? 0, previous?.items ?? []);
+            return PatientWeeklyAnswersList(auth.token ?? '',
+                auth.authIdPatient ?? 0, previous?.items ?? []);
           },
         ),
         ChangeNotifierProvider(

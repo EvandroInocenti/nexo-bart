@@ -4,46 +4,76 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:nexo_onco/services/databaseController.dart';
 
 class Auth with ChangeNotifier {
-  String? _token;
-  String? _email;
-  int? _idPatient;
-  String? _role;
-  bool? _confirmed;
-  int? _institutionId;
-  String? _firebaseToken;
+  String? token;
+  String? email;
+  int? idPatient;
+  String? role;
+  bool? confirmed;
+  int? institutionId;
+  String? firebaseToken;
+
+  List<Auth> _items = [];
+  Future<int> itemsCount() async {
+    await fetchAuths();
+    notifyListeners();
+    return _items.length;
+  }
+
+  Future<List<Auth>> fetchAuths() async {
+    _items = await DatabaseController().getAuth();
+    notifyListeners();
+    return _items;
+  }
+
+  Future<List<Auth>> items() async {
+    notifyListeners();
+
+    return _items;
+  }
+
+  Auth({
+    this.token,
+    this.email,
+    this.idPatient,
+    this.role,
+    this.confirmed,
+    this.institutionId,
+    this.firebaseToken,
+  });
 
   bool get isAuth {
-    return _token != null;
+    return token != null;
   }
 
-  String? get token {
-    return isAuth ? _token : null;
+  String? get authToken {
+    return isAuth ? token : _items[0].token;
   }
 
-  String? get email {
-    return isAuth ? _email : null;
+  String? get authEmail {
+    return isAuth ? email : null;
   }
 
-  int? get idPatient {
-    return isAuth ? _idPatient : null;
+  int? get authIdPatient {
+    return isAuth ? idPatient : null;
   }
 
-  String? get role {
-    return isAuth ? _role : null;
+  String? get authRole {
+    return isAuth ? role : null;
   }
 
-  bool? get confirmed {
-    return isAuth ? _confirmed : null;
+  bool? get authConfirmed {
+    return isAuth ? confirmed : null;
   }
 
-  int? get institutionId {
-    return isAuth ? _institutionId : null;
+  int? get authInstitutionId {
+    return isAuth ? institutionId : null;
   }
 
-  String? get firebaseToken {
-    return isAuth ? _firebaseToken : null;
+  String? get authFirebaseToken {
+    return isAuth ? firebaseToken : null;
   }
 
   Future<void> _authenticate(String email, String password) async {
@@ -63,21 +93,26 @@ class Auth with ChangeNotifier {
     final body = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
-      _token = body['authToken']['token'];
-      _role = body['user']['role'];
-      if (_role == "P") {
-        _idPatient = body['user']['patient']['id'];
+      token = body['authToken']['token'];
+      role = body['user']['role'];
+      if (role == "P") {
+        idPatient = body['user']['patient']['id'];
       }
-      _email = body['user']['email'];
-      _confirmed = body['user']['confirmed'];
-      _institutionId = body['user']['institution_id'];
+      email = body['user']['email'];
+      confirmed = body['user']['confirmed'];
+      institutionId = body['user']['institution_id'];
 
-      _firebaseToken = await FirebaseMessaging.instance.getToken();
-      await sendFirebaseToken(_firebaseToken!);
+      firebaseToken = await FirebaseMessaging.instance.getToken();
+      await sendFirebaseToken(firebaseToken!);
+
+      // Add Ab Auth
+      DatabaseController().insertAuth(token, email, confirmed, role, idPatient,
+          institutionId, firebaseToken);
+
       notifyListeners();
 
       if (kDebugMode) {
-        print('AuthToken: ${_token}');
+        print('AuthToken: ${token}');
       }
     }
   }
@@ -112,11 +147,11 @@ class Auth with ChangeNotifier {
     );
 
     // _token = null;
-    _email = null;
-    _idPatient = null;
-    _role = null;
-    _confirmed = null;
-    _institutionId = null;
+    // email = null;
+    // idPatient = null;
+    // role = null;
+    // confirmed = null;
+    // institutionId = null;
     notifyListeners();
   }
 }

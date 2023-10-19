@@ -5,6 +5,7 @@ import 'package:nexo_onco/pages/patient_answers_weekly_page.dart';
 import 'package:provider/provider.dart';
 
 import '../models/auth.dart';
+import '../models/auth_list.dart';
 import '../services/patient_notifications_service.dart';
 import 'auth_page.dart';
 import 'patient_answers_page.dart';
@@ -18,6 +19,10 @@ class AuthOrHomePage extends StatelessWidget {
       context,
       listen: false,
     );
+    await Provider.of<Auth>(
+      context,
+      listen: false,
+    ).fetchAuths();
   }
 
   @override
@@ -27,8 +32,9 @@ class AuthOrHomePage extends StatelessWidget {
       // inicializa o firebase
       future: init(context),
       builder: (ctx, snapshot) {
+        // carregar tokem salvo n BD
         if (auth.isAuth) {
-          if (auth.role == 'P') {
+          if (auth.authRole == 'P') {
             final moonLanding = DateTime.parse('1969-07-20 20:18:04Z');
             if (kDebugMode) {
               print(moonLanding.weekday);

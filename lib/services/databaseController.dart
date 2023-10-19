@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/foundation.dart';
 
+import '../models/auth.dart';
 import '../models/patient_notification.dart';
 
 class DatabaseController with ChangeNotifier {
@@ -37,8 +38,69 @@ class DatabaseController with ChangeNotifier {
             lida INTEGER
           )
         ''');
+
+        await db.execute('''
+            CREATE TABLE IF NOT EXISTS auth (
+            token TEXT PRIMARY KEY, 
+            email TEXT,
+            confirmed BOOLEAN,
+            role TEXT,
+            idPatient INTEGER,
+            institutionId INTEGER,
+            firebaseToken TEXT)
+          ''');
       },
     );
+  }
+
+  Future<void> insertAuth(token, email, confirmed, role, idPatient,
+      institutionId, firebaseToken) async {
+    final db = await DatabaseController().db;
+    try {
+      final id_resultBd = await db.insert(
+        'auth',
+        {
+          'token': token,
+          'email': email,
+          'confirmed': confirmed,
+          'role': role,
+          'idPatient': idPatient,
+          'institutionId': institutionId ?? '',
+          'firebaseToken': firebaseToken,
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      if (kDebugMode) {
+        print(id_resultBd);
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
+  Future<List<Auth>> getAuth() async {
+    final db = await DatabaseController().db;
+
+    List<Map<String, dynamic>> result = await db.query(
+      'auth',
+    );
+    List<Auth> auths = [];
+    for (int i = 0; i < result.length; i++) {
+      auths.add(
+        Auth(
+          token: result[i]["token"],
+          email: result[i]["email"],
+          confirmed: result[i]["confirmed"],
+          role: result[i]["role"],
+          idPatient: result[i]["idPatient"],
+          institutionId: result[i]["institutionId"],
+          firebaseToken: result[i]["firebaseToken"],
+        ),
+      );
+    }
+    return auths;
   }
 
   Future<void> insertNotificacao(title, body, lida) async {
