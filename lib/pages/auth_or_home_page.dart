@@ -19,10 +19,10 @@ class AuthOrHomePage extends StatelessWidget {
       context,
       listen: false,
     );
-    await Provider.of<Auth>(
-      context,
-      listen: false,
-    ).fetchAuths();
+    //   await Provider.of<AuthList>(
+    //     context,
+    //     listen: false,
+    //   ).loadAuths();
   }
 
   @override
@@ -32,7 +32,7 @@ class AuthOrHomePage extends StatelessWidget {
       // inicializa o firebase
       future: init(context),
       builder: (ctx, snapshot) {
-        // carregar tokem salvo n BD
+        // carregar tokem salvo no BD
         if (auth.isAuth) {
           if (auth.authRole == 'P') {
             final moonLanding = DateTime.parse('1969-07-20 20:18:04Z');

@@ -53,6 +53,30 @@ class DatabaseController with ChangeNotifier {
     );
   }
 
+  // static Future<void> insert(String table, Map<String, Object> data) async {
+  //   final db = await DatabaseController().db;
+  //   try {
+  //     await db.insert(
+  //       table,
+  //       data,
+  //       conflictAlgorithm: ConflictAlgorithm.replace,
+  //     );
+
+  //     if (kDebugMode) {
+  //       print(data);
+  //     }
+  //   } catch (e) {
+  //     if (kDebugMode) {
+  //       print(e);
+  //     }
+  //   }
+  // }
+
+  // static Future<List<Map<String, dynamic>>> getData(String table) async {
+  //   final db = await DatabaseController().db;
+  //   return db.query(table);
+  // }
+
   Future<void> insertAuth(token, email, confirmed, role, idPatient,
       institutionId, firebaseToken) async {
     final db = await DatabaseController().db;
@@ -62,7 +86,7 @@ class DatabaseController with ChangeNotifier {
         {
           'token': token,
           'email': email,
-          'confirmed': confirmed,
+          'confirmed': confirmed ? 1 : 0,
           'role': role,
           'idPatient': idPatient,
           'institutionId': institutionId ?? '',
@@ -92,10 +116,10 @@ class DatabaseController with ChangeNotifier {
         Auth(
           token: result[i]["token"],
           email: result[i]["email"],
-          confirmed: result[i]["confirmed"],
+          confirmed: result[i]["confirmed"] == 1 ? true : false,
           role: result[i]["role"],
           idPatient: result[i]["idPatient"],
-          institutionId: result[i]["institutionId"],
+          institutionId: int.tryParse(result[i]["institutionId"]),
           firebaseToken: result[i]["firebaseToken"],
         ),
       );

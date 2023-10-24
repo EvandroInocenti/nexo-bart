@@ -45,11 +45,13 @@ class Auth with ChangeNotifier {
   });
 
   bool get isAuth {
+    // buscar token existente no DB
+
     return token != null;
   }
 
   String? get authToken {
-    return isAuth ? token : _items[0].token;
+    return isAuth ? token : null;
   }
 
   String? get authEmail {
