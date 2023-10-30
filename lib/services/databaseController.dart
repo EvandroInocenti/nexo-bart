@@ -104,29 +104,6 @@ class DatabaseController with ChangeNotifier {
     }
   }
 
-  Future<List<Auth>> getAuth() async {
-    final db = await DatabaseController().db;
-
-    List<Map<String, dynamic>> result = await db.query(
-      'auth',
-    );
-    List<Auth> auths = [];
-    for (int i = 0; i < result.length; i++) {
-      auths.add(
-        Auth(
-          token: result[i]["token"],
-          email: result[i]["email"],
-          confirmed: result[i]["confirmed"] == 1 ? true : false,
-          role: result[i]["role"],
-          idPatient: result[i]["idPatient"],
-          institutionId: int.tryParse(result[i]["institutionId"]),
-          firebaseToken: result[i]["firebaseToken"],
-        ),
-      );
-    }
-    return auths;
-  }
-
   Future<void> insertNotificacao(title, body, lida) async {
     final db = await DatabaseController().db;
     await db

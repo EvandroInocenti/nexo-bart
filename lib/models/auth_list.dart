@@ -4,25 +4,34 @@ import 'package:nexo_onco/services/databaseController.dart';
 import 'auth.dart';
 
 class AuthList with ChangeNotifier {
-  List<Auth> _items = [];
+  final List<Auth> _items = [];
 
-  // Future<void> loadAuths() async {
-  //   final dataList = await DatabaseController.getData('auth');
-  //   _items = dataList
-  //       .map(
-  //         (item) => Auth(
-  //           token: item['token'],
-  //           email: item['email'],
-  //           confirmed: item['confirmed'],
-  //           role: item['role'],
-  //           idPatient: item['idPatient'],
-  //           institutionId: item['institutionId'],
-  //           firebaseToken: item['firebaseToken'],
-  //         ),
-  //       )
-  //       .toList();
-  //   notifyListeners();
-  // }
+  Future<List<Auth>> getAuth() async {
+    final db = await DatabaseController().db;
+    List<Map<String, dynamic>> result = await db.query(
+      'auth',
+    );
+
+    List<Auth> auths = [];
+    for (var element in result) {
+      auths.add(
+        Auth(
+          token: element["token"],
+          email: element["email"],
+          confirmed: element["confirmed"] == 1 ? true : false,
+          role: element["role"],
+          idPatient: element["idPatient"],
+          institutionId: int.tryParse(element["institutionId"]),
+          firebaseToken: element["firebaseToken"],
+        ),
+      );
+    }
+
+    // notifyListeners();
+
+    print(auths.length);
+    return auths;
+  }
 
   List<Auth> get items {
     return [..._items];
@@ -45,33 +54,5 @@ class AuthList with ChangeNotifier {
     );
 
     _items.add(newAuth);
-    // try {
-    //   DatabaseController.insert('auth', {
-    //     'token': token,
-    //     'email': email,
-    //     'confirmed': confirmed,
-    //     'role': role,
-    //     'idPatient': idPatient,
-    //     'institutionId': institutionId ?? '',
-    //     'firebaseToken': firebaseToken,
-    //   });
-    //   notifyListeners();
-    // } catch (e) {
-    //   if (kDebugMode) {
-    //     print(e);
-    //   }
-    // }
   }
-
-  // Future<List<Auth>> loadAuth() async {
-  //   _items = await DatabaseController().getAuth();
-  //   notifyListeners();
-  //   return _items;
-  // }
-
-  // Future<List<Auth>> items() async {
-  //   notifyListeners();
-
-  //   return _items;
-  // }
 }

@@ -14,11 +14,14 @@ import 'patients_page.dart';
 class AuthOrHomePage extends StatelessWidget {
   AuthOrHomePage({super.key});
 
+  var _itemCount;
+
   Future<void> init(BuildContext context) async {
     await Provider.of<PatientNotificationService>(
       context,
       listen: false,
     );
+    _itemCount = await Auth().itemsCount();
     //   await Provider.of<AuthList>(
     //     context,
     //     listen: false,
@@ -30,34 +33,31 @@ class AuthOrHomePage extends StatelessWidget {
     Auth auth = Provider.of(context);
     return FutureBuilder(
       // inicializa o firebase
-      future: init(context),
-      builder: (ctx, snapshot) {
+      future: Future.wait([init(context)]),
+      builder: (ctx, AsyncSnapshot snapshot) {
         // carregar tokem salvo no BD
-        if (auth.isAuth) {
-          if (auth.authRole == 'P') {
-            final moonLanding = DateTime.parse('1969-07-20 20:18:04Z');
-            if (kDebugMode) {
-              print(moonLanding.weekday);
-            } //  7
-            if (kDebugMode) {
-              print(DateTime.sunday);
-            }
-            if (moonLanding.weekday == DateTime.friday) {
-              // if (moonLanding.weekday == DateTime.sunday) {
-              return PatientWeeklyAnswersPage();
-            } else {
-              return PatientAnswersPage();
-            }
-          } else {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else {
-              return const PatientsPage();
-            }
-          }
-        } else {
+        _itemCount == null ? 0 : _itemCount;
+        if (_itemCount < 1) {
           return AuthPage();
         }
+        if (auth.role == 'P') {
+          final moonLanding = DateTime.parse('1969-07-20 20:18:04Z');
+          if (kDebugMode) {
+            print(moonLanding.weekday);
+          } //  7
+          if (kDebugMode) {
+            print(DateTime.sunday);
+          }
+          if (moonLanding.weekday == DateTime.friday) {
+            // if (moonLanding.weekday == DateTime.sunday) {
+            return PatientWeeklyAnswersPage();
+          }
+          return PatientAnswersPage();
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        }
+        return const PatientsPage();
       },
     );
   }

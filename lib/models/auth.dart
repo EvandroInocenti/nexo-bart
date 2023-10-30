@@ -4,6 +4,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:nexo_onco/models/auth_list.dart';
+import 'package:nexo_onco/models/patient_list.dart';
 import 'package:nexo_onco/services/databaseController.dart';
 
 class Auth with ChangeNotifier {
@@ -15,25 +17,6 @@ class Auth with ChangeNotifier {
   int? institutionId;
   String? firebaseToken;
 
-  List<Auth> _items = [];
-  Future<int> itemsCount() async {
-    await fetchAuths();
-    notifyListeners();
-    return _items.length;
-  }
-
-  Future<List<Auth>> fetchAuths() async {
-    _items = await DatabaseController().getAuth();
-    notifyListeners();
-    return _items;
-  }
-
-  Future<List<Auth>> items() async {
-    notifyListeners();
-
-    return _items;
-  }
-
   Auth({
     this.token,
     this.email,
@@ -44,9 +27,27 @@ class Auth with ChangeNotifier {
     this.firebaseToken,
   });
 
+  List<Auth> _items = [];
+  Future<int> itemsCount() async {
+    await fetchAuths();
+    notifyListeners();
+    return _items.length;
+  }
+
+  Future<List<Auth>> fetchAuths() async {
+    _items = await AuthList().getAuth();
+    notifyListeners();
+    return _items;
+  }
+
+  Future<List<Auth>> items() async {
+    notifyListeners();
+
+    return _items;
+  }
+
   bool get isAuth {
     // buscar token existente no DB
-
     return token != null;
   }
 
