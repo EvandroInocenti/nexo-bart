@@ -14,50 +14,55 @@ import 'patients_page.dart';
 class AuthOrHomePage extends StatelessWidget {
   AuthOrHomePage({super.key});
 
-  var _itemCount;
-
-  Future<void> init(BuildContext context) async {
+  Future<Auth> init(BuildContext context) async {
     await Provider.of<PatientNotificationService>(
       context,
       listen: false,
     );
-    _itemCount = await Auth().itemsCount();
-    //   await Provider.of<AuthList>(
-    //     context,
-    //     listen: false,
-    //   ).loadAuths();
+    // ignore: use_build_context_synchronously
+    var providerAuth = await Provider.of<AuthList>(
+      context,
+      listen: false,
+    ).getAuth();
+    return providerAuth;
   }
 
   @override
   Widget build(BuildContext context) {
-    Auth auth = Provider.of(context);
     return FutureBuilder(
       // inicializa o firebase
       future: Future.wait([init(context)]),
       builder: (ctx, AsyncSnapshot snapshot) {
-        // carregar tokem salvo no BD
-        _itemCount == null ? 0 : _itemCount;
-        if (_itemCount < 1) {
-          return AuthPage();
-        }
-        if (auth.role == 'P') {
-          final moonLanding = DateTime.parse('1969-07-20 20:18:04Z');
-          if (kDebugMode) {
-            print(moonLanding.weekday);
-          } //  7
-          if (kDebugMode) {
-            print(DateTime.sunday);
-          }
-          if (moonLanding.weekday == DateTime.friday) {
-            // if (moonLanding.weekday == DateTime.sunday) {
-            return PatientWeeklyAnswersPage();
-          }
-          return PatientAnswersPage();
-        }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.error != null) {
+          return const Center(
+            child: Text('Ocorreu um erro!'),
+          );
+        } else {
+          // carregar tokem salvo no BD
+          if (snapshot.data[0].token == '') {
+            return AuthPage();
+          }
+          if (snapshot.data[0].role != 'P') {
+            return const PatientsPage();
+          } else {
+            final moonLanding = DateTime.parse('1969-07-20 20:18:04Z');
+            if (kDebugMode) {
+              print(moonLanding.weekday);
+            } //  7
+            if (kDebugMode) {
+              print(DateTime.sunday);
+            }
+            if (moonLanding.weekday == DateTime.friday) {
+              // if (moonLanding.weekday == DateTime.sunday) {
+              return PatientWeeklyAnswersPage();
+            }
+            return PatientAnswersPage();
+          }
         }
-        return const PatientsPage();
       },
     );
   }

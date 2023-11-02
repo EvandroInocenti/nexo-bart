@@ -4,10 +4,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:json_annotation/json_annotation.dart';
 import 'package:nexo_onco/models/auth_list.dart';
 import 'package:nexo_onco/models/patient_list.dart';
 import 'package:nexo_onco/services/databaseController.dart';
 
+part 'auth.g.dart';
+
+@JsonSerializable()
 class Auth with ChangeNotifier {
   String? token;
   String? email;
@@ -26,25 +30,6 @@ class Auth with ChangeNotifier {
     this.institutionId,
     this.firebaseToken,
   });
-
-  List<Auth> _items = [];
-  Future<int> itemsCount() async {
-    await fetchAuths();
-    notifyListeners();
-    return _items.length;
-  }
-
-  Future<List<Auth>> fetchAuths() async {
-    _items = await AuthList().getAuth();
-    notifyListeners();
-    return _items;
-  }
-
-  Future<List<Auth>> items() async {
-    notifyListeners();
-
-    return _items;
-  }
 
   bool get isAuth {
     // buscar token existente no DB
@@ -156,5 +141,13 @@ class Auth with ChangeNotifier {
     // confirmed = null;
     // institutionId = null;
     notifyListeners();
+  }
+
+  factory Auth.fromJson(Map<String, dynamic> json) => _$AuthFromJson(json);
+  Map<String, dynamic> toJson() => _$AuthToJson(this);
+
+  @override
+  String toString() {
+    return jsonEncode(this);
   }
 }

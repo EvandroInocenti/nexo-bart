@@ -81,7 +81,7 @@ class DatabaseController with ChangeNotifier {
       institutionId, firebaseToken) async {
     final db = await DatabaseController().db;
     try {
-      final id_resultBd = await db.insert(
+      final idResultbd = await db.insert(
         'auth',
         {
           'token': token,
@@ -95,7 +95,7 @@ class DatabaseController with ChangeNotifier {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
       if (kDebugMode) {
-        print(id_resultBd);
+        print(idResultbd);
       }
     } catch (e) {
       if (kDebugMode) {

@@ -4,41 +4,41 @@ import 'package:nexo_onco/services/databaseController.dart';
 import 'auth.dart';
 
 class AuthList with ChangeNotifier {
-  final List<Auth> _items = [];
+  String token;
+  // final List<Auth> _items = [];
 
-  Future<List<Auth>> getAuth() async {
-    final db = await DatabaseController().db;
-    List<Map<String, dynamic>> result = await db.query(
-      'auth',
-    );
+  List<Auth> get items => [..._items];
 
-    List<Auth> auths = [];
-    for (var element in result) {
-      auths.add(
-        Auth(
-          token: element["token"],
-          email: element["email"],
-          confirmed: element["confirmed"] == 1 ? true : false,
-          role: element["role"],
-          idPatient: element["idPatient"],
-          institutionId: int.tryParse(element["institutionId"]),
-          firebaseToken: element["firebaseToken"],
-        ),
-      );
-    }
-
-    // notifyListeners();
-
-    print(auths.length);
-    return auths;
-  }
-
-  List<Auth> get items {
-    return [..._items];
-  }
+  List<Auth> _items = [];
+  AuthList(
+    this.token,
+    this._items,
+  );
 
   int get itemsCount {
     return _items.length;
+  }
+
+  Future<Auth> getAuth() async {
+    final db = await DatabaseController().db;
+    List<Map<String, Object?>> result = await db.query(
+      'auth',
+    );
+
+    List<Auth> items = [];
+
+    List<Auth> auth = List<Auth>.from(result.map((i) => Auth.fromJson(i)));
+
+    for (var element in auth) {
+      items.add(element);
+    }
+
+    notifyListeners();
+
+    if (auth.isEmpty) {
+      return Auth();
+    }
+    return auth.first;
   }
 
   void addAuth(

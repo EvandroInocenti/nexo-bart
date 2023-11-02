@@ -85,8 +85,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ChangeNotifierProvider(
           create: (_) => Auth(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => AuthList(),
+        ChangeNotifierProxyProvider<Auth, AuthList>(
+          create: (_) => AuthList('', []),
+          update: (ctx, auth, previous) {
+            return AuthList(auth.token ?? '', previous?.items ?? []);
+          },
         ),
         ChangeNotifierProxyProvider<Auth, PatientList>(
           create: (_) => PatientList('', []),

@@ -15,9 +15,10 @@ PatientWeeklyAnswers _$PatientWeeklyAnswersFromJson(
       difficulty_sleeping: json['difficulty_sleeping'] as bool?,
       emotional_problem: json['emotional_problem'] as bool?,
       sexual_problem: json['sexual_problem'] as bool?,
+      memory_problem: json['memory_problem'] as bool?,
       concentration_problem: json['concentration_problem'] as bool?,
       patient_id: json['patient_id'] as int?,
-    )..memory_problem = json['memory_problem'] as bool?;
+    );
 
 Map<String, dynamic> _$PatientWeeklyAnswersToJson(
         PatientWeeklyAnswers instance) =>
