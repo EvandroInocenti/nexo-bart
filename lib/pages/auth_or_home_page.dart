@@ -43,11 +43,11 @@ class AuthOrHomePage extends StatelessWidget {
           );
         } else {
           // carregar tokem salvo no BD
-          if (snapshot.data[0].token == '') {
+          if (snapshot.data[0].token == null) {
             return AuthPage();
           }
           if (snapshot.data[0].role != 'P') {
-            return const PatientsPage();
+            return PatientsPage();
           } else {
             final moonLanding = DateTime.parse('1969-07-20 20:18:04Z');
             if (kDebugMode) {
