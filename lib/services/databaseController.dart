@@ -47,38 +47,16 @@ class DatabaseController with ChangeNotifier {
             role TEXT,
             idPatient INTEGER,
             institutionId INTEGER,
-            firebaseToken TEXT)
+            firebaseToken TEXT,
+            lastAccess TEXT
+            )
           ''');
       },
     );
   }
 
-  // static Future<void> insert(String table, Map<String, Object> data) async {
-  //   final db = await DatabaseController().db;
-  //   try {
-  //     await db.insert(
-  //       table,
-  //       data,
-  //       conflictAlgorithm: ConflictAlgorithm.replace,
-  //     );
-
-  //     if (kDebugMode) {
-  //       print(data);
-  //     }
-  //   } catch (e) {
-  //     if (kDebugMode) {
-  //       print(e);
-  //     }
-  //   }
-  // }
-
-  // static Future<List<Map<String, dynamic>>> getData(String table) async {
-  //   final db = await DatabaseController().db;
-  //   return db.query(table);
-  // }
-
   Future<void> insertAuth(token, email, confirmed, role, idPatient,
-      institutionId, firebaseToken) async {
+      institutionId, firebaseToken, lastAccess) async {
     final db = await DatabaseController().db;
     try {
       final idResultbd = await db.insert(
@@ -91,16 +69,14 @@ class DatabaseController with ChangeNotifier {
           'idPatient': idPatient,
           'institutionId': institutionId ?? '',
           'firebaseToken': firebaseToken,
+          'lastAccess': lastAccess.toString(),
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
-      if (kDebugMode) {
-        print(idResultbd);
-      }
+
+      print(idResultbd);
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      print(e);
     }
   }
 

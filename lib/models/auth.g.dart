@@ -14,6 +14,9 @@ Auth _$AuthFromJson(Map<String, dynamic> json) => Auth(
       confirmed: json["confirmed"] == 1 ? true : false,
       institutionId: int.tryParse(json['institutionId']),
       firebaseToken: json['firebaseToken'] as String?,
+      lastAccess: json['lastAccess'] == null
+          ? null
+          : DateTime.parse(json['lastAccess'] as String),
     );
 
 Map<String, dynamic> _$AuthToJson(Auth instance) => <String, dynamic>{
@@ -24,4 +27,5 @@ Map<String, dynamic> _$AuthToJson(Auth instance) => <String, dynamic>{
       'confirmed': instance.confirmed,
       'institutionId': instance.institutionId,
       'firebaseToken': instance.firebaseToken,
+      'lastAccess': instance.lastAccess?.toIso8601String(),
     };

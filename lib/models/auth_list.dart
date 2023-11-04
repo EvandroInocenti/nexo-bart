@@ -41,8 +41,8 @@ class AuthList with ChangeNotifier {
     return auth.first;
   }
 
-  void addAuth(
-      token, email, confirmed, role, idPatient, institutionId, firebaseToken) {
+  void addAuth(token, email, confirmed, role, idPatient, institutionId,
+      firebaseToken, lastAccess) {
     final newAuth = Auth(
       token: token,
       email: email,
@@ -51,6 +51,7 @@ class AuthList with ChangeNotifier {
       idPatient: idPatient,
       institutionId: institutionId,
       firebaseToken: firebaseToken,
+      lastAccess: lastAccess,
     );
 
     _items.add(newAuth);

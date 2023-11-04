@@ -4,9 +4,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:nexo_onco/models/auth_list.dart';
-import 'package:nexo_onco/models/patient_list.dart';
 import 'package:nexo_onco/services/databaseController.dart';
 
 part 'auth.g.dart';
@@ -20,6 +19,7 @@ class Auth with ChangeNotifier {
   bool? confirmed;
   int? institutionId;
   String? firebaseToken;
+  DateTime? lastAccess;
 
   Auth({
     this.token,
@@ -29,6 +29,7 @@ class Auth with ChangeNotifier {
     this.confirmed,
     this.institutionId,
     this.firebaseToken,
+    this.lastAccess,
   });
 
   bool get isAuth {
@@ -89,13 +90,15 @@ class Auth with ChangeNotifier {
       email = body['user']['email'];
       confirmed = body['user']['confirmed'];
       institutionId = body['user']['institution_id'];
+      lastAccess = DateFormat("yyyy-MM-dd").parse('2023-10-30');
+      // lastAccess = DateFormat("yyyy-MM-dd").parse('2023-10-30');
 
       firebaseToken = await FirebaseMessaging.instance.getToken();
       await sendFirebaseToken(firebaseToken!);
 
       // Add Ab Auth
       DatabaseController().insertAuth(token, email, confirmed, role, idPatient,
-          institutionId, firebaseToken);
+          institutionId, firebaseToken, lastAccess);
 
       notifyListeners();
 

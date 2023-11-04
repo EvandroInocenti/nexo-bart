@@ -1,7 +1,9 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:nexo_onco/models/patient_notification.dart';
 import 'package:nexo_onco/pages/patient_answers_weekly_page.dart';
+import 'package:nexo_onco/services/databaseController.dart';
 import 'package:provider/provider.dart';
 
 import '../models/auth.dart';
@@ -49,17 +51,23 @@ class AuthOrHomePage extends StatelessWidget {
           if (snapshot.data[0].role != 'P') {
             return PatientsPage();
           } else {
-            final moonLanding = DateTime.parse('1969-07-20 20:18:04Z');
-            if (kDebugMode) {
-              print(moonLanding.weekday);
-            } //  7
-            if (kDebugMode) {
-              print(DateTime.sunday);
+            if (snapshot.data[0].lastAccess !=
+                DateTime.now().toIso8601String()) {
+              print('Ultimo acesso: ${snapshot.data[0].lastAccess}');
+            } else {
+              final moonLanding = DateTime.parse('1969-07-20 20:18:04Z');
+              if (kDebugMode) {
+                print(moonLanding.weekday);
+              } //  7
+              if (kDebugMode) {
+                print(DateTime.sunday);
+              }
+              if (moonLanding.weekday == DateTime.friday) {
+                // if (moonLanding.weekday == DateTime.sunday) {
+                return PatientWeeklyAnswersPage();
+              }
             }
-            if (moonLanding.weekday == DateTime.friday) {
-              // if (moonLanding.weekday == DateTime.sunday) {
-              return PatientWeeklyAnswersPage();
-            }
+
             return PatientAnswersPage();
           }
         }
