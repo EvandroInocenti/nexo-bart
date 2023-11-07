@@ -112,7 +112,7 @@ class PatientNotificationService with ChangeNotifier {
     if (message == null) return;
 
     navigatorKey.currentState?.pushNamed(
-      AppRoutes.route,
+      AppRoutes.notificationPage,
       arguments: message,
     );
 

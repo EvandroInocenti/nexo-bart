@@ -2,13 +2,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nexo_onco/models/patient_notification.dart';
+import 'package:nexo_onco/models/pending_response.dart';
+import 'package:nexo_onco/models/pending_response_list.dart';
 import 'package:nexo_onco/pages/patient_answers_weekly_page.dart';
+import 'package:nexo_onco/pages/pending_responses_page.dart';
 import 'package:nexo_onco/services/databaseController.dart';
 import 'package:provider/provider.dart';
 
 import '../models/auth.dart';
 import '../models/auth_list.dart';
 import '../services/patient_notifications_service.dart';
+import '../utils/app_routes.dart';
 import 'auth_page.dart';
 import 'patient_answers_page.dart';
 import 'patients_page.dart';
@@ -29,12 +33,20 @@ class AuthOrHomePage extends StatelessWidget {
     return providerAuth;
   }
 
+  Future<PendingResponse> responses(BuildContext context) async {
+    var providerResponse = await Provider.of<PendingResponseList>(
+      context,
+      listen: false,
+    ).getPendingResponse();
+    return providerResponse;
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       // inicializa o firebase
-      future: Future.wait([init(context)]),
-      builder: (ctx, AsyncSnapshot snapshot) {
+      future: Future.wait([init(context), responses(context)]),
+      builder: (ctx, AsyncSnapshot<List> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -45,15 +57,25 @@ class AuthOrHomePage extends StatelessWidget {
           );
         } else {
           // carregar tokem salvo no BD
-          if (snapshot.data[0].token == null) {
+          if (snapshot.data?[0].token == null) {
             return AuthPage();
           }
-          if (snapshot.data[0].role != 'P') {
-            return PatientsPage();
+          if (snapshot.data?[0].role != 'P') {
+            return const PatientsPage();
+            // Navigator.of(context).pushNamed(AppRoutes.patientForm);
           } else {
-            if (snapshot.data[0].lastAccess !=
+            if (snapshot.data?[0].lastAccess !=
                 DateTime.now().toIso8601String()) {
-              print('Ultimo acesso: ${snapshot.data[0].lastAccess}');
+              print('Ultimo acesso: ${snapshot.data?[0].lastAccess}');
+
+              PendingResponseList().addPendingResponse('Reposta pendente',
+                  snapshot.data?[0].lastAccess.toString(), 'Diário');
+
+              // if (PendingResponseList().itemsCount > 0) {
+              if (snapshot.data?[1].title != '') {
+                return const PendingResponsesPage();
+                // Navigator.of(context).pushNamed(AppRoutes.pendingResponsePage);
+              }
             } else {
               final moonLanding = DateTime.parse('1969-07-20 20:18:04Z');
               if (kDebugMode) {

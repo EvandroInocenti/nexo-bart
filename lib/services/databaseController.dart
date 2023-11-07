@@ -1,8 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/foundation.dart';
-
-import '../models/auth.dart';
 import '../models/patient_notification.dart';
 
 class DatabaseController with ChangeNotifier {
@@ -41,16 +39,25 @@ class DatabaseController with ChangeNotifier {
 
         await db.execute('''
             CREATE TABLE IF NOT EXISTS auth (
-            token TEXT PRIMARY KEY, 
-            email TEXT,
-            confirmed BOOLEAN,
-            role TEXT,
-            idPatient INTEGER,
-            institutionId INTEGER,
-            firebaseToken TEXT,
-            lastAccess TEXT
+              token TEXT PRIMARY KEY, 
+              email TEXT,
+              confirmed BOOLEAN,
+              role TEXT,
+              idPatient INTEGER,
+              institutionId INTEGER,
+              firebaseToken TEXT,
+              lastAccess TEXT
             )
           ''');
+
+        await db.execute('''
+              CREATE TABLE IF NOT EXISTS pending_response (
+                id INTEGER PRIMARY KEY,
+                title TEXT,
+                date TEXT,
+                period TEXT
+              )              
+            ''');
       },
     );
   }
@@ -74,16 +81,56 @@ class DatabaseController with ChangeNotifier {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
 
-      print(idResultbd);
+      if (kDebugMode) {
+        print(idResultbd);
+      }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
+  }
+
+  Future<void> insertPendingResponse(title, date, period) async {
+    final db = await DatabaseController().db;
+    try {
+      final resultInsert = await db.insert(
+        'pending_response',
+        {
+          'title': title,
+          'date': date,
+          'period': period,
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+
+      if (kDebugMode) {
+        print(resultInsert);
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
+  Future<void> deletePendingResponse(int id) async {
+    final db = await DatabaseController().db;
+
+    await db.delete(
+      'pending_response',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 
   Future<void> insertNotificacao(title, body, lida) async {
     final db = await DatabaseController().db;
-    await db
-        .insert('notificacao', {'title': title, 'body': body, 'lida': lida});
+    await db.insert('notificacao', {
+      'title': title,
+      'body': body,
+      'lida': lida,
+    });
   }
 
   Future<List<PatientNotification>> getNotificacao() async {
@@ -94,11 +141,14 @@ class DatabaseController with ChangeNotifier {
     );
     List<PatientNotification> notis = [];
     for (int i = 0; i < result.length; i++) {
-      notis.add(PatientNotification(
+      notis.add(
+        PatientNotification(
           title: result[i]['title'],
           body: result[i]['body'],
           lida: result[i]['lida'],
-          id: result[i]['id']));
+          id: result[i]['id'],
+        ),
+      );
     }
 
     return notis;

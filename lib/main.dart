@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 import 'package:nexo_onco/models/patient_weekly_answers_list.dart';
+import 'package:nexo_onco/models/pending_response.dart';
 import 'package:nexo_onco/models/treatment_patient_list.dart';
 import 'package:nexo_onco/models/tumor_list.dart';
 import 'package:nexo_onco/pages/implanted_catheter_page.dart';
@@ -20,9 +21,12 @@ import 'models/drugs_list.dart';
 import 'models/environment.dart';
 import 'models/patient_answers_list.dart';
 import 'models/patient_list.dart';
+import 'models/pending_response_list.dart';
 import 'models/treatment_list.dart';
 import 'pages/auth_or_home_page.dart';
 import 'pages/patient_answers_page.dart';
+import 'pages/patients_page.dart';
+import 'pages/pending_responses_page.dart';
 import 'pages/radiotherapy_page.dart';
 import 'pages/tabs_page.dart';
 import 'utils/app_routes.dart';
@@ -148,6 +152,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ChangeNotifierProvider(
           create: (_) => PatientNotificationService(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => PendingResponseList(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -208,10 +215,12 @@ class _MyHomePageState extends State<MyHomePage> {
           AppRoutes.answresWeekForm: (ctx) => PatientWeeklyAnswersPage(),
           AppRoutes.tabsPage: (ctx) => TabsPage(),
           AppRoutes.patientForm: (ctx) => PatientFormPage(),
+          AppRoutes.patientPage: (ctx) => PatientsPage(),
           AppRoutes.oncologicalForm: (ctx) => OncologicalCirurgianPage(),
           AppRoutes.catheterForm: (ctx) => ImplantedCatheterPage(),
           AppRoutes.radiotherapyForm: (ctx) => RadiotherapyPage(),
-          AppRoutes.route: (ctx) => const NotificationsPage(),
+          AppRoutes.notificationPage: (ctx) => const NotificationsPage(),
+          AppRoutes.pendingResponsePage: (ctx) => const PendingResponsesPage(),
         },
       ),
     );
