@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 import 'package:nexo_onco/models/patient_weekly_answers_list.dart';
-import 'package:nexo_onco/models/pending_response.dart';
 import 'package:nexo_onco/models/treatment_patient_list.dart';
 import 'package:nexo_onco/models/tumor_list.dart';
 import 'package:nexo_onco/pages/implanted_catheter_page.dart';

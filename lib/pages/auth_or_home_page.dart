@@ -1,18 +1,15 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:nexo_onco/models/patient_notification.dart';
 import 'package:nexo_onco/models/pending_response.dart';
 import 'package:nexo_onco/models/pending_response_list.dart';
 import 'package:nexo_onco/pages/patient_answers_weekly_page.dart';
 import 'package:nexo_onco/pages/pending_responses_page.dart';
-import 'package:nexo_onco/services/databaseController.dart';
 import 'package:provider/provider.dart';
 
 import '../models/auth.dart';
 import '../models/auth_list.dart';
 import '../services/patient_notifications_service.dart';
-import '../utils/app_routes.dart';
 import 'auth_page.dart';
 import 'patient_answers_page.dart';
 import 'patients_page.dart';
