@@ -36,6 +36,7 @@ class PendingResponseList with ChangeNotifier {
       items.add(element);
     }
 
+    _items = items.toList();
     notifyListeners();
 
     if (response.isEmpty) {
@@ -51,13 +52,14 @@ class PendingResponseList with ChangeNotifier {
       period: period,
     );
 
-    _items.add(newResponse);
+    items.add(newResponse);
 
     DatabaseController().insertPendingResponse(
       title,
       date,
       period,
     );
+
     notifyListeners();
   }
 }

@@ -103,7 +103,7 @@ class Auth with ChangeNotifier {
       notifyListeners();
 
       if (kDebugMode) {
-        print('AuthToken: ${token}');
+        print('AuthToken: $token');
       }
     }
   }

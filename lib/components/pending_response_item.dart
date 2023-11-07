@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../models/pending_response.dart';
 
@@ -15,32 +16,27 @@ class _PendingResponseItemState extends State<PendingResponseItem> {
 
   @override
   Widget build(BuildContext context) {
+    var strDate = widget.pendingResponse.date!;
+    DateTime parseDate = DateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('MM/dd/yyyy');
+    var outputDate = outputFormat.format(inputDate);
+
     return Material(
       elevation: 4,
       borderRadius: const BorderRadius.all(Radius.circular(6)),
       child: ListTile(
-        leading: const Icon(Icons.error_outline),
+        leading: Icon(
+          Icons.error_outline,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
         title: Text(
-          widget.pendingResponse.date! as String,
+          "Pendente $outputDate",
           style: Theme.of(context).textTheme.titleMedium,
         ),
         subtitle: Text(
-          widget.pendingResponse.title! + widget.pendingResponse.period!,
+          widget.pendingResponse.period!,
           style: Theme.of(context).textTheme.titleSmall,
-        ),
-        trailing: SizedBox(
-          width: 130,
-          child: Row(
-            children: [
-              Flexible(
-                child: Icon(
-                  Icons.error_outline,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              const SizedBox(width: 20),
-            ],
-          ),
         ),
       ),
     );
