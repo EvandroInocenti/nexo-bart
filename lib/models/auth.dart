@@ -90,13 +90,13 @@ class Auth with ChangeNotifier {
       email = body['user']['email'];
       confirmed = body['user']['confirmed'];
       institutionId = body['user']['institution_id'];
-      lastAccess = DateFormat("yyyy-MM-dd").parse('2023-10-30');
+      lastAccess = DateFormat("yyyy-MM-dd").parse('2023-30-10');
       // lastAccess = DateFormat("yyyy-MM-dd").parse('2023-10-30');
 
       firebaseToken = await FirebaseMessaging.instance.getToken();
       await sendFirebaseToken(firebaseToken!);
 
-      // Add Ab Auth
+      // Add DB Auth
       DatabaseController().insertAuth(token, email, confirmed, role, idPatient,
           institutionId, firebaseToken, lastAccess);
 

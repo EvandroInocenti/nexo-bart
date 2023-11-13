@@ -5,7 +5,6 @@ import '../components/app_drawer.dart';
 import '../components/pending_response_item.dart';
 
 import '../models/pending_response_list.dart';
-// import '../utils/app_routes.dart';
 import 'dart:async';
 
 class PendingResponsesPage extends StatefulWidget {
@@ -71,18 +70,6 @@ class _PendingResponsesPageState extends State<PendingResponsesPage> {
           }
         },
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Provider.of<PatientNotificationService>(
-      //       context,
-      //       listen: false,
-      //     ).add(PatientNotification(
-      //       title: 'Mais uma notificação',
-      //       body: Random().nextDouble().toString(),
-      //     ));
-      //   },
-      //   child: Icon(Icons.add),
-      // ),
     );
   }
 }

@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../models/auth.dart';
 import '../models/auth_list.dart';
 import '../services/patient_notifications_service.dart';
+import '../utils/app_routes.dart';
 import 'auth_page.dart';
 import 'patient_answers_page.dart';
 import 'patients_page.dart';
@@ -66,12 +67,11 @@ class AuthOrHomePage extends StatelessWidget {
               print('Ultimo acesso: ${snapshot.data?[0].lastAccess}');
 
               PendingResponseList().addPendingResponse('Reposta pendente',
-                  snapshot.data?[0].lastAccess.toString(), 'Diário');
+                  snapshot.data?[0].lastAccess.toString(), 'Semanal');
 
               // if (PendingResponseList().itemsCount > 0) {
               if (snapshot.data?[1].title != '') {
                 return const PendingResponsesPage();
-                // Navigator.of(context).pushNamed(AppRoutes.pendingResponsePage);
               }
             } else {
               final moonLanding = DateTime.parse('1969-07-20 20:18:04Z');
