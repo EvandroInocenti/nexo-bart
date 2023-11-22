@@ -19,7 +19,7 @@ class Auth with ChangeNotifier {
   bool? confirmed;
   int? institutionId;
   String? firebaseToken;
-  DateTime? lastAccess;
+  String? lastAccess;
 
   Auth({
     this.token,
@@ -90,7 +90,10 @@ class Auth with ChangeNotifier {
       email = body['user']['email'];
       confirmed = body['user']['confirmed'];
       institutionId = body['user']['institution_id'];
-      lastAccess = DateFormat("yyyy-MM-dd").parse('2023-30-10');
+
+      // Alterar data de acesso
+      lastAccess =
+          DateFormat("yyyy-MM-dd").format(DateTime.parse("2023-11-13"));
       // lastAccess = DateFormat("yyyy-MM-dd").parse('2023-10-30');
 
       firebaseToken = await FirebaseMessaging.instance.getToken();

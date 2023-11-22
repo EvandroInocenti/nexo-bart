@@ -5,11 +5,11 @@ import 'auth.dart';
 
 class AuthList with ChangeNotifier {
   String token;
-  // final List<Auth> _items = [];
 
   List<Auth> get items => [..._items];
 
   List<Auth> _items = [];
+
   AuthList(
     this.token,
     this._items,

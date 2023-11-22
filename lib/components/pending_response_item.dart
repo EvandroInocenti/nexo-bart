@@ -18,10 +18,9 @@ class _PendingResponseItemState extends State<PendingResponseItem> {
   @override
   Widget build(BuildContext context) {
     var strDate = widget.pendingResponse.date!;
-    DateTime parseDate = DateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('MM/dd/yyyy');
-    var outputDate = outputFormat.format(inputDate);
+    // DateTime parseDate = DateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate);
+    var inputDate = DateTime.parse(strDate);
+    var outputDate = DateFormat('dd-MM-yyyy').format(inputDate);
 
     return Material(
       elevation: 4,

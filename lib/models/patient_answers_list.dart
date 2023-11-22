@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:nexo_onco/models/auth_list.dart';
+import 'package:nexo_onco/services/databaseController.dart';
 
 import '../exceptions/http_exception.dart';
 import 'auth.dart';
@@ -30,6 +32,13 @@ class PatientAnswersList with ChangeNotifier {
   }
 
   Future<void> savePatientAnswers(PatientAnswers patientAnswers) async {
+    //Buscar id Paciente no BD do App
+    // var idPatient = DatabaseController().getAuths();
+    int? idPat = await DatabaseController().getIdPatient();
+    patientAnswers.patient_id = idPat;
+
+    token = (await DatabaseController().getToken())!;
+
     bool hasId = patientAnswers.id != null;
 
     if (!hasId) {
@@ -41,6 +50,8 @@ class PatientAnswersList with ChangeNotifier {
   }
 
   Future<void> addPatientAnsware(PatientAnswers patientAnswers) async {
+    idPatient = patientAnswers.patient_id!;
+
     final response = await http.post(
       Uri.parse('$_url/patients/answers/$idPatient'),
       headers: {
@@ -70,7 +81,7 @@ class PatientAnswersList with ChangeNotifier {
 
     if (response.statusCode >= 400) {
       throw HttpException(
-        msg: 'Não é possível salvar o tratamento do paciente',
+        msg: 'Não é possível a resposta do paciente',
         statusCode: response.statusCode,
       );
     }

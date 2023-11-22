@@ -1,6 +1,6 @@
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:nexo_onco/models/pending_response.dart';
 import 'package:nexo_onco/models/pending_response_list.dart';
 import 'package:nexo_onco/pages/patient_answers_weekly_page.dart';
@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import '../models/auth.dart';
 import '../models/auth_list.dart';
 import '../services/patient_notifications_service.dart';
-import '../utils/app_routes.dart';
 import 'auth_page.dart';
 import 'patient_answers_page.dart';
 import 'patients_page.dart';
@@ -60,21 +59,29 @@ class AuthOrHomePage extends StatelessWidget {
           }
           if (snapshot.data?[0].role != 'P') {
             return const PatientsPage();
-            // Navigator.of(context).pushNamed(AppRoutes.patientForm);
           } else {
-            if (snapshot.data?[0].lastAccess !=
-                DateTime.now().toIso8601String()) {
-              print('Ultimo acesso: ${snapshot.data?[0].lastAccess}');
+            var lastDate = snapshot.data?[0].lastAccess;
+            DateTime newLastDate = DateTime.parse(lastDate);
+            var dateNow = DateFormat("yyyy-MM-dd").format(DateTime.now());
+            DateTime newDateNow = DateTime.parse(dateNow);
+
+            while (newLastDate.day <= newDateNow.day) {
+              print('lastDate: ${snapshot.data?[0].lastAccess}');
+              print('Ultimo acesso: ${newLastDate}');
+              print('Hoje: ${DateFormat('yMd').format(newDateNow)}');
 
               PendingResponseList().addPendingResponse('Reposta pendente',
-                  snapshot.data?[0].lastAccess.toString(), 'Semanal');
+                  DateFormat("yyyy-MM-dd").format(newLastDate), 'Semanal');
+              newLastDate = DateTime(
+                  newLastDate.year, newLastDate.month, newLastDate.day + 1);
+            }
 
-              // if (PendingResponseList().itemsCount > 0) {
-              if (snapshot.data?[1].title != '') {
-                return const PendingResponsesPage();
-              }
+            // if (PendingResponseList().itemsCount > 0) {
+            if (snapshot.data?[1].title != '') {
+              return const PendingResponsesPage();
             } else {
-              final moonLanding = DateTime.parse('1969-07-20 20:18:04Z');
+              final moonLanding =
+                  DateTime.parse(DateTime.now().toIso8601String());
               if (kDebugMode) {
                 print(moonLanding.weekday);
               } //  7

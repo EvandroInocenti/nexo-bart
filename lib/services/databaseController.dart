@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/foundation.dart';
+import '../models/auth.dart';
 import '../models/patient_notification.dart';
 
 class DatabaseController with ChangeNotifier {
@@ -89,6 +90,48 @@ class DatabaseController with ChangeNotifier {
         print(e);
       }
     }
+  }
+
+  Future<Auth> getAuths() async {
+    final db = await DatabaseController().db;
+
+    final List<Map<String, dynamic>> maps = await db.query('auth');
+
+    List<Auth> auths = [];
+    for (int i = 0; i < maps.length; i++) {
+      auths.add(
+        Auth(
+          token: maps[i]['token']!,
+          email: maps[i]['email']!,
+          confirmed: maps[i]['confirmed']! == 1 ? true : false,
+          role: maps[i]['role']!,
+          idPatient: maps[i]['idPatient']! as int,
+          institutionId: int.tryParse(maps[i]['institutionId']!.toString()),
+          firebaseToken: maps[i]['firebaseToken']!,
+          lastAccess: maps[i]['lastAccess']!,
+        ),
+      );
+    }
+
+    return auths.first;
+  }
+
+  Future<int?> getIdPatient() async {
+    final db = await DatabaseController().db;
+    // List<Map> result = await db.rawQuery('SELECT * FROM "auth"');
+    final List<Map<String, dynamic>> result = await db.query('auth');
+
+    int idPatient = result.first['idPatient'];
+    return idPatient;
+  }
+
+  Future<String?> getToken() async {
+    final db = await DatabaseController().db;
+    final List<Map<String, dynamic>> result = await db.query('auth');
+
+    String token = result.first['token'];
+    print('id patient: $token');
+    return token;
   }
 
   Future<void> insertPendingResponse(title, date, period) async {

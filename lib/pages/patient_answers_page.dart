@@ -3,8 +3,10 @@ import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nexo_onco/models/auth_list.dart';
 import 'package:nexo_onco/models/patient_answers.dart';
 import 'package:nexo_onco/models/patient_answers_list.dart';
+import 'package:nexo_onco/services/databaseController.dart';
 import 'package:provider/provider.dart';
 
 import '../components/adaptative_rating_bar.dart';
@@ -676,7 +678,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
             Icons.error_outlined,
             color: Theme.of(context).colorScheme.error,
           ),
-          title: Text('Ocorreu um erro!',
+          title: Text('Ocorreu um erro! $error',
               style: Theme.of(context).textTheme.titleLarge),
           content: Text(
               'Ocorreu erro ao salvar o questionamento, tente novamente mais tarde.',
@@ -733,43 +735,46 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
-                    SizedBox(
-                      height: 30,
-                      child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          (patientAnswares!.temperature! > 37.5 ||
-                                  patientAnswares!.convulsion! ||
-                                  patientAnswares!.difficulty_breathing!)
-                              ? Container(
-                                  alignment: AlignmentDirectional.bottomCenter,
-                                  child: AnimatedTextKit(
-                                    animatedTexts: [
-                                      FadeAnimatedText(
-                                        'Atenção!',
-                                        textStyle: const TextStyle(
-                                            color: Colors.red,
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      FadeAnimatedText(
-                                        'Procure o serviço médico!',
-                                        textStyle: const TextStyle(
-                                            color: Colors.red,
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ],
-                                    totalRepeatCount: 30,
+                    Flex(
+                      direction: Axis.vertical,
+                      children: [
+                        Column(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            (patientAnswares!.temperature! > 37.5 ||
+                                    patientAnswares!.convulsion! ||
+                                    patientAnswares!.difficulty_breathing!)
+                                ? Container(
+                                    alignment:
+                                        AlignmentDirectional.bottomCenter,
+                                    child: AnimatedTextKit(
+                                      animatedTexts: [
+                                        FadeAnimatedText(
+                                          'Atenção!',
+                                          textStyle: const TextStyle(
+                                              color: Colors.red,
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        FadeAnimatedText(
+                                          'Procure o serviço médico!',
+                                          textStyle: const TextStyle(
+                                              color: Colors.red,
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                      totalRepeatCount: 30,
+                                    ),
+                                  )
+                                : Text(
+                                    'Tenha um ótimo dia!',
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
                                   ),
-                                )
-                              : Text(
-                                  'Tenha um ótimo dia!',
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
-                        ],
-                      ),
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),
