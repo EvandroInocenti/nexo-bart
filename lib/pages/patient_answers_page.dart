@@ -3,10 +3,8 @@ import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nexo_onco/models/auth_list.dart';
 import 'package:nexo_onco/models/patient_answers.dart';
 import 'package:nexo_onco/models/patient_answers_list.dart';
-import 'package:nexo_onco/services/databaseController.dart';
 import 'package:provider/provider.dart';
 
 import '../components/adaptative_rating_bar.dart';

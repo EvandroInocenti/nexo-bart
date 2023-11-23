@@ -33,7 +33,6 @@ class PatientAnswersList with ChangeNotifier {
 
   Future<void> savePatientAnswers(PatientAnswers patientAnswers) async {
     //Buscar id Paciente no BD do App
-    // var idPatient = DatabaseController().getAuths();
     int? idPat = await DatabaseController().getIdPatient();
     patientAnswers.patient_id = idPat;
 
@@ -81,7 +80,7 @@ class PatientAnswersList with ChangeNotifier {
 
     if (response.statusCode >= 400) {
       throw HttpException(
-        msg: 'Não é possível a resposta do paciente',
+        msg: 'Não é possível enviar a resposta do paciente',
         statusCode: response.statusCode,
       );
     }

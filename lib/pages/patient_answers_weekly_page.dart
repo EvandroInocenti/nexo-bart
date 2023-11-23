@@ -2,7 +2,6 @@ import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:nexo_onco/models/patient_weekly_answers_list.dart';
 import 'package:provider/provider.dart';
 
 import '../models/auth.dart';
@@ -52,6 +51,7 @@ class _PatienWeeklyAnswersState extends State<PatientWeeklyAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -88,6 +88,7 @@ class _PatienWeeklyAnswersState extends State<PatientWeeklyAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -127,6 +128,7 @@ class _PatienWeeklyAnswersState extends State<PatientWeeklyAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -176,6 +178,7 @@ class _PatienWeeklyAnswersState extends State<PatientWeeklyAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -215,6 +218,7 @@ class _PatienWeeklyAnswersState extends State<PatientWeeklyAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -254,6 +258,7 @@ class _PatienWeeklyAnswersState extends State<PatientWeeklyAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -293,6 +298,7 @@ class _PatienWeeklyAnswersState extends State<PatientWeeklyAnswersPage> {
                 selectedBorderColor: Colors.transparent,
                 unSelectedBorderColor: Colors.transparent,
                 absoluteZeroSpacing: false,
+                defaultSelected: 'Não',
                 buttonTextStyle: ButtonTextStyle(
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black,
@@ -346,7 +352,7 @@ class _PatienWeeklyAnswersState extends State<PatientWeeklyAnswersPage> {
             Icons.error_outlined,
             color: Theme.of(context).colorScheme.error,
           ),
-          title: Text('Ocorreu um erro!',
+          title: Text(error.toString(),
               style: Theme.of(context).textTheme.titleLarge),
           content: Text(
               'Ocorreu erro ao salvar o questionamento, tente novamente mais tarde.',

@@ -1,10 +1,11 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import '../exceptions/http_exception.dart';
+import '../services/databaseController.dart';
 import 'auth.dart';
 import 'patient_weekly_answers.dart';
 
@@ -31,6 +32,9 @@ class PatientWeeklyAnswersList with ChangeNotifier {
 
   Future<void> savePatientWeeklyAnswers(
       PatientWeeklyAnswers patientWeeklyAnswers) async {
+    idPatient = (await DatabaseController().getIdPatient())!;
+    token = (await DatabaseController().getToken())!;
+
     bool hasId = patientWeeklyAnswers.id != null;
 
     if (!hasId) {
@@ -52,7 +56,6 @@ class PatientWeeklyAnswersList with ChangeNotifier {
       },
       body: jsonEncode(
         {
-          // "patient_id": idPatient,
           "lost_appetite": patientWeeklyAnswers.lost_appetite,
           "lost_strength": patientWeeklyAnswers.lost_strength,
           "difficulty_sleeping": patientWeeklyAnswers.difficulty_sleeping,
@@ -65,6 +68,9 @@ class PatientWeeklyAnswersList with ChangeNotifier {
     );
 
     if (response.statusCode >= 400) {
+      if (kDebugMode) {
+        print(response.body);
+      }
       throw HttpException(
         msg: 'Não é possível salvar resposta do paciente',
         statusCode: response.statusCode,
