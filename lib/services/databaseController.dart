@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/foundation.dart';
@@ -130,8 +131,46 @@ class DatabaseController with ChangeNotifier {
     final List<Map<String, dynamic>> result = await db.query('auth');
 
     String token = result.first['token'];
-    print('id patient: $token');
+    if (kDebugMode) {
+      print('id patient: $token');
+    }
     return token;
+  }
+
+  Future<String?> getLastAccess() async {
+    final db = await DatabaseController().db;
+    final List<Map<String, dynamic>> result = await db.query('auth');
+
+    String? lastAccess = result.isNotEmpty
+        ? result.first['lastAccess']
+        : DateFormat("yyyy-MM-dd").format(DateTime.now());
+
+    if (kDebugMode) {
+      print('lastAccess: $lastAccess');
+    }
+    return lastAccess;
+  }
+
+  Future<void> updateAuth(lastAccess, token) async {
+    final db = await DatabaseController().db;
+    try {
+      final resultupdate = await db.update(
+        'auth',
+        {
+          'lastAccess': lastAccess.toString(),
+        },
+        where: 'token = ?',
+        whereArgs: [token],
+      );
+
+      if (kDebugMode) {
+        print(resultupdate);
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
   }
 
   Future<void> insertPendingResponse(title, date, period) async {

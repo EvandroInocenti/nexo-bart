@@ -91,10 +91,7 @@ class Auth with ChangeNotifier {
       confirmed = body['user']['confirmed'];
       institutionId = body['user']['institution_id'];
 
-      // Alterar data de acesso
-      lastAccess =
-          DateFormat("yyyy-MM-dd").format(DateTime.parse("2023-11-13"));
-      // lastAccess = DateFormat("yyyy-MM-dd").parse('2023-10-30');
+      lastAccess = await DatabaseController().getLastAccess();
 
       firebaseToken = await FirebaseMessaging.instance.getToken();
       await sendFirebaseToken(firebaseToken!);

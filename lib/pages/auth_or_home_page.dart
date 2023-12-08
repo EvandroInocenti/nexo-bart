@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../models/auth.dart';
 import '../models/auth_list.dart';
+import '../services/databaseController.dart';
 import '../services/patient_notifications_service.dart';
 import 'auth_page.dart';
 import 'patient_answers_page.dart';
@@ -65,16 +66,28 @@ class AuthOrHomePage extends StatelessWidget {
             var dateNow = DateFormat("yyyy-MM-dd").format(DateTime.now());
             DateTime newDateNow = DateTime.parse(dateNow);
 
-            while (newLastDate.day <= newDateNow.day) {
+            // while (newLastDate.day <= newDateNow.day) {
+            while ((newDateNow.isAfter(newLastDate)) ||
+                newDateNow.isAtSameMomentAs(newLastDate)) {
               print('lastDate: ${snapshot.data?[0].lastAccess}');
               print('Ultimo acesso: ${newLastDate}');
               print('Hoje: ${DateFormat('yMd').format(newDateNow)}');
 
+              if (newLastDate.weekday == DateTime.friday) {
+                PendingResponseList().addPendingResponse('Reposta pendente',
+                    DateFormat("yyyy-MM-dd").format(newLastDate), 'Semanal');
+                newLastDate = DateTime(
+                    newLastDate.year, newLastDate.month, newLastDate.day + 1);
+              }
+
               PendingResponseList().addPendingResponse('Reposta pendente',
-                  DateFormat("yyyy-MM-dd").format(newLastDate), 'Semanal');
+                  DateFormat("yyyy-MM-dd").format(newLastDate), 'Diário');
               newLastDate = DateTime(
                   newLastDate.year, newLastDate.month, newLastDate.day + 1);
             }
+
+            DatabaseController()
+                .updateAuth(newDateNow, snapshot.data?[0].token);
 
             // if (PendingResponseList().itemsCount > 0) {
             if (snapshot.data?[1].title != '') {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nexo_onco/components/adaptative_text_form_field.dart';
+import 'package:nexo_onco/services/databaseController.dart';
 import 'package:provider/provider.dart';
 
 import '../models/auth.dart';
