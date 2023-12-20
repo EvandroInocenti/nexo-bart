@@ -7,11 +7,13 @@ part 'pending_response.g.dart';
 
 @JsonSerializable()
 class PendingResponse with ChangeNotifier {
+  int? id;
   String? title;
   String? date;
   String? period;
 
   PendingResponse({
+    this.id,
     this.title,
     this.date,
     this.period,

@@ -60,6 +60,13 @@ class PendingResponseList with ChangeNotifier {
       period,
     );
 
+    print(items);
+
     notifyListeners();
+  }
+
+  void removePendingResponse(id) {
+    items.remove(id);
+    DatabaseController().deletePendingResponse(id);
   }
 }

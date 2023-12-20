@@ -54,7 +54,7 @@ class DatabaseController with ChangeNotifier {
 
         await db.execute('''
               CREATE TABLE IF NOT EXISTS pending_response (
-                id INTEGER PRIMARY KEY,
+                id INTEGER PRIMARY KEY autoincrement,
                 title TEXT,
                 date TEXT,
                 period TEXT

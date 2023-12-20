@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:nexo_onco/models/pending_response_list.dart';
 
 import '../models/pending_response.dart';
 import '../utils/app_routes.dart';
@@ -18,6 +19,7 @@ class _PendingResponseItemState extends State<PendingResponseItem> {
   @override
   Widget build(BuildContext context) {
     var strDate = widget.pendingResponse.date!;
+
     // DateTime parseDate = DateFormat("yyyy-MM-dd HH:mm:ss").parse(strDate);
     var inputDate = DateTime.parse(strDate);
     var outputDate = DateFormat('dd-MM-yyyy').format(inputDate);
@@ -61,6 +63,7 @@ class _PendingResponseItemState extends State<PendingResponseItem> {
                       arguments: widget.pendingResponse,
                     );
                   }
+                  PendingResponseList().remove(widget.pendingResponse.id!);
                 },
               ),
             ],

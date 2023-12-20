@@ -8,6 +8,7 @@ part of 'pending_response.dart';
 
 PendingResponse _$PendingResponseFromJson(Map<String, dynamic> json) =>
     PendingResponse(
+      id: json['id'] as int?,
       title: json['title'] as String?,
       date: json['date'] as String?,
       period: json['period'] as String?,
@@ -15,6 +16,7 @@ PendingResponse _$PendingResponseFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$PendingResponseToJson(PendingResponse instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'title': instance.title,
       'date': instance.date,
       'period': instance.period,
