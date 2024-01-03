@@ -328,7 +328,15 @@ class _PatienWeeklyAnswersState extends State<PatientWeeklyAnswersPage> {
   void initState() {
     super.initState();
     Provider.of<PatientList>(context, listen: false).loadPatients();
-    patientWeeklyAnswares = PatientWeeklyAnswers();
+    patientWeeklyAnswares = PatientWeeklyAnswers(
+      concentration_problem: false,
+      difficulty_sleeping: false,
+      emotional_problem: false,
+      lost_appetite: false,
+      lost_strength: false,
+      memory_problem: false,
+      sexual_problem: false,
+    );
   }
 
   @override
