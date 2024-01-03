@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:nexo_onco/services/databaseController.dart';
 
@@ -12,10 +14,22 @@ class PendingResponseList with ChangeNotifier {
     return _items.length;
   }
 
+  Future<int> fetchPendingResponse() async {
+    _items = await DatabaseController().getPendingResponse();
+
+    return _items.length;
+  }
+
   Future<void> remove(int i) async {
     DatabaseController().deletePendingResponse(i);
     if (kDebugMode) {
       print("Resposta pendente removida: $i");
+    }
+    items.remove(i);
+    _items = items.toList();
+
+    if (kDebugMode) {
+      print("items: $items.toList()");
     }
 
     notifyListeners();
@@ -45,28 +59,16 @@ class PendingResponseList with ChangeNotifier {
     return response.first;
   }
 
-  void addPendingResponse(title, date, period) {
-    final newResponse = PendingResponse(
-      title: title,
-      date: date,
-      period: period,
-    );
-
-    items.add(newResponse);
-
+  Future<void> addPendingResponse(title, date, period) async {
     DatabaseController().insertPendingResponse(
       title,
       date,
       period,
     );
-
-    print(items);
-
-    notifyListeners();
   }
 
-  void removePendingResponse(id) {
-    items.remove(id);
-    DatabaseController().deletePendingResponse(id);
-  }
+  // void removePendingResponse(id) {
+  //   items.remove(id);
+  //   DatabaseController().deletePendingResponse(id);
+  // }
 }

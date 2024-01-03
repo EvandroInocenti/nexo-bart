@@ -8,6 +8,7 @@ import '../models/auth.dart';
 import '../models/patient_list.dart';
 import '../models/patient_weekly_answers.dart';
 import '../models/patient_weekly_answers_list.dart';
+import '../models/pending_response_list.dart';
 import '../utils/app_routes.dart';
 
 class PatientWeeklyAnswersPage extends StatefulWidget {
@@ -392,151 +393,174 @@ class _PatienWeeklyAnswersState extends State<PatientWeeklyAnswersPage> {
         ),
         centerTitle: true,
       ),
-      body: isCompleted
-          ? ListView(
-              children: [
-                Column(
-                  children: [
-                    Icon(
-                      Icons.cloud_done,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 200,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Respostas enviadas!',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      elevation: 5,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        'Sair',
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                    ),
-                    onPressed: () {
-                      SystemNavigator.pop();
-                    },
-                  ),
-                ),
-              ],
-            )
-          : _isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Form(
-                  key: _formKey,
-                  child: Stepper(
-                    type: StepperType.horizontal,
-                    currentStep: _activeStateIndex,
-                    steps: stepList(),
-                    onStepContinue: () async {
-                      if (isLastStep) {
-                        await _submitAnswers();
-                        setState(() {
-                          isCompleted = true;
-                        });
-
-                        if (kDebugMode) {
-                          print('complete');
-                        }
-                      } else {
-                        if (!_formKey.currentState!.validate()) {
-                          return;
-                        }
-                        setState(() {
-                          _activeStateIndex += 1;
-                        });
-                      }
-                    },
-                    onStepCancel: () {
-                      _activeStateIndex == 0
-                          ? null
-                          : setState(() {
-                              _activeStateIndex -= 1;
-                            });
-                    },
-                    onStepTapped: (index) {
-                      setState(() {
-                        _activeStateIndex = index;
-                      });
-                    },
-                    controlsBuilder:
-                        (BuildContext context, ControlsDetails details) {
-                      return Container(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: details.onStepContinue,
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 5,
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.primary,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                child: Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      isLastStep ? 'Confirmar' : 'Próximo',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge,
-                                    ),
-                                  ),
-                                ),
-                              ),
+      body: FutureBuilder(
+        future: Provider.of<PendingResponseList>(context, listen: false)
+            .fetchPendingResponse(),
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.error != null) {
+            return const Center(
+              child: Text('Ocorreu um erro!'),
+            );
+          } else {
+            return isCompleted
+                ? ListView(
+                    children: [
+                      Column(
+                        children: [
+                          Icon(
+                            Icons.cloud_done,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 200,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Respostas enviadas!',
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
-                            const SizedBox(width: 12),
-                            if (_activeStateIndex != 0)
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: details.onStepCancel,
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 5,
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 5,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              'Sair',
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                          ),
+                          onPressed: () {
+                            SystemNavigator.pop();
+                          },
+                        ),
+                      ),
+                    ],
+                  )
+                : _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Form(
+                        key: _formKey,
+                        child: Stepper(
+                          type: StepperType.horizontal,
+                          currentStep: _activeStateIndex,
+                          steps: stepList(),
+                          onStepContinue: () async {
+                            if (isLastStep) {
+                              await _submitAnswers();
+                              setState(() {
+                                isCompleted = true;
+                              });
+
+                              if (kDebugMode) {
+                                print('complete');
+                              }
+                            } else {
+                              if (!_formKey.currentState!.validate()) {
+                                return;
+                              }
+                              setState(() {
+                                _activeStateIndex += 1;
+                              });
+                            }
+                          },
+                          onStepCancel: () {
+                            _activeStateIndex == 0
+                                ? null
+                                : setState(() {
+                                    _activeStateIndex -= 1;
+                                  });
+                          },
+                          onStepTapped: (index) {
+                            setState(() {
+                              _activeStateIndex = index;
+                            });
+                          },
+                          controlsBuilder:
+                              (BuildContext context, ControlsDetails details) {
+                            return Container(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: details.onStepContinue,
+                                      style: ElevatedButton.styleFrom(
+                                        elevation: 5,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      child: Container(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text(
+                                            isLastStep
+                                                ? 'Confirmar'
+                                                : 'Próximo',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelLarge,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                    textStyle:
-                                        Theme.of(context).textTheme.labelLarge,
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      'Voltar',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                  ),
-                                ),
-                              )
-                          ],
+                                  const SizedBox(width: 12),
+                                  if (_activeStateIndex != 0)
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        onPressed: details.onStepCancel,
+                                        style: ElevatedButton.styleFrom(
+                                          elevation: 5,
+                                          backgroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text(
+                                            'Voltar',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       );
-                    },
-                  ),
-                ),
+          }
+        },
+      ),
     );
   }
 }

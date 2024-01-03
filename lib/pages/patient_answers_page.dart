@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/foundation.dart';
@@ -11,6 +13,7 @@ import '../components/adaptative_rating_bar.dart';
 import '../models/auth.dart';
 import '../models/patient.dart';
 import '../models/patient_list.dart';
+import '../models/pending_response_list.dart';
 import '../utils/app_routes.dart';
 
 class PatientAnswersPage extends StatefulWidget {
@@ -143,7 +146,7 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                   "Não",
                 ],
                 radioButtonValue: (value) {
-                  value == null
+                  value == 'Não'
                       ? patientAnswares!.difficulty_breathing = false
                       : patientAnswares!.difficulty_breathing = true;
                 },
@@ -716,140 +719,43 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
         ),
         centerTitle: true,
       ),
-      body: isCompleted
-          ? ListView(
-              children: [
-                Column(
-                  children: [
-                    Icon(
-                      Icons.cloud_done,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 200,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Respostas enviadas!',
-                        style: Theme.of(context).textTheme.titleMedium,
+      body: FutureBuilder(
+        future: Provider.of<PendingResponseList>(context, listen: false)
+            .fetchPendingResponse(),
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.error != null) {
+            return const Center(
+              child: Text('Ocorreu um erro!'),
+            );
+          } else {
+            return isCompleted
+                ? ListView(
+                    children: [
+                      Column(
+                        children: [
+                          Icon(
+                            Icons.cloud_done,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 200,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Respostas enviadas!',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Flex(
-                      direction: Axis.vertical,
-                      children: [
-                        Column(
-                          // mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            (patientAnswares!.temperature! > 37.5 ||
-                                    patientAnswares!.convulsion! ||
-                                    patientAnswares!.difficulty_breathing!)
-                                ? Container(
-                                    alignment:
-                                        AlignmentDirectional.bottomCenter,
-                                    child: AnimatedTextKit(
-                                      animatedTexts: [
-                                        FadeAnimatedText(
-                                          'Atenção!',
-                                          textStyle: const TextStyle(
-                                              color: Colors.red,
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        FadeAnimatedText(
-                                          'Procure o serviço médico!',
-                                          textStyle: const TextStyle(
-                                              color: Colors.red,
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ],
-                                      totalRepeatCount: 30,
-                                    ),
-                                  )
-                                : Text(
-                                    'Tenha um ótimo dia!',
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium,
-                                  ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      elevation: 5,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        'Sair',
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                    ),
-                    onPressed: () {
-                      SystemNavigator.pop();
-                    },
-                  ),
-                ),
-              ],
-            )
-          : _isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Form(
-                  key: _formKey,
-                  child: Stepper(
-                    type: StepperType.horizontal,
-                    currentStep: _activeStateIndex,
-                    steps: stepList(),
-                    onStepContinue: () async {
-                      if (isLastStep) {
-                        await _submitAnswers();
-                        setState(() {
-                          isCompleted = true;
-                        });
-
-                        if (kDebugMode) {
-                          print('complete');
-                        }
-                      } else {
-                        if (!_formKey.currentState!.validate()) {
-                          return;
-                        }
-                        setState(() {
-                          _activeStateIndex += 1;
-                        });
-                      }
-                    },
-                    onStepCancel: () {
-                      _activeStateIndex == 0
-                          ? null
-                          : setState(() {
-                              _activeStateIndex -= 1;
-                            });
-                    },
-                    onStepTapped: (index) {
-                      setState(() {
-                        _activeStateIndex = index;
-                      });
-                    },
-                    controlsBuilder:
-                        (BuildContext context, ControlsDetails details) {
-                      return Container(
-                        child: Row(
-                          children: [
-                            Expanded(
+                      const SizedBox(height: 10),
+                      snapshot.data! > 0
+                          ? Container(
+                              alignment: Alignment.bottomCenter,
                               child: ElevatedButton(
-                                onPressed: details.onStepContinue,
                                 style: ElevatedButton.styleFrom(
                                   elevation: 5,
                                   backgroundColor:
@@ -858,50 +764,194 @@ class _PatienAnswersState extends State<PatientAnswersPage> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
-                                child: Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      isLastStep ? 'Confirmar' : 'Próximo',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge,
-                                    ),
+                                child: Text(
+                                  'Voltar',
+                                  style: Theme.of(context).textTheme.labelLarge,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pushReplacementNamed(
+                                    AppRoutes.pendingResponsePage,
+                                  );
+                                },
+                              ),
+                            )
+                          : Container(
+                              alignment: Alignment.bottomCenter,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 5,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
+                                child: Text(
+                                  'Sair',
+                                  style: Theme.of(context).textTheme.labelLarge,
+                                ),
+                                onPressed: () {
+                                  SystemNavigator.pop();
+                                },
                               ),
                             ),
-                            const SizedBox(width: 12),
-                            if (_activeStateIndex != 0)
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: details.onStepCancel,
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 5,
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    textStyle:
-                                        Theme.of(context).textTheme.labelLarge,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      'Voltar',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                  ),
-                                ),
-                              )
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Flex(
+                          direction: Axis.vertical,
+                          children: [
+                            Column(
+                              // mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                (patientAnswares!.temperature! > 37.5 ||
+                                        patientAnswares!.convulsion! ||
+                                        patientAnswares!.difficulty_breathing!)
+                                    ? Container(
+                                        alignment:
+                                            AlignmentDirectional.bottomCenter,
+                                        child: AnimatedTextKit(
+                                          animatedTexts: [
+                                            FadeAnimatedText(
+                                              'Atenção!',
+                                              textStyle: const TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            FadeAnimatedText(
+                                              'Procure o serviço médico!',
+                                              textStyle: const TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                          totalRepeatCount: 30,
+                                        ),
+                                      )
+                                    : Text(
+                                        '',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium,
+                                      ),
+                              ],
+                            ),
                           ],
                         ),
+                      ),
+                    ],
+                  )
+                : _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Form(
+                        key: _formKey,
+                        child: Stepper(
+                          type: StepperType.horizontal,
+                          currentStep: _activeStateIndex,
+                          steps: stepList(),
+                          onStepContinue: () async {
+                            if (isLastStep) {
+                              await _submitAnswers();
+                              setState(() {
+                                isCompleted = true;
+                              });
+
+                              if (kDebugMode) {
+                                print('complete');
+                              }
+                            } else {
+                              if (!_formKey.currentState!.validate()) {
+                                return;
+                              }
+                              setState(() {
+                                _activeStateIndex += 1;
+                              });
+                            }
+                          },
+                          onStepCancel: () {
+                            _activeStateIndex == 0
+                                ? null
+                                : setState(() {
+                                    _activeStateIndex -= 1;
+                                  });
+                          },
+                          onStepTapped: (index) {
+                            setState(() {
+                              _activeStateIndex = index;
+                            });
+                          },
+                          controlsBuilder:
+                              (BuildContext context, ControlsDetails details) {
+                            return Container(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: details.onStepContinue,
+                                      style: ElevatedButton.styleFrom(
+                                        elevation: 5,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      child: Container(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text(
+                                            isLastStep
+                                                ? 'Confirmar'
+                                                : 'Próximo',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelLarge,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  if (_activeStateIndex != 0)
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        onPressed: details.onStepCancel,
+                                        style: ElevatedButton.styleFrom(
+                                          elevation: 5,
+                                          backgroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text(
+                                            'Voltar',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                       );
-                    },
-                  ),
-                ),
+          }
+        },
+      ),
     );
   }
 }

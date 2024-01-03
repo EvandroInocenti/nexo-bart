@@ -4,6 +4,7 @@ import 'package:path/path.dart';
 import 'package:flutter/foundation.dart';
 import '../models/auth.dart';
 import '../models/patient_notification.dart';
+import '../models/pending_response.dart';
 
 class DatabaseController with ChangeNotifier {
   static final DatabaseController _instance = DatabaseController.internal();
@@ -204,6 +205,26 @@ class DatabaseController with ChangeNotifier {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  Future<List<PendingResponse>> getPendingResponse() async {
+    final db = await DatabaseController().db;
+    final List<Map<String, dynamic>> result =
+        await db.query('pending_response');
+
+    List<PendingResponse> pending = [];
+    for (int i = 0; i < result.length; i++) {
+      pending.add(
+        PendingResponse(
+          id: result[i]['id'],
+          title: result[i]['title'],
+          date: result[i]['date'],
+          period: result[i]['period'],
+        ),
+      );
+    }
+
+    return pending;
   }
 
   Future<void> insertNotificacao(title, body, lida) async {
