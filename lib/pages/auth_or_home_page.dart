@@ -65,23 +65,23 @@ class AuthOrHomePage extends StatelessWidget {
             DateTime newLastDate = DateTime.parse(lastDate);
             var dateNow = DateFormat("yyyy-MM-dd").format(DateTime.now());
             DateTime newDateNow = DateTime.parse(dateNow);
+            bool? ansToday = snapshot.data?[1].ansToday ?? false;
 
-            // while (newLastDate.day <= newDateNow.day) {
             while ((newDateNow.isAfter(newLastDate)) ||
-                newDateNow.isAtSameMomentAs(newLastDate)) {
-              print('lastDate: ${snapshot.data?[0].lastAccess}');
-              print('Ultimo acesso: ${newLastDate}');
-              print('Hoje: ${DateFormat('yMd').format(newDateNow)}');
-
+                (newDateNow.isAtSameMomentAs(newLastDate) &&
+                    ansToday == false)) {
               if (newLastDate.weekday == DateTime.friday) {
-                PendingResponseList().addPendingResponse('Reposta pendente',
-                    DateFormat("yyyy-MM-dd").format(newLastDate), 'Semanal');
+                PendingResponseList().addPendingResponse(
+                    'Reposta pendente',
+                    DateFormat("yyyy-MM-dd").format(newLastDate),
+                    'Semanal',
+                    false);
                 newLastDate = DateTime(
                     newLastDate.year, newLastDate.month, newLastDate.day + 1);
               }
 
               PendingResponseList().addPendingResponse('Reposta pendente',
-                  DateFormat("yyyy-MM-dd").format(newLastDate), 'Diário');
+                  DateFormat("yyyy-MM-dd").format(newLastDate), 'Diário', true);
               newLastDate = DateTime(
                   newLastDate.year, newLastDate.month, newLastDate.day + 1);
             }
@@ -89,7 +89,6 @@ class AuthOrHomePage extends StatelessWidget {
             DatabaseController()
                 .updateAuth(newDateNow, snapshot.data?[0].token);
 
-            // if (PendingResponseList().itemsCount > 0) {
             if (snapshot.data?[1].title != '') {
               return const PendingResponsesPage();
             } else {

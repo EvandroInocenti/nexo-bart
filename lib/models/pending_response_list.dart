@@ -59,16 +59,12 @@ class PendingResponseList with ChangeNotifier {
     return response.first;
   }
 
-  Future<void> addPendingResponse(title, date, period) async {
+  Future<void> addPendingResponse(title, date, period, ansToday) async {
     DatabaseController().insertPendingResponse(
       title,
       date,
       period,
+      ansToday,
     );
   }
-
-  // void removePendingResponse(id) {
-  //   items.remove(id);
-  //   DatabaseController().deletePendingResponse(id);
-  // }
 }

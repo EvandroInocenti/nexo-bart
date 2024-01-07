@@ -434,29 +434,53 @@ class _PatienWeeklyAnswersState extends State<PatientWeeklyAnswersPage> {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            elevation: 5,
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                      snapshot.data! > 0
+                          ? Container(
+                              alignment: Alignment.bottomCenter,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 5,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Voltar',
+                                  style: Theme.of(context).textTheme.labelLarge,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pushReplacementNamed(
+                                    AppRoutes.pendingResponsePage,
+                                  );
+                                },
+                              ),
+                            )
+                          : Container(
+                              alignment: Alignment.bottomCenter,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 5,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                    'Sair',
+                                    style:
+                                        Theme.of(context).textTheme.labelLarge,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  SystemNavigator.pop();
+                                },
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              'Sair',
-                              style: Theme.of(context).textTheme.labelLarge,
-                            ),
-                          ),
-                          onPressed: () {
-                            SystemNavigator.pop();
-                          },
-                        ),
-                      ),
                     ],
                   )
                 : _isLoading

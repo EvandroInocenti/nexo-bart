@@ -4,7 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nexo_onco/services/databaseController.dart';
 
@@ -136,13 +135,6 @@ class Auth with ChangeNotifier {
         'Authorization': 'Bearer $token',
       },
     );
-
-    // _token = null;
-    // email = null;
-    // idPatient = null;
-    // role = null;
-    // confirmed = null;
-    // institutionId = null;
     notifyListeners();
   }
 

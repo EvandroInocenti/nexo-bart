@@ -12,6 +12,7 @@ PendingResponse _$PendingResponseFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String?,
       date: json['date'] as String?,
       period: json['period'] as String?,
+      ansToday: json['ansToday'] == 1 ? true : false,
     );
 
 Map<String, dynamic> _$PendingResponseToJson(PendingResponse instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$PendingResponseToJson(PendingResponse instance) =>
       'title': instance.title,
       'date': instance.date,
       'period': instance.period,
+      'ansToday': instance.ansToday,
     };

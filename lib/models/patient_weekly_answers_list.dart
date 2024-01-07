@@ -92,9 +92,6 @@ class PatientWeeklyAnswersList with ChangeNotifier {
       ),
     );
 
-    // final firebaseToken = await FirebaseMessaging.instance.getToken();
-    // auth.sendFirebaseToken(firebaseToken as String);
-
     notifyListeners();
   }
 }

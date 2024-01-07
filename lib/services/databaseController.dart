@@ -58,7 +58,8 @@ class DatabaseController with ChangeNotifier {
                 id INTEGER PRIMARY KEY autoincrement,
                 title TEXT,
                 date TEXT,
-                period TEXT
+                period TEXT,
+                ansToday BOOLEAN
               )              
             ''');
       },
@@ -163,10 +164,6 @@ class DatabaseController with ChangeNotifier {
         where: 'token = ?',
         whereArgs: [token],
       );
-
-      if (kDebugMode) {
-        print(resultupdate);
-      }
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -174,7 +171,7 @@ class DatabaseController with ChangeNotifier {
     }
   }
 
-  Future<void> insertPendingResponse(title, date, period) async {
+  Future<void> insertPendingResponse(title, date, period, ansToday) async {
     final db = await DatabaseController().db;
     try {
       final resultInsert = await db.insert(
@@ -183,6 +180,7 @@ class DatabaseController with ChangeNotifier {
           'title': title,
           'date': date,
           'period': period,
+          'ansToday': ansToday ? 1 : 0,
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );

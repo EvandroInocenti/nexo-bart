@@ -11,12 +11,14 @@ class PendingResponse with ChangeNotifier {
   String? title;
   String? date;
   String? period;
+  bool? ansToday;
 
   PendingResponse({
     this.id,
     this.title,
     this.date,
     this.period,
+    this.ansToday,
   });
 
   factory PendingResponse.fromJson(Map<String, dynamic> json) =>
